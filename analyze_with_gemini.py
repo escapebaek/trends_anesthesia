@@ -2,13 +2,41 @@ import json
 import os
 import re
 import google.generativeai as genai
+from dotenv import load_dotenv
 
-API_KEY = "AIzaSyB-TP4cwbW3a1qPezmDEal7z2Q-9NAQvMM"
+# .env 파일에서 환경변수 로드
+load_dotenv()
+
+# 환경변수에서 API 키 가져오기
+API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not API_KEY:
+    raise ValueError("""
+    ❌ GEMINI_API_KEY가 설정되지 않았습니다.
+    
+    다음 중 하나의 방법으로 설정하세요:
+    
+    1. .env 파일 생성 (권장):
+       GEMINI_API_KEY=your_api_key_here
+    
+    2. 시스템 환경변수 설정:
+       export GEMINI_API_KEY=your_api_key_here  # Linux/Mac
+       set GEMINI_API_KEY=your_api_key_here     # Windows
+    
+    3. Python 실행 시 환경변수 설정:
+       GEMINI_API_KEY=your_api_key python analyze_with_gemini.py
+    """)
+
 genai.configure(api_key=API_KEY)
 
 # 1. 데이터 로드
-with open("abstracts_for_gemini.json", "r", encoding="utf-8") as f:
-    abstracts = json.load(f)
+try:
+    with open("abstracts_for_gemini.json", "r", encoding="utf-8") as f:
+        abstracts = json.load(f)
+except FileNotFoundError:
+    print("❌ abstracts_for_gemini.json 파일을 찾을 수 없습니다.")
+    print("💡 먼저 fetch_pubmed.py와 prepare_for_gemini.py를 실행하세요.")
+    exit(1)
 
 # 2. 프롬프트 (세부 논문 링크 포함, 세분화된 키워드 그룹화)
 prompt = (
@@ -34,8 +62,15 @@ prompt = (
 )
 
 # 3. 모델 호출
-model = genai.GenerativeModel("gemini-2.5-pro")
-response = model.generate_content(prompt)
+try:
+    print("🤖 Gemini API 호출 중...")
+    model = genai.GenerativeModel("gemini-2.5-pro")
+    response = model.generate_content(prompt)
+    print("✅ API 호출 성공")
+except Exception as e:
+    print(f"❌ Gemini API 호출 실패: {e}")
+    print("💡 API 키가 올바른지, 할당량이 남아있는지 확인하세요.")
+    exit(1)
 
 # 4. JSON 추출
 raw_text = response.text.strip()
@@ -45,13 +80,16 @@ json_str = match.group(0) if match else raw_text
 # 5. JSON 파싱
 try:
     trends_by_journal = json.loads(json_str)
+    print(f"✅ JSON 파싱 성공 - {len(trends_by_journal)}개 저널 데이터")
 except json.JSONDecodeError as e:
     print("❌ JSON 파싱 실패:", e)
-    print("raw 출력:\n", raw_text[:500])
+    print("Raw 출력 (처음 500자):\n", raw_text[:500])
     trends_by_journal = {}
 
 # 6. 저장
-with open("anesthesia_trends_by_journal_with_article_links.json", "w", encoding="utf-8") as f:
+output_file = "anesthesia_trends_by_journal_with_article_links.json"
+with open(output_file, "w", encoding="utf-8") as f:
     json.dump(trends_by_journal, f, ensure_ascii=False, indent=2)
 
-print(f"✅ 저장 완료 → anesthesia_trends_by_journal_with_article_links.json (세부 키워드별 논문 링크 포함)")
+print(f"✅ 저장 완료 → {output_file} (세부 키워드별 논문 링크 포함)")
+print(f"📊 분석된 총 토픽 수: {sum(len(topics) for topics in trends_by_journal.values())}")
