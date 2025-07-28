@@ -12,22 +12,60 @@ import sys
 from collections import Counter
 import re
 from datetime import datetime
+import signal
+import threading
 
 # GitHub 설정 (사용자가 수정해야 할 부분)
 GITHUB_REPO_PATH = "."  # 현재 디렉토리가 git 레포지토리라고 가정
 GITHUB_REPO_URL = "https://github.com/escapebaek/trends_anesthesia.git"
-# 예: "https://github.com/username/repo-name"
 AUTO_DEPLOY = True      # 자동 배포 여부
+AUTO_OPEN_BROWSER = True  # 자동으로 브라우저 열기 여부
+
+def safe_input(prompt, timeout=10, default='n'):
+    """
+    타임아웃이 있는 안전한 입력 함수
+    timeout 초 후에 default 값을 반환
+    """
+    def timeout_handler():
+        print(f"\n⏰ {timeout}초 타임아웃 - 기본값 '{default}' 사용")
+        return default
+    
+    try:
+        # 프롬프트 출력
+        print(prompt, end='', flush=True)
+        
+        # 타이머 설정
+        timer = threading.Timer(timeout, timeout_handler)
+        timer.start()
+        
+        # 입력 시도
+        try:
+            result = input().strip().lower()
+            timer.cancel()  # 입력이 성공하면 타이머 취소
+            return result if result else default
+        except (EOFError, KeyboardInterrupt):
+            timer.cancel()
+            print(f"\n⚠️ 입력 취소됨 - 기본값 '{default}' 사용")
+            return default
+        except Exception:
+            timer.cancel()
+            print(f"\n❌ 입력 오류 - 기본값 '{default}' 사용")
+            return default
+            
+    except Exception:
+        print(f"\n🔧 안전한 입력 모드 - 기본값 '{default}' 사용")
+        return default
 
 def setup_git_repo():
     """Git 레포지토리 초기 설정"""
     if not os.path.exists(".git"):
         print("📁 Git 레포지토리를 초기화합니다...")
-        subprocess.run(["git", "init"], check=True)
-        
-        # .gitignore 생성
-        with open(".gitignore", "w") as f:
-            f.write("""
+        try:
+            subprocess.run(["git", "init"], check=True)
+            
+            # .gitignore 생성
+            with open(".gitignore", "w") as f:
+                f.write("""
 # Python
 __pycache__/
 *.pyc
@@ -38,6 +76,12 @@ __pycache__/
 .coverage
 .pytest_cache/
 
+# 환경변수 파일 (중요: API 키 보호)
+.env
+.env.local
+.env.production
+.env.staging
+
 # Data files (optional - 보안상 민감한 데이터는 제외)
 # *.json
 
@@ -45,11 +89,14 @@ __pycache__/
 .DS_Store
 Thumbs.db
 """)
-        
-        print("✅ Git 레포지토리가 초기화되었습니다.")
-        print("🔗 GitHub에서 레포지토리를 생성하고 다음 명령어를 실행하세요:")
-        print("   git remote add origin https://github.com/escapebaek/trends_anesthesia.git")
-        return False
+            
+            print("✅ Git 레포지토리가 초기화되었습니다.")
+            print("🔗 GitHub에서 레포지토리를 생성하고 다음 명령어를 실행하세요:")
+            print("   git remote add origin https://github.com/escapebaek/trends_anesthesia.git")
+            return False
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Git 초기화 실패: {e}")
+            return False
     return True
 
 def deploy_to_github():
@@ -67,9 +114,9 @@ def deploy_to_github():
             commit_message = f"Update dashboard - {timestamp}"
             
             # Git 명령어 실행
-            subprocess.run(["git", "add", "."], check=True)
-            subprocess.run(["git", "commit", "-m", commit_message], check=True)
-            subprocess.run(["git", "push"], check=True)
+            subprocess.run(["git", "add", "."], check=True, timeout=30)
+            subprocess.run(["git", "commit", "-m", commit_message], check=True, timeout=30)
+            subprocess.run(["git", "push"], check=True, timeout=60)
             
             print("✅ GitHub에 업로드 완료!")
             
@@ -77,7 +124,7 @@ def deploy_to_github():
             try:
                 # 원격 URL 가져오기
                 result = subprocess.run(["git", "remote", "get-url", "origin"], 
-                                      capture_output=True, text=True, check=True)
+                                      capture_output=True, text=True, check=True, timeout=10)
                 remote_url = result.stdout.strip()
                 
                 # GitHub Pages URL 생성
@@ -90,10 +137,32 @@ def deploy_to_github():
                     print(f"🌐 GitHub Pages URL: {pages_url}")
                     print("⏳ 배포까지 5-10분 정도 소요될 수 있습니다.")
                     
-                    # 브라우저에서 GitHub Pages 열기 (선택사항)
-                    open_browser = input("GitHub Pages를 브라우저에서 열까요? (y/n): ")
-                    if open_browser.lower() == 'y':
-                        webbrowser.open(pages_url)
+                    # 자동으로 브라우저 열기 옵션
+                    if AUTO_OPEN_BROWSER:
+                        print("🚀 자동으로 GitHub Pages를 브라우저에서 엽니다...")
+                        try:
+                            webbrowser.open(pages_url)
+                            print("✅ 브라우저에서 열었습니다!")
+                        except Exception as e:
+                            print(f"⚠️ 브라우저 열기 실패: {e}")
+                    else:
+                        # 사용자에게 물어보기 (타임아웃 포함)
+                        open_browser = safe_input(
+                            "GitHub Pages를 브라우저에서 열까요? (y/n, 10초 후 자동으로 'n'): ", 
+                            timeout=10, 
+                            default='n'
+                        )
+                        
+                        if open_browser == 'y':
+                            try:
+                                webbrowser.open(pages_url)
+                                print("✅ 브라우저에서 열었습니다!")
+                            except Exception as e:
+                                print(f"⚠️ 브라우저 열기 실패: {e}")
+                        else:
+                            print("📝 수동으로 URL을 복사해서 브라우저에서 확인하세요.")
+                    
+                    return pages_url
                         
             except Exception as e:
                 print(f"⚠️ GitHub Pages URL을 자동으로 확인할 수 없습니다: {e}")
@@ -101,6 +170,9 @@ def deploy_to_github():
         else:
             print("ℹ️ 변경사항이 없습니다.")
             
+    except subprocess.TimeoutExpired:
+        print("❌ Git 명령어 실행 시간 초과")
+        return False
     except subprocess.CalledProcessError as e:
         print(f"❌ Git 명령어 실행 실패: {e}")
         print("🔧 해결방법:")
@@ -114,13 +186,15 @@ def deploy_to_github():
     
     return True
 
-# 기존 시각화 코드 (이전과 동일)
+# 기존 시각화 코드
 # 1. JSON 로드
 json_path = "anesthesia_trends_by_journal_with_article_links.json"
 if not os.path.exists(json_path):
     print(f"❌ {json_path} 파일을 찾을 수 없습니다.")
+    print("💡 먼저 analyze_with_gemini.py를 실행하세요.")
     sys.exit(1)
 
+print("📊 데이터 로드 중...")
 with open(json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
@@ -143,6 +217,7 @@ for journal, clusters in data.items():
         })
 
 df = pd.DataFrame(rows)
+print(f"✅ {len(df)}개 토픽 데이터 처리 완료")
 
 # 키워드 빈도 분석
 keyword_counts = Counter(all_keywords)
@@ -156,9 +231,11 @@ journal_stats = df.groupby('journal').agg({
 journal_stats.columns = ['total_articles', 'avg_per_topic', 'max_topic', 'num_topics']
 journal_stats = journal_stats.reset_index()
 
-# 3. 색상 팔레트 정의 (현대적인 색상)
+# 3. 색상 팔레트 정의
 colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9']
 journal_colors = {journal: colors[i % len(colors)] for i, journal in enumerate(df['journal'].unique())}
+
+print("📈 차트 생성 중...")
 
 # 4. HTML 문서 생성
 doc, tag, text = Doc().tagtext()
@@ -386,7 +463,7 @@ def create_modern_css():
     </style>
     """
 
-# HTML 구조 생성 (기존과 동일하지만 푸터 추가)
+# HTML 구조 생성
 doc.asis("<!DOCTYPE html>")
 with tag("html", lang="en"):
     with tag("head"):
@@ -434,7 +511,7 @@ with tag("html", lang="en"):
                     with tag("div", klass="stat-label"):
                         text("Keywords")
 
-# 차트 생성 (기존과 동일)
+# 차트 생성
 # 메인 바 차트
 fig1 = px.bar(
     df.sort_values('count', ascending=True).tail(20),
@@ -533,7 +610,7 @@ with tag("div", klass="dashboard-grid"):
     with tag("div", klass="chart-container"):
         doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="keywords-chart"))
 
-# 저널별 상세 섹션 (기존과 동일)
+# 저널별 상세 섹션
 for journal in sorted(df["journal"].unique()):
     journal_data = df[df["journal"] == journal].sort_values('count', ascending=False)
     
@@ -575,7 +652,7 @@ with tag("div", klass="footer"):
     with tag("p", style="font-size: 0.9em; margin-top: 5px;"):
         text("Auto-deployed research trends dashboard")
 
-# JavaScript (기존과 동일)
+# JavaScript
 with tag("script"):
     doc.asis("""
     document.querySelectorAll('.topic-card').forEach(card => {
@@ -603,6 +680,7 @@ with tag("script"):
 
 # HTML 저장
 output_html = "index.html"  # GitHub Pages를 위해 index.html로 저장
+print("💾 HTML 파일 생성 중...")
 with open(output_html, "w", encoding="utf-8") as f:
     f.write(doc.getvalue())
 
@@ -615,16 +693,28 @@ if AUTO_DEPLOY:
     # Git 레포지토리 확인/설정
     if setup_git_repo():
         # 배포 실행
-        if deploy_to_github():
+        pages_url = deploy_to_github()
+        if pages_url:
             print("🎉 배포가 완료되었습니다!")
         else:
-            print("⚠️ 배포 중 문제가 발생했습니다.")
-            # 로컬에서라도 열기
-            webbrowser.open("file://" + os.path.abspath(output_html))
+            print("⚠️ 배포 중 문제가 발생했습니다. 로컬에서 확인합니다.")
+            try:
+                webbrowser.open("file://" + os.path.abspath(output_html))
+            except Exception:
+                print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
     else:
         print("📝 Git 설정을 완료한 후 다시 실행해주세요.")
-        webbrowser.open("file://" + os.path.abspath(output_html))
+        try:
+            webbrowser.open("file://" + os.path.abspath(output_html))
+        except Exception:
+            print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
 else:
     # 로컬에서만 열기
-    webbrowser.open("file://" + os.path.abspath(output_html))
+    try:
+        webbrowser.open("file://" + os.path.abspath(output_html))
+        print("🌐 로컬 브라우저에서 대시보드를 열었습니다.")
+    except Exception:
+        print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
     print("💡 자동 배포를 원하시면 스크립트 상단의 AUTO_DEPLOY = True로 설정하세요.")
+
+print("\n🏁 모든 작업이 완료되었습니다!")
