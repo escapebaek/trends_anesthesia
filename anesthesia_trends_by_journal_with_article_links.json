@@ -1,575 +1,742 @@
 {
   "Anesthesiology": [
     {
-      "topic": "Perioperative Management in Obstetric Anesthesia",
-      "count": 3,
-      "related_keywords": [
-        "diabetic pregnancy",
-        "insulin management",
-        "obstetric anesthesia workforce",
-        "neuraxial labor analgesia"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40626748/",
-        "https://pubmed.ncbi.nlm.nih.gov/40237779/",
-        "https://pubmed.ncbi.nlm.nih.gov/40626745/"
-      ],
-      "description": "Managing diabetes, workforce trends, and care access in obstetrics."
-    },
-    {
-      "topic": "Anesthetic Mechanisms on Consciousness and Memory",
-      "count": 4,
-      "related_keywords": [
-        "propofol",
-        "consciousness",
-        "amnesia",
-        "supramammillary nucleus",
-        "mitochondria"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40704593/",
-        "https://pubmed.ncbi.nlm.nih.gov/40203181/",
-        "https://pubmed.ncbi.nlm.nih.gov/40626585/",
-        "https://pubmed.ncbi.nlm.nih.gov/40315373/"
-      ],
-      "description": "Investigating neural circuits and molecular targets for anesthetic-induced hypnosis."
-    },
-    {
-      "topic": "Sugammadex Pharmacology and Safety",
-      "count": 3,
+      "topic": "Pediatric Neuromuscular Blockade Reversal",
+      "count": 2,
       "related_keywords": [
         "sugammadex",
-        "rocuronium",
-        "neuromuscular blockade",
-        "hypoxic ventilatory response",
-        "infants"
+        "remimazolam",
+        "pharmacokinetics",
+        "neostigmine"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40324166/",
-        "https://pubmed.ncbi.nlm.nih.gov/40644393/",
-        "https://pubmed.ncbi.nlm.nih.gov/40251137/"
-      ],
-      "description": "Efficacy and physiological effects of sugammadex reversal in varied populations."
-    },
-    {
-      "topic": "Pediatric Anesthesia Pharmacology",
-      "count": 3,
-      "related_keywords": [
-        "remimazolam",
-        "propofol",
-        "sevoflurane",
-        "pharmacokinetics",
-        "pharmacodynamics"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40355106/",
-        "https://pubmed.ncbi.nlm.nih.gov/40258137/",
-        "https://pubmed.ncbi.nlm.nih.gov/40408187/"
-      ],
-      "description": "Dosing, metabolic effects, and neurotoxicity of anesthetics in children."
-    },
-    {
-      "topic": "Anesthetic-Induced Neurotoxicity and PND",
-      "count": 2,
-      "related_keywords": [
-        "sevoflurane",
-        "intergenerational PND",
-        "NKCC1",
-        "arginine vasopressin"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40408187/",
         "https://pubmed.ncbi.nlm.nih.gov/40355106/"
       ],
-      "description": "Mechanisms of sevoflurane-triggered neurocognitive deficits and intergenerational effects."
+      "description": "Pharmacokinetics and efficacy of reversal agents in young children."
     },
     {
-      "topic": "Central Mechanisms of Nociceptive Sensitization",
+      "topic": "Anesthetic Mechanisms at the Mitochondrial Level",
       "count": 2,
       "related_keywords": [
-        "central amygdala",
-        "isoflurane",
-        "nociceptive sensitization",
-        "KCC2 dysregulation",
-        "ketamine"
+        "mitochondria",
+        "propofol",
+        "ubiquinone-5",
+        "proton leak"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40333028/",
-        "https://pubmed.ncbi.nlm.nih.gov/40663518/"
+        "https://pubmed.ncbi.nlm.nih.gov/40315373/",
+        "https://pubmed.ncbi.nlm.nih.gov/40258137/"
       ],
-      "description": "Role of CeA neurons and central sensitization in chronic pain."
+      "description": "Investigating mitochondrial targets and metabolic responses to anesthetic agents."
     },
     {
-      "topic": "Healthcare Systems and Clinician Safety",
-      "count": 4,
-      "related_keywords": [
-        "EHR downtime",
-        "occupational hazard",
-        "head strikes",
-        "emotional distress",
-        "workforce survey"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40493406/",
-        "https://pubmed.ncbi.nlm.nih.gov/40663557/",
-        "https://pubmed.ncbi.nlm.nih.gov/40674546/",
-        "https://pubmed.ncbi.nlm.nih.gov/40237779/"
-      ],
-      "description": "Operational resilience, occupational hazards, and emotional well-being for anesthesiologists."
-    },
-    {
-      "topic": "Pediatric Airway Management and Recovery",
-      "count": 2,
-      "related_keywords": [
-        "pediatric airway",
-        "desaturation",
-        "adverse events",
-        "quality of recovery"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40622860/",
-        "https://pubmed.ncbi.nlm.nih.gov/40227959/"
-      ],
-      "description": "Adverse event incidence and quality of recovery assessment in children."
-    },
-    {
-      "topic": "Perioperative Organ Protection in Cardiac Surgery",
+      "topic": "Neural Circuits of Anesthetic-Induced Unconsciousness",
       "count": 3,
       "related_keywords": [
-        "acute kidney injury",
+        "propofol",
+        "isoflurane",
+        "supramammillary nucleus (SuM)",
+        "central amygdala (CeA)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40704593/",
+        "https://pubmed.ncbi.nlm.nih.gov/40333028/",
+        "https://pubmed.ncbi.nlm.nih.gov/40626585/"
+      ],
+      "description": "Exploring specific brain regions regulating consciousness under general anesthesia."
+    },
+    {
+      "topic": "Obstetric Anesthesia Practice and Workforce",
+      "count": 3,
+      "related_keywords": [
+        "workforce survey",
+        "neuraxial labor analgesia",
+        "diabetes in pregnancy",
+        "Dobbs decision"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40237779/",
+        "https://pubmed.ncbi.nlm.nih.gov/40626748/",
+        "https://pubmed.ncbi.nlm.nih.gov/40626745/"
+      ],
+      "description": "Trends in obstetric care delivery, access, and specific comorbidities."
+    },
+    {
+      "topic": "Anesthetic Effects on Memory and Cognition",
+      "count": 2,
+      "related_keywords": [
+        "fMRI",
+        "propofol",
+        "fentanyl",
+        "amnesia"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40203181/",
+        "https://pubmed.ncbi.nlm.nih.gov/40626585/"
+      ],
+      "description": "Neuroanatomic targets of anesthetics on memory encoding and recall."
+    },
+    {
+      "topic": "Occupational Hazards for Anesthesiologists",
+      "count": 2,
+      "related_keywords": [
+        "head strikes",
+        "emotional distress",
+        "workplace safety",
+        "post-traumatic stress"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40663557/",
+        "https://pubmed.ncbi.nlm.nih.gov/40674546/"
+      ],
+      "description": "Investigating physical and psychological risks in perioperative environments."
+    },
+    {
+      "topic": "Renal Protection in Cardiac Surgery",
+      "count": 2,
+      "related_keywords": [
         "nitric oxide",
-        "cardiopulmonary bypass",
-        "renal blood flow"
+        "acute kidney injury (AKI)",
+        "cardiopulmonary bypass (CPB)",
+        "glomerular filtration rate"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40203179/",
-        "https://pubmed.ncbi.nlm.nih.gov/40622858/",
-        "https://pubmed.ncbi.nlm.nih.gov/40237771/"
+        "https://pubmed.ncbi.nlm.nih.gov/40622858/"
       ],
-      "description": "Strategies to mitigate renal injury during cardiopulmonary bypass procedures."
+      "description": "Strategies to mitigate renal dysfunction during cardiac procedures."
     },
     {
-      "topic": "Ventilator Management and Lung Mechanics",
-      "count": 2,
+      "topic": "Pediatric Perioperative Outcomes and Assessment",
+      "count": 3,
       "related_keywords": [
-        "recruitment-to-inflation ratio",
+        "quality of recovery",
+        "congenital heart surgery",
+        "mortality models",
+        "STAT score"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40227959/",
+        "https://pubmed.ncbi.nlm.nih.gov/40237771/",
+        "https://pubmed.ncbi.nlm.nih.gov/40622860/"
+      ],
+      "description": "Developing and validating tools for risk and recovery in children."
+    },
+    {
+      "topic": "Individualizing PEEP with Recruitment-to-Inflation Ratio",
+      "count": 1,
+      "related_keywords": [
         "PEEP",
+        "recruitment-to-inflation ratio (R/I)",
         "lung recruitment",
-        "mechanical ventilation weaning"
+        "electrical impedance tomography"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40690301/",
-        "https://pubmed.ncbi.nlm.nih.gov/40637299/"
+        "https://pubmed.ncbi.nlm.nih.gov/40690301/"
       ],
-      "description": "Assessing lung recruitability and nutritional support for ventilator weaning."
+      "description": "Using R/I to assess lung recruitability during general anesthesia."
     },
     {
-      "topic": "Anesthetic Monitoring and Dosing",
-      "count": 2,
+      "topic": "Factors Influencing Anesthetic Agent Delivery",
+      "count": 1,
       "related_keywords": [
-        "breath analysis",
-        "pharmacometabolomics",
-        "MAC ratio",
-        "end-tidal concentration"
+        "minimum alveolar concentration (MAC)",
+        "mean arterial pressure (MAP)",
+        "genome-wide association study",
+        "DISC1"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40258137/",
         "https://pubmed.ncbi.nlm.nih.gov/40489632/"
       ],
-      "description": "Novel monitoring via breath and factors influencing anesthetic delivery."
+      "description": "Investigating clinical and genetic determinants of volatile anesthetic dosing."
     },
     {
-      "topic": "Classic Papers Revisited: Ultrasound & Multimodal Care",
-      "count": 2,
+      "topic": "Sevoflurane-Induced Perioperative Neurocognitive Disorder",
+      "count": 1,
       "related_keywords": [
-        "ultrasound-guided",
-        "supraclavicular block",
-        "multimodal approach",
-        "surgical stress response"
+        "sevoflurane",
+        "PND",
+        "arginine vasopressin (AVP)",
+        "intergenerational effects"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40590455/",
-        "https://pubmed.ncbi.nlm.nih.gov/40626746/"
+        "https://pubmed.ncbi.nlm.nih.gov/40408187/"
       ],
-      "description": "Reflecting on landmark papers that shaped modern regional anesthesia."
+      "description": "Mechanisms of sevoflurane neurotoxicity and its heritable impacts."
     },
     {
-      "topic": "Novel Local Anesthetics and Cerebrovascular Effects",
-      "count": 2,
+      "topic": "Sugammadex and Hypoxic Ventilatory Response",
+      "count": 1,
       "related_keywords": [
-        "2',6'-pipecolylxylidine",
-        "PPX",
-        "sensory-selective",
-        "cerebrovascular compliance",
-        "norepinephrine"
+        "sugammadex",
+        "rocuronium",
+        "acute hypoxic ventilatory response (AHVR)",
+        "chemoreflex"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40704591/",
-        "https://pubmed.ncbi.nlm.nih.gov/40644378/"
+        "https://pubmed.ncbi.nlm.nih.gov/40644393/"
       ],
-      "description": "Developing sensory-sparing anesthetics and understanding cerebrovascular adaptive responses."
+      "description": "Impact of NMB reversal on peripheral chemoreflex recovery."
+    },
+    {
+      "topic": "Ketamine for Postoperative Pain and Central Sensitization",
+      "count": 1,
+      "related_keywords": [
+        "ketamine",
+        "central sensitization",
+        "breast surgery",
+        "temporal summation"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40663518/"
+      ],
+      "description": "Evaluating ketamine's efficacy based on baseline central sensitization."
+    },
+    {
+      "topic": "Innovative Anesthesia Education and Technology",
+      "count": 2,
+      "related_keywords": [
+        "large language models (LLMs)",
+        "emotional intelligence",
+        "electronic health records (EHR)",
+        "ultrasound guidance"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40626589/",
+        "https://pubmed.ncbi.nlm.nih.gov/40590455/"
+      ],
+      "description": "Utilizing advanced technology for training and clinical practice improvement."
     }
   ],
   "British journal of anaesthesia": [
     {
-      "topic": "Frailty and Geriatric Surgical Outcomes (SNAP-3)",
+      "topic": "Frailty and Multimorbidity in Older Surgical Populations (SNAP-3)",
       "count": 5,
       "related_keywords": [
         "frailty",
-        "multimorbidity",
-        "Clinical Frailty Scale",
         "SNAP-3",
-        "postoperative delirium"
+        "Clinical Frailty Scale (CFS)",
+        "multimorbidity",
+        "directed acyclic graphs (DAGs)"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40571477/",
         "https://pubmed.ncbi.nlm.nih.gov/40562634/",
         "https://pubmed.ncbi.nlm.nih.gov/40425395/",
-        "https://pubmed.ncbi.nlm.nih.gov/40425394/",
-        "https://pubmed.ncbi.nlm.nih.gov/40410100/"
+        "https://pubmed.ncbi.nlm.nih.gov/40707288/",
+        "https://pubmed.ncbi.nlm.nih.gov/40425394/"
       ],
-      "description": "Impact of frailty on outcomes in older surgical populations."
+      "description": "Large-scale study on frailty's impact on postoperative outcomes."
     },
     {
-      "topic": "Perioperative Neurocognitive Disorders and Ketamine",
+      "topic": "Perioperative Neurocognitive Disorder (PND) Prevention and Mechanisms",
       "count": 4,
       "related_keywords": [
-        "perioperative neurocognitive disorders",
+        "pNCD/dNCR",
+        "dexmedetomidine",
         "ketamine",
-        "postoperative delirium",
-        "esketamine",
-        "isoflurane"
+        "isoflurane",
+        "stochastic emergence"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40483182/",
         "https://pubmed.ncbi.nlm.nih.gov/40480916/",
+        "https://pubmed.ncbi.nlm.nih.gov/40483182/",
         "https://pubmed.ncbi.nlm.nih.gov/40628582/",
         "https://pubmed.ncbi.nlm.nih.gov/40537199/"
       ],
-      "description": "Investigating ketamine's controversial role in preventing cognitive decline after procedures."
+      "description": "Evaluating interventions and mechanisms for preventing cognitive decline."
     },
     {
-      "topic": "Long-Term Opioid Use and Rebound Pain",
-      "count": 3,
+      "topic": "Regional Anesthesia for Major Orthopedic and Breast Surgery",
+      "count": 4,
       "related_keywords": [
-        "long-term opioid use",
-        "rebound pain",
-        "dexamethasone",
-        "morphine milligram equivalents",
-        "trauma"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40615331/",
-        "https://pubmed.ncbi.nlm.nih.gov/40610285/",
-        "https://pubmed.ncbi.nlm.nih.gov/40701886/"
-      ],
-      "description": "Examining post-surgical opioid dependency and management of rebound phenomenon."
-    },
-    {
-      "topic": "Thoracic and Truncal Regional Blocks",
-      "count": 3,
-      "related_keywords": [
-        "erector spinae plane block",
-        "paravertebral block",
-        "parasternal intercostal plane block",
-        "levobupivacaine"
+        "erector spinae plane block (ESPB)",
+        "thoracic paravertebral block (PVB)",
+        "pericapsular nerve group (PENG)",
+        "total hip arthroplasty"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40707285/",
-        "https://pubmed.ncbi.nlm.nih.gov/40640047/",
-        "https://pubmed.ncbi.nlm.nih.gov/40640046/"
-      ],
-      "description": "Comparing efficacy and pharmacokinetics of fascial plane blocks for trunk."
-    },
-    {
-      "topic": "Neurobiology of Chronic and Neuropathic Pain",
-      "count": 4,
-      "related_keywords": [
-        "anterior cingulate cortex",
-        "neuropathic pain",
-        "P2X4R-BDNF",
-        "TRPV1",
-        "microglia"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40533323/",
-        "https://pubmed.ncbi.nlm.nih.gov/40410097/",
-        "https://pubmed.ncbi.nlm.nih.gov/40707290/",
-        "https://pubmed.ncbi.nlm.nih.gov/40404497/"
-      ],
-      "description": "Exploring cortical and cellular mechanisms driving persistent pain states."
-    },
-    {
-      "topic": "Perioperative Anemia and Iron Management",
-      "count": 3,
-      "related_keywords": [
-        "iron deficiency",
-        "preoperative anaemia",
-        "transfusion",
-        "arthroplasty",
-        "pediatric"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40514282/",
-        "https://pubmed.ncbi.nlm.nih.gov/40500601/",
-        "https://pubmed.ncbi.nlm.nih.gov/40404500/"
-      ],
-      "description": "Impact of preoperative iron status on surgical outcomes and transfusion."
-    },
-    {
-      "topic": "Anesthesia Technology and Monitoring",
-      "count": 4,
-      "related_keywords": [
-        "continuous glucose monitoring",
-        "EEG",
-        "Conox",
-        "qCON",
-        "artificial intelligence"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40707283/",
-        "https://pubmed.ncbi.nlm.nih.gov/40685291/",
-        "https://pubmed.ncbi.nlm.nih.gov/40537197/",
-        "https://pubmed.ncbi.nlm.nih.gov/40615329/"
-      ],
-      "description": "Evaluating novel monitoring devices and AI applications in anesthesia."
-    },
-    {
-      "topic": "Regional Anesthesia for Hip Arthroplasty",
-      "count": 3,
-      "related_keywords": [
-        "PENG block",
-        "total hip arthroplasty",
-        "femoral nerve block",
-        "local infiltrative analgesia",
-        "network meta-analysis"
-      ],
-      "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40483183/",
         "https://pubmed.ncbi.nlm.nih.gov/40480912/",
-        "https://pubmed.ncbi.nlm.nih.gov/40689673/"
+        "https://pubmed.ncbi.nlm.nih.gov/40685291/"
       ],
-      "description": "Comparing block modalities for analgesia in total hip procedures."
+      "description": "Comparing efficacy of different nerve block techniques."
     },
     {
-      "topic": "Prehabilitation and Enhanced Recovery",
-      "count": 4,
-      "related_keywords": [
-        "prehabilitation",
-        "adherence",
-        "respiratory muscle training",
-        "quality of recovery",
-        "DAH(30)"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40615328/",
-        "https://pubmed.ncbi.nlm.nih.gov/40374400/",
-        "https://pubmed.ncbi.nlm.nih.gov/40619312/",
-        "https://pubmed.ncbi.nlm.nih.gov/40480911/"
-      ],
-      "description": "Evaluating pre-surgical optimization programs to improve postoperative outcomes."
-    },
-    {
-      "topic": "Education and Skill Acquisition in Anesthesia",
-      "count": 4,
-      "related_keywords": [
-        "videolaryngoscopy",
-        "direct laryngoscopy",
-        "mastery learning",
-        "neuraxial access",
-        "simulation"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40707287/",
-        "https://pubmed.ncbi.nlm.nih.gov/40634187/",
-        "https://pubmed.ncbi.nlm.nih.gov/40537198/",
-        "https://pubmed.ncbi.nlm.nih.gov/40628584/"
-      ],
-      "description": "Investigating effective training methods for procedural skills in trainees."
-    },
-    {
-      "topic": "Sustainability in Anesthesia Practice",
-      "count": 2,
-      "related_keywords": [
-        "sustainability",
-        "carbon footprint",
-        "CO2e-emissions",
-        "desflurane",
-        "patient warming"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40541484/",
-        "https://pubmed.ncbi.nlm.nih.gov/40675839/"
-      ],
-      "description": "Assessing environmental and economic impacts of anesthetic agents and devices."
-    },
-    {
-      "topic": "Perioperative Hemodynamic Management",
+      "topic": "Perioperative Diabetes Management and Technology",
       "count": 3,
       "related_keywords": [
-        "goal-directed haemodynamic therapy",
-        "vasoplegia",
-        "hydroxocobalamin",
-        "autonomic nervous system",
-        "cardiac surgery"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40640043/",
-        "https://pubmed.ncbi.nlm.nih.gov/40634184/",
-        "https://pubmed.ncbi.nlm.nih.gov/40615330/"
-      ],
-      "description": "Strategies for circulatory management and autonomic balance during surgery."
-    },
-    {
-      "topic": "Perioperative Management of Diabetes",
-      "count": 3,
-      "related_keywords": [
-        "diabetes mellitus",
         "insulin analogues",
+        "hybrid closed loop systems",
         "GLP-1 receptor agonists",
-        "SGLT2 inhibitors",
-        "continuous glucose monitoring"
+        "SGLT2 inhibitors"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40480914/",
         "https://pubmed.ncbi.nlm.nih.gov/40651878/",
         "https://pubmed.ncbi.nlm.nih.gov/40379536/"
       ],
-      "description": "Guidance on new antidiabetic agents and technology in surgery."
+      "description": "Reviews on managing novel diabetes medications and delivery systems."
+    },
+    {
+      "topic": "Neuropathic and Chronic Pain Mechanisms",
+      "count": 4,
+      "related_keywords": [
+        "anterior cingulate cortex (ACC)",
+        "microglia",
+        "P2X4R-BDNF-TrkB signalling",
+        "satellite glial cell (SGC)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40533323/",
+        "https://pubmed.ncbi.nlm.nih.gov/40404497/",
+        "https://pubmed.ncbi.nlm.nih.gov/40707290/",
+        "https://pubmed.ncbi.nlm.nih.gov/40483184/"
+      ],
+      "description": "Exploring cellular and signaling pathways in chronic pain states."
+    },
+    {
+      "topic": "Preoperative Anemia and Iron Deficiency Management",
+      "count": 3,
+      "related_keywords": [
+        "non-anemic iron deficiency",
+        "preoperative anaemia",
+        "hip arthroplasty",
+        "pediatric surgery"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40514282/",
+        "https://pubmed.ncbi.nlm.nih.gov/40500601/",
+        "https://pubmed.ncbi.nlm.nih.gov/40404500/"
+      ],
+      "description": "Impact of iron status on surgical outcomes."
+    },
+    {
+      "topic": "Anesthesia Education and Skill Acquisition",
+      "count": 3,
+      "related_keywords": [
+        "neuraxial space access",
+        "mastery learning",
+        "videolaryngoscopy",
+        "direct laryngoscopy"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40628584/",
+        "https://pubmed.ncbi.nlm.nih.gov/40537198/",
+        "https://pubmed.ncbi.nlm.nih.gov/40634187/"
+      ],
+      "description": "Modern approaches to training in procedural and technical skills."
+    },
+    {
+      "topic": "Environmental Sustainability in Anesthesia",
+      "count": 2,
+      "related_keywords": [
+        "carbon footprint",
+        "inhalational anaesthesia",
+        "desflurane",
+        "patient warming"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40675839/",
+        "https://pubmed.ncbi.nlm.nih.gov/40541484/"
+      ],
+      "description": "Quantifying and reducing the environmental impact of perioperative care."
+    },
+    {
+      "topic": "Epidural-Related Maternal Fever Mechanisms",
+      "count": 2,
+      "related_keywords": [
+        "interleukin-1Ra (IL-1Ra)",
+        "epidural analgesia",
+        "maternal fever",
+        "intrapartum antibiotics"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40537200/",
+        "https://pubmed.ncbi.nlm.nih.gov/40368685/"
+      ],
+      "description": "Investigating the genetic and inflammatory basis of fever during labor."
+    },
+    {
+      "topic": "Pharmacokinetics of Interfascial Plane Blocks",
+      "count": 1,
+      "related_keywords": [
+        "levobupivacaine",
+        "epinephrine",
+        "erector spinae plane (ESP)",
+        "transversus abdominis plane (TAP)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40640044/"
+      ],
+      "description": "Systemic absorption and safety of local anesthetics in blocks."
+    },
+    {
+      "topic": "EEG Monitoring and Muscle Artifact (Conox)",
+      "count": 1,
+      "related_keywords": [
+        "Conox monitor",
+        "qCON",
+        "qNOX",
+        "electromyography (EMG)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40683805/"
+      ],
+      "description": "Assessing reliability of depth of anesthesia monitors in paralysis."
+    },
+    {
+      "topic": "Adamgammadex for Rocuronium Reversal",
+      "count": 1,
+      "related_keywords": [
+        "adamgammadex",
+        "sugammadex",
+        "rocuronium",
+        "neuromuscular block"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40461346/"
+      ],
+      "description": "Phase III trial of a new cyclodextrin derivative."
+    },
+    {
+      "topic": "Prehabilitation Programs and Adherence",
+      "count": 2,
+      "related_keywords": [
+        "prehabilitation",
+        "adherence",
+        "respiratory muscle training",
+        "lung resection"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40615328/",
+        "https://pubmed.ncbi.nlm.nih.gov/40374400/"
+      ],
+      "description": "Evaluating factors for success in preoperative optimization programs."
+    },
+    {
+      "topic": "Long-Term Opioid Use After Trauma",
+      "count": 1,
+      "related_keywords": [
+        "long-term opioid use (LTU)",
+        "trauma",
+        "morphine milligram equivalents",
+        "chronic pain"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40615331/"
+      ],
+      "description": "Investigating prescribing patterns and reasons for post-injury opioid use."
+    }
+  ],
+  "Anesthesia and analgesia": [
+    {
+      "topic": "Neuromuscular Blockade and Reversal",
+      "count": 3,
+      "related_keywords": [
+        "sugammadex",
+        "neostigmine",
+        "deep NMB",
+        "postoperative delirium"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40327558/",
+        "https://pubmed.ncbi.nlm.nih.gov/40251137/",
+        "https://pubmed.ncbi.nlm.nih.gov/40674253/"
+      ],
+      "description": "Comparing reversal agents and NMB depth on clinical outcomes."
+    },
+    {
+      "topic": "Pediatric Anesthesia and Outcomes",
+      "count": 3,
+      "related_keywords": [
+        "sevoflurane",
+        "gut-brain axis",
+        "entropy EEG",
+        "fibrinogen concentrate"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39899452/",
+        "https://pubmed.ncbi.nlm.nih.gov/40638527/",
+        "https://pubmed.ncbi.nlm.nih.gov/39116012/"
+      ],
+      "description": "Investigating anesthetic neurotoxicity, monitoring, and hemostasis in children."
+    },
+    {
+      "topic": "Obstetric Anesthesia and Cardiovascular Health",
+      "count": 2,
+      "related_keywords": [
+        "preeclampsia",
+        "hypertensive disorders of pregnancy (HDP)",
+        "POCUS",
+        "cardiovascular events"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39504272/",
+        "https://pubmed.ncbi.nlm.nih.gov/40690383/"
+      ],
+      "description": "Using POCUS and machine learning to assess risk in preeclampsia."
+    },
+    {
+      "topic": "Perioperative Opioid Management and Digital Health",
+      "count": 2,
+      "related_keywords": [
+        "wearable sensors",
+        "opioid dependence",
+        "digital biomarkers",
+        "pharmacovigilance"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39413034/",
+        "https://pubmed.ncbi.nlm.nih.gov/40602806/"
+      ],
+      "description": "Using technology to monitor and manage opioid use."
+    },
+    {
+      "topic": "Health Disparities in Perioperative Care",
+      "count": 2,
+      "related_keywords": [
+        "racial differences",
+        "antiemetic administration",
+        "gender equity",
+        "global health leadership"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39178159/",
+        "https://pubmed.ncbi.nlm.nih.gov/39137053/"
+      ],
+      "description": "Examining racial and gender-based inequities in anesthesia practice."
+    },
+    {
+      "topic": "Sarcopenia and Myosteatosis as Surgical Risk Factors",
+      "count": 1,
+      "related_keywords": [
+        "sarcopenia",
+        "myosteatosis",
+        "L3 SMI",
+        "HUAC"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39504268/"
+      ],
+      "description": "Muscle-related parameters predicting postoperative complications in colorectal procedures."
+    },
+    {
+      "topic": "Intrathecal Morphine Pump for Craniofacial Cancer Pain",
+      "count": 1,
+      "related_keywords": [
+        "intrathecal morphine pump",
+        "craniofacial cancer pain",
+        "prepontine cistern",
+        "breakthrough pain"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39259695/"
+      ],
+      "description": "A novel catheter placement for refractory craniofacial pain."
+    },
+    {
+      "topic": "Ketamine Analgo-Sedation in the ICU",
+      "count": 1,
+      "related_keywords": [
+        "ketamine",
+        "analgo-sedation",
+        "invasive mechanical ventilation (iMV)",
+        "rapid practice guideline"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39207913/"
+      ],
+      "description": "Evidence-based guidelines for ketamine use in critically ill adults."
+    },
+    {
+      "topic": "Outcomes in Older Arthroplasty Populations",
+      "count": 1,
+      "related_keywords": [
+        "octogenarians",
+        "total knee arthroplasty (TKA)",
+        "total hip arthroplasty (THA)",
+        "neuraxial anesthesia"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40700091/"
+      ],
+      "description": "Characterizing practice trends and complication risks for very old adults."
+    },
+    {
+      "topic": "Pharmacokinetics of Anesthetics during Cardiopulmonary Bypass",
+      "count": 2,
+      "related_keywords": [
+        "methadone",
+        "insulin",
+        "cardiopulmonary bypass (CPB)",
+        "hemodilution"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39773745/",
+        "https://pubmed.ncbi.nlm.nih.gov/38861464/"
+      ],
+      "description": "Investigating drug concentration changes during extracorporeal circulation."
+    },
+    {
+      "topic": "Noninvasive Hemoglobin and Respiratory Monitoring",
+      "count": 2,
+      "related_keywords": [
+        "near-infrared reflectance spectroscopy (NIRS)",
+        "total hemoglobin (tHb)",
+        "high-flow nasal oxygen",
+        "laryngeal mask"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40601488/",
+        "https://pubmed.ncbi.nlm.nih.gov/40690380/"
+      ],
+      "description": "Novel technologies for continuous perioperative monitoring."
+    },
+    {
+      "topic": "Resident Assessment and Competency",
+      "count": 1,
+      "related_keywords": [
+        "ACGME Milestones",
+        "ABA examination",
+        "competency",
+        "entrustable professional activities"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40638528/"
+      ],
+      "description": "Correlation between residency evaluations and board exam performance."
+    },
+    {
+      "topic": "Neuroprotective Gases for Brain Injury",
+      "count": 1,
+      "related_keywords": [
+        "xenon",
+        "argon",
+        "neuroprotection",
+        "hypoxic-ischemic encephalopathy (HIE)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39453983/"
+      ],
+      "description": "Meta-analysis of inert gases for treating perinatal brain injury."
     }
   ],
   "European journal of anaesthesiology": [
     {
-      "topic": "Sugammadex Pharmacology and Clinical Effects",
+      "topic": "Sugammadex Pharmacodynamics and Interactions",
       "count": 3,
       "related_keywords": [
         "sugammadex",
         "methylprednisolone",
-        "immunomodulation",
-        "diaphragmatic excursion",
-        "neostigmine"
+        "neostigmine",
+        "immunomodulatory effect"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39957489/",
         "https://pubmed.ncbi.nlm.nih.gov/40673736/",
-        "https://pubmed.ncbi.nlm.nih.gov/40625141/"
+        "https://pubmed.ncbi.nlm.nih.gov/40625141/",
+        "https://pubmed.ncbi.nlm.nih.gov/39957489/"
       ],
-      "description": "Drug interactions and physiological recovery following sugammadex administration."
+      "description": "Evaluating steroid interactions and immune effects of sugammadex."
     },
     {
-      "topic": "Perioperative Neurocognitive Disorders (POD)",
-      "count": 3,
+      "topic": "Perioperative Delirium and Cognition",
+      "count": 2,
       "related_keywords": [
-        "postoperative delirium",
+        "postoperative delirium (POD)",
         "benzodiazepines",
-        "emergence agitation",
         "dexmedetomidine",
-        "nasal surgery"
+        "hip fracture"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40384317/",
-        "https://pubmed.ncbi.nlm.nih.gov/40052487/",
         "https://pubmed.ncbi.nlm.nih.gov/40513143/"
       ],
-      "description": "Risk factors and preventative strategies for postoperative cognitive changes."
+      "description": "Risk factors and preventative strategies for postoperative neurocognitive changes."
     },
     {
-      "topic": "Hemodynamic Monitoring and Management",
+      "topic": "Hemodynamic Management and Monitoring",
       "count": 3,
       "related_keywords": [
-        "end-expiratory occlusion test",
+        "dynamic arterial elastance (Ea dyn)",
         "fluid responsiveness",
-        "dynamic arterial elastance",
+        "end-expiratory occlusion test (EEOT)",
         "postoperative hypotension"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40260456/",
         "https://pubmed.ncbi.nlm.nih.gov/40070308/",
+        "https://pubmed.ncbi.nlm.nih.gov/40260456/",
         "https://pubmed.ncbi.nlm.nih.gov/40641389/"
       ],
-      "description": "Using dynamic parameters to guide fluid and vasopressor therapy."
+      "description": "Advanced monitoring techniques to guide fluid and vasopressor therapy."
     },
     {
-      "topic": "Airway Management Techniques",
-      "count": 2,
-      "related_keywords": [
-        "videolaryngoscope",
-        "hyperangulated blade",
-        "sinus pause",
-        "eFONA",
-        "foreign body airway obstruction"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40702899/",
-        "https://pubmed.ncbi.nlm.nih.gov/40620035/"
-      ],
-      "description": "Comparing devices and managing critical airway emergencies in adults/children."
-    },
-    {
-      "topic": "Pediatric Sedation and Anesthesia",
+      "topic": "Pediatric Sedation and Airway Management",
       "count": 3,
       "related_keywords": [
         "remimazolam",
-        "congenital heart disease",
-        "effective dose",
-        "diaphragmatic recovery",
-        "sugammadex"
+        "congenital heart disease (CHD)",
+        "dexmedetomidine",
+        "diaphragmatic excursion"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40223488/",
-        "https://pubmed.ncbi.nlm.nih.gov/40673736/",
+        "https://pubmed.ncbi.nlm.nih.gov/40052487/",
         "https://pubmed.ncbi.nlm.nih.gov/40625141/"
       ],
-      "description": "Dosing and recovery characteristics of newer agents in children."
+      "description": "Evaluating sedatives and reversal agents in children."
     },
     {
-      "topic": "Prehabilitation and Perioperative Interventions",
+      "topic": "Opioid-Free Anesthesia and Analgesia",
+      "count": 2,
+      "related_keywords": [
+        "opioid-free anaesthesia (OFA)",
+        "bariatric surgery",
+        "transcutaneous electrical nerve stimulation (TENS)",
+        "thoracic paravertebral block"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40371564/",
+        "https://pubmed.ncbi.nlm.nih.gov/40532358/"
+      ],
+      "description": "Assessing opioid-sparing pathways for enhanced recovery after surgery."
+    },
+    {
+      "topic": "Perioperative Prehabilitation and Psychological Interventions",
       "count": 3,
       "related_keywords": [
         "prehabilitation",
         "cardiac surgery",
         "psychological interventions",
-        "opioid-free anaesthesia",
-        "bariatric surgery"
+        "digital health interventions (DHIs)"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40673713/",
         "https://pubmed.ncbi.nlm.nih.gov/40462461/",
-        "https://pubmed.ncbi.nlm.nih.gov/40371564/"
-      ],
-      "description": "Evaluating multimodal programs to improve postoperative outcomes."
-    },
-    {
-      "topic": "Digital Health for Ambulatory Surgery",
-      "count": 1,
-      "related_keywords": [
-        "digital health interventions",
-        "ambulatory surgery",
-        "post-discharge follow-up",
-        "mobile applications"
-      ],
-      "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40654033/"
       ],
-      "description": "Assessing mobile technology for post-discharge patient monitoring and recovery."
+      "description": "Evaluating non-pharmacological strategies to improve postoperative outcomes."
     },
     {
-      "topic": "Opioid-Free Anesthesia Pathways",
-      "count": 1,
+      "topic": "Dexmedetomidine for Emergence Agitation and Premedication",
+      "count": 3,
       "related_keywords": [
-        "opioid-free anaesthesia",
-        "bariatric surgery",
-        "TENS",
-        "postoperative pain",
-        "PQRS"
+        "dexmedetomidine",
+        "emergence agitation",
+        "nasal surgery",
+        "total knee arthroplasty"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40371564/"
+        "https://pubmed.ncbi.nlm.nih.gov/40052487/",
+        "https://pubmed.ncbi.nlm.nih.gov/40513143/",
+        "https://pubmed.ncbi.nlm.nih.gov/40499279/"
       ],
-      "description": "Comparing total opioid-free care with conventional opioid-based approaches."
+      "description": "Efficacy of dexmedetomidine for sedation and preventing agitation."
     },
     {
-      "topic": "Post-Arthroplasty Pain Management",
+      "topic": "Glucocorticoids for Postoperative Pain",
       "count": 1,
       "related_keywords": [
         "dexamethasone",
@@ -580,146 +747,775 @@
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40364780/"
       ],
-      "description": "Efficacy of repeat-dose glucocorticoids for high-pain responders after TKA."
+      "description": "Repeat-dose dexamethasone efficacy in high-pain-response individuals."
+    },
+    {
+      "topic": "Videolaryngoscopy and Airway Complications",
+      "count": 1,
+      "related_keywords": [
+        "videolaryngoscope",
+        "hyperangulated blade",
+        "transient sinus pause",
+        "tracheal intubation"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40702899/"
+      ],
+      "description": "Comparing haemodynamic effects of different videolaryngoscope blade angles."
+    },
+    {
+      "topic": "Emergency Front-of-Neck Airway in Pediatrics",
+      "count": 1,
+      "related_keywords": [
+        "emergency front-of-neck surgical airway (eFONA)",
+        "CICO",
+        "foreign body airway obstruction",
+        "pediatric"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40620035/"
+      ],
+      "description": "Case report of scalpel-bougie-tube eFONA in a child."
+    }
+  ],
+  "Journal of clinical anesthesia": [
+    {
+      "topic": "Perioperative Delirium and Cognitive Assessment",
+      "count": 3,
+      "related_keywords": [
+        "postoperative delirium (POD)",
+        "dexmedetomidine",
+        "cognitive impairment (CI)",
+        "Ascertain Dementia Eight-item Questionnaire (AD8)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40513143/",
+        "https://pubmed.ncbi.nlm.nih.gov/40694882/",
+        "https://pubmed.ncbi.nlm.nih.gov/40424777/"
+      ],
+      "description": "Screening tools and interventions for cognitive changes in older adults."
+    },
+    {
+      "topic": "Perioperative Anesthetic Management and Outcomes",
+      "count": 3,
+      "related_keywords": [
+        "propofol",
+        "sevoflurane",
+        "sleep quality",
+        "orexin-A"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40460592/",
+        "https://pubmed.ncbi.nlm.nih.gov/40499279/",
+        "https://pubmed.ncbi.nlm.nih.gov/40235368/"
+      ],
+      "description": "Comparing effects of different anesthetics on postoperative recovery."
+    },
+    {
+      "topic": "Regional Anesthesia for Postoperative Analgesia",
+      "count": 5,
+      "related_keywords": [
+        "thoracic paravertebral block (TPVB)",
+        "pericapsular nerve group (PENG)",
+        "erector spinae plane block (ESPB)",
+        "intrathecal morphine"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40532358/",
+        "https://pubmed.ncbi.nlm.nih.gov/40609218/",
+        "https://pubmed.ncbi.nlm.nih.gov/40449315/",
+        "https://pubmed.ncbi.nlm.nih.gov/40435923/",
+        "https://pubmed.ncbi.nlm.nih.gov/40601485/"
+      ],
+      "description": "Comparing nerve blocks for pain control after major procedures."
+    },
+    {
+      "topic": "Pediatric Premedication and Induction",
+      "count": 1,
+      "related_keywords": [
+        "dexmedetomidine",
+        "midazolam",
+        "ketamine",
+        "mask acceptance"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40517567/"
+      ],
+      "description": "Network meta-analysis of agents for improving pediatric cooperation."
+    },
+    {
+      "topic": "Postoperative Pulmonary Complications and Diaphragmatic Function",
+      "count": 2,
+      "related_keywords": [
+        "high-flow nasal cannula (HFNC)",
+        "diaphragmatic dysfunction",
+        "postoperative pulmonary complications (PPCs)",
+        "diaphragmatic thickening fraction"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40706477/",
+        "https://pubmed.ncbi.nlm.nih.gov/200/"
+      ],
+      "description": "HFNC therapy for preventing respiratory issues after thoracic surgery."
+    },
+    {
+      "topic": "Health Disparities in Surgical Care",
+      "count": 2,
+      "related_keywords": [
+        "surgical cancellation",
+        "race",
+        "ethnicity",
+        "cancer care"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40627996/",
+        "https://pubmed.ncbi.nlm.nih.gov/39178159/"
+      ],
+      "description": "Investigating racial and ethnic factors in surgical cancellations."
+    },
+    {
+      "topic": "Non-invasive Hemorrhage and Hemodynamic Monitoring",
+      "count": 3,
+      "related_keywords": [
+        "Non-Invasive Venous waveform Analysis (NIVA)",
+        "hemorrhage",
+        "blood volume loss",
+        "qCON index"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40532359/",
+        "https://pubmed.ncbi.nlm.nih.gov/40682867/",
+        "https://pubmed.ncbi.nlm.nih.gov/40070308/"
+      ],
+      "description": "Novel technologies for early detection of bleeding and sedation depth."
+    },
+    {
+      "topic": "Risk Assessment and Scheduling in High-Risk Surgery",
+      "count": 2,
+      "related_keywords": [
+        "surgical start time",
+        "aerobic capacity",
+        "steep ramp test (SRT)",
+        "pancreatic surgery"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40424777/",
+        "https://pubmed.ncbi.nlm.nih.gov/40617055/"
+      ],
+      "description": "Impact of timing and fitness on outcomes in major procedures."
+    },
+    {
+      "topic": "Postoperative Sore Throat (POST) Prevention",
+      "count": 1,
+      "related_keywords": [
+        "dexamethasone",
+        "lidocaine",
+        "postoperative sore throat (POST)",
+        "endotracheal intubation"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40651058/"
+      ],
+      "description": "Combined dexamethasone-lidocaine efficacy for reducing POST incidence."
+    },
+    {
+      "topic": "Sugammadex Pharmacokinetics in Renal Failure",
+      "count": 1,
+      "related_keywords": [
+        "sugammadex",
+        "end-stage renal disease",
+        "kidney transplantation",
+        "pharmacokinetics"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40513142/"
+      ],
+      "description": "Evaluating sugammadex clearance and safety in renal transplant recipients."
+    },
+    {
+      "topic": "Deep Learning for Postoperative Pain Assessment",
+      "count": 1,
+      "related_keywords": [
+        "deep learning",
+        "facial pain recognition",
+        "VGG16 model",
+        "automatic pain assessment"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40516197/"
+      ],
+      "description": "Using AI to analyze facial expressions for pain monitoring."
+    },
+    {
+      "topic": "Oliceridine for Postoperative Pain Management",
+      "count": 1,
+      "related_keywords": [
+        "oliceridine",
+        "mu-opioid receptor agonist",
+        "respiratory compromise",
+        "opioid-related adverse effects (ORAEs)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40446423/"
+      ],
+      "description": "Evaluating respiratory safety of a G protein-selective opioid."
+    },
+    {
+      "topic": "Resident Assessment with Entrustable Professional Activities (EPAs)",
+      "count": 1,
+      "related_keywords": [
+        "Entrustable Professional Activities (EPA)",
+        "workplace assessment",
+        "competency-based medical education",
+        "mobile web application"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40609217/"
+      ],
+      "description": "Validating EPA-based assessment tools for anesthesiology training."
+    }
+  ],
+  "Regional anesthesia and pain medicine": [
+    {
+      "topic": "Peripheral Nerve Stimulation (PNS) for Chronic Pain",
+      "count": 3,
+      "related_keywords": [
+        "peripheral nerve stimulation (PNS)",
+        "micro-implantable pulse generator (micro-IPG)",
+        "neuromodulation",
+        "temporary PNS"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40659443/",
+        "https://pubmed.ncbi.nlm.nih.gov/38821535/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623762/"
+      ],
+      "description": "Evaluating efficacy and approaches for PNS implantation."
+    },
+    {
+      "topic": "Quadratus Lumborum (QL) Block",
+      "count": 3,
+      "related_keywords": [
+        "anterior quadratus lumborum block",
+        "intrathecal morphine (ITM)",
+        "laparoscopic nephrectomy",
+        "quadriceps muscle strength"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40639953/",
+        "https://pubmed.ncbi.nlm.nih.gov/38754991/",
+        "https://pubmed.ncbi.nlm.nih.gov/40610221/"
+      ],
+      "description": "Assessing motor-sparing effects and analgesic efficacy."
+    },
+    {
+      "topic": "Pericapsular Nerve Group (PENG) Block",
+      "count": 2,
+      "related_keywords": [
+        "PENG block",
+        "hip surgery",
+        "injectate spread",
+        "CT imaging"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/38925712/",
+        "https://pubmed.ncbi.nlm.nih.gov/40435923/"
+      ],
+      "description": "Investigating mechanisms and clinical applications for hip procedures."
+    },
+    {
+      "topic": "AI and Extended Reality in Regional Anesthesia",
+      "count": 4,
+      "related_keywords": [
+        "extended reality (XR)",
+        "artificial intelligence (AI)",
+        "large language models (LLMs)",
+        "curriculum development"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/38697776/",
+        "https://pubmed.ncbi.nlm.nih.gov/40610221/",
+        "https://pubmed.ncbi.nlm.nih.gov/38876802/",
+        "https://pubmed.ncbi.nlm.nih.gov/40610220/"
+      ],
+      "description": "Exploring novel technologies for procedural guidance and education."
+    },
+    {
+      "topic": "Guidelines for Interventional Pain Management",
+      "count": 3,
+      "related_keywords": [
+        "practice advisory",
+        "inpatient headache management",
+        "infection control",
+        "neurostimulation guidelines"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40602807/",
+        "https://pubmed.ncbi.nlm.nih.gov/39837579/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623762/"
+      ],
+      "description": "Developing evidence-based recommendations for clinical practice."
+    },
+    {
+      "topic": "Local Anesthetic Systemic Toxicity (LAST) and Safety",
+      "count": 2,
+      "related_keywords": [
+        "local anesthetic systemic toxicity",
+        "lipid emulsion therapy",
+        "lidocaine",
+        "poisoning reports"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40691088/",
+        "https://pubmed.ncbi.nlm.nih.gov/40493784/"
+      ],
+      "description": "Analyzing trends and risks associated with local anesthetic use."
+    },
+    {
+      "topic": "Gabapentin and Cognitive Risk",
+      "count": 1,
+      "related_keywords": [
+        "gabapentin",
+        "dementia",
+        "mild cognitive impairment",
+        "chronic low back pain"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40639955/"
+      ],
+      "description": "Association between gabapentin prescription and cognitive decline."
+    },
+    {
+      "topic": "Transitional Pain Service (TPS) Outcomes",
+      "count": 2,
+      "related_keywords": [
+        "transitional pain service (TPS)",
+        "opioid consumption trajectories",
+        "persistent opioid use",
+        "orthopedic surgery"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/39084703/",
+        "https://pubmed.ncbi.nlm.nih.gov/38677883/"
+      ],
+      "description": "Evaluating long-term pain and opioid use after TPS enrollment."
+    },
+    {
+      "topic": "Spinal Cord Stimulation (SCS) for Post-Spine Surgery Pain",
+      "count": 1,
+      "related_keywords": [
+        "spinal cord stimulation (SCS)",
+        "accelerometer",
+        "mobility",
+        "intractable back pain"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40639954/"
+      ],
+      "description": "Objective mobility data assessing long-term SCS effects."
+    },
+    {
+      "topic": "Multimodal Analgesia (MMA) Optimization",
+      "count": 1,
+      "related_keywords": [
+        "multimodal analgesia (MMA)",
+        "instrumental variable (IV) analysis",
+        "dexamethasone",
+        "NSAIDs"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40659442/"
+      ],
+      "description": "Identifying optimal non-opioid medication combinations in MMA."
+    },
+    {
+      "topic": "Genicular Nerve Radiofrequency Ablation (RFA)",
+      "count": 1,
+      "related_keywords": [
+        "radiofrequency ablation (RFA)",
+        "genicular nerves",
+        "chronic knee pain",
+        "prognostic blocks"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40664401/"
+      ],
+      "description": "Critical analysis of controversies in knee RFA techniques."
+    },
+    {
+      "topic": "Ultrasound-Guided Maxillary and Mandibular Nerve Block",
+      "count": 1,
+      "related_keywords": [
+        "V2 nerve block",
+        "V3 nerve block",
+        "orthognathic surgery",
+        "ultrasound-guided"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/38688686/"
+      ],
+      "description": "Evaluating regional anesthesia for double-jaw surgery pain."
+    },
+    {
+      "topic": "Neuraxial vs. General Anesthesia for Total Joint Arthroplasty",
+      "count": 1,
+      "related_keywords": [
+        "regional anesthesia (RA)",
+        "general anesthesia (GA)",
+        "total joint arthroplasty (TJA)",
+        "propensity score matching"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/38677883/"
+      ],
+      "description": "Population-based study comparing mortality and complications."
+    },
+    {
+      "topic": "Intrathecal Opioid Conversion and Weaning",
+      "count": 1,
+      "related_keywords": [
+        "intrathecal drug delivery system (IDDS)",
+        "intrathecal morphine",
+        "opioid conversion",
+        "catheter-related granuloma"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40610220/"
+      ],
+      "description": "Case report and review of weaning from chronic intrathecal opioids."
+    }
+  ],
+  "Pain": [
+    {
+      "topic": "Neuropathic Pain Mechanisms and Models",
+      "count": 5,
+      "related_keywords": [
+        "neuropathic pain (NP)",
+        "non-evoked pain (NEP)",
+        "spinal microglia",
+        "central amygdala (CeA)",
+        "TRPV1"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40705707/",
+        "https://pubmed.ncbi.nlm.nih.gov/40705704/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623269/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623285/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623293/"
+      ],
+      "description": "Investigating cellular and molecular drivers of neuropathic pain."
+    },
+    {
+      "topic": "Hormonal and Sex Differences in Pain",
+      "count": 3,
+      "related_keywords": [
+        "androgen receptor (AR)",
+        "testosterone",
+        "sex differences",
+        "calcitonin gene-related peptide (CGRP)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40668025/",
+        "https://pubmed.ncbi.nlm.nih.gov/40668003/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623248/"
+      ],
+      "description": "Exploring the role of androgens in pain sensitivity."
+    },
+    {
+      "topic": "Psychosocial Factors in Chronic Pain",
+      "count": 4,
+      "related_keywords": [
+        "anti-immigration attitudes",
+        "endometriosis",
+        "fear and avoidance model",
+        "parental chronic pain"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40705855/",
+        "https://pubmed.ncbi.nlm.nih.gov/40705703/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623245/",
+        "https://pubmed.ncbi.nlm.nih.gov/40705692/"
+      ],
+      "description": "Examining societal, familial, and psychological influences on pain."
+    },
+    {
+      "topic": "Opioids, Sleep, and Chronic Pain",
+      "count": 2,
+      "related_keywords": [
+        "long-term opioids",
+        "sleep disordered breathing (SDB)",
+        "hypoxic burden",
+        "KCC2"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40705710/",
+        "https://pubmed.ncbi.nlm.nih.gov/40667986/"
+      ],
+      "description": "Investigating the interplay between opioid use, sleep, and pain."
+    },
+    {
+      "topic": "Brain Mechanisms of Pain Perception and Learning",
+      "count": 3,
+      "related_keywords": [
+        "aversive prediction error (PE)",
+        "magnetoencephalography",
+        "offset analgesia (OA)",
+        "gene expression"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40668023/",
+        "https://pubmed.ncbi.nlm.nih.gov/40667996/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623285/"
+      ],
+      "description": "Neurophysiological and genetic basis of pain processing and modulation."
+    },
+    {
+      "topic": "Genetic and Lifestyle Factors in Pain Syndromes",
+      "count": 2,
+      "related_keywords": [
+        "carpal tunnel syndrome",
+        "familial risk",
+        "obesity",
+        "gene expression"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40705706/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623285/"
+      ],
+      "description": "Population-level studies on gene-environment interactions in pain."
+    },
+    {
+      "topic": "Biomarkers and Pathophysiology of Pain",
+      "count": 3,
+      "related_keywords": [
+        "Nppb",
+        "chronic itch",
+        "STIM1",
+        "TRPA1"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40705694/",
+        "https://pubmed.ncbi.nlm.nih.gov/40668026/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623269/"
+      ],
+      "description": "Identifying molecular markers and pathways for itch and pain."
+    },
+    {
+      "topic": "Interventions for Fibromyalgia and Low Back Pain",
+      "count": 2,
+      "related_keywords": [
+        "fibromyalgia",
+        "sodium oxybate",
+        "CBT for insomnia",
+        "low back pain (LBP) flares"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40705693/",
+        "https://pubmed.ncbi.nlm.nih.gov/40623243/"
+      ],
+      "description": "Evaluating pharmacological and non-pharmacological treatments for chronic pain."
+    },
+    {
+      "topic": "Autoimmunity and Chronic Musculoskeletal Pain",
+      "count": 1,
+      "related_keywords": [
+        "autoimmunity",
+        "B cells",
+        "immunoglobulin (Ig)M",
+        "disk puncture model"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40623266/"
+      ],
+      "description": "Role of adaptive immunity in transitioning to chronic pain."
+    },
+    {
+      "topic": "Preclinical Pain Assessment using Facial Grimacing",
+      "count": 1,
+      "related_keywords": [
+        "facial grimacing",
+        "mouse grimace scale (MGS)",
+        "machine learning",
+        "spontaneous pain"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40667997/"
+      ],
+      "description": "Automated facial scoring to evaluate spontaneous postsurgical pain."
+    },
+    {
+      "topic": "Nociplastic Pain and Lipoxygenase Pathway",
+      "count": 1,
+      "related_keywords": [
+        "nociplastic pain",
+        "Toll-like receptor 4",
+        "12/15-lipoxygenase (12/15-LOX)",
+        "lipopolysaccharide (LPS)"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40667997/"
+      ],
+      "description": "Investigating 12/15-LOX inhibitors for centrally-mediated pain hypersensitivity."
     }
   ],
   "Anaesthesia": [
     {
-      "topic": "Intrathecal Morphine Safety and Efficacy",
-      "count": 2,
-      "related_keywords": [
-        "intrathecal morphine",
-        "respiratory depression",
-        "hypoxaemia",
-        "non-obstetric surgery",
-        "pulmonary complications"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40235368/",
-        "https://pubmed.ncbi.nlm.nih.gov/40609218/"
-      ],
-      "description": "Evaluating respiratory risks associated with intrathecal morphine administration."
-    },
-    {
       "topic": "Regional Anesthesia for Hip Arthroplasty",
-      "count": 1,
+      "count": 2,
       "related_keywords": [
         "pericapsular nerve group block",
         "erector spinae plane block",
-        "total hip arthroplasty",
-        "motor-sparing analgesia"
+        "lateral femoral cutaneous nerve block",
+        "total hip arthroplasty"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40689673/"
+        "https://pubmed.ncbi.nlm.nih.gov/40689673/",
+        "https://pubmed.ncbi.nlm.nih.gov/40609218/"
       ],
-      "description": "Comparing anterior versus posterior motor-sparing blocks for THA."
+      "description": "Comparing motor-sparing peripheral nerve blocks for postoperative analgesia."
     },
     {
-      "topic": "Perioperative Risk in High-Risk Populations",
-      "count": 2,
+      "topic": "Intra-operative Ventilation Strategies",
+      "count": 1,
       "related_keywords": [
-        "chronic heart failure",
-        "major adverse cardiovascular events",
-        "alcohol-related liver disease",
-        "ICU mortality"
+        "low tidal volume",
+        "positive end-expiratory pressure (PEEP)",
+        "recruitment manoeuvres",
+        "postoperative pulmonary complications"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40230320/",
-        "https://pubmed.ncbi.nlm.nih.gov/40070011/"
+        "https://pubmed.ncbi.nlm.nih.gov/40133080/"
       ],
-      "description": "Assessing postoperative outcomes in cardiac and liver-compromised individuals."
+      "description": "Meta-analysis of ventilation strategies to prevent pulmonary complications."
     },
     {
-      "topic": "Remimazolam for General Anesthesia in Older Adults",
+      "topic": "Perioperative Intrathecal Morphine Use",
+      "count": 1,
+      "related_keywords": [
+        "intrathecal morphine",
+        "respiratory depression",
+        "sedation",
+        "non-obstetric surgery"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40235368/"
+      ],
+      "description": "Meta-analysis on pulmonary complications associated with intrathecal morphine."
+    },
+    {
+      "topic": "Postoperative Iron Therapy for Anemia",
+      "count": 1,
+      "related_keywords": [
+        "intravenous iron",
+        "oral iron",
+        "postoperative anaemia",
+        "haemoglobin levels"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40127959/"
+      ],
+      "description": "Efficacy of postoperative iron supplementation to increase haemoglobin."
+    },
+    {
+      "topic": "Remimazolam vs. Propofol in Older Adults",
       "count": 1,
       "related_keywords": [
         "remimazolam",
         "propofol",
         "postoperative delirium",
-        "quality of recovery",
-        "gastrectomy"
+        "quality of recovery"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40653956/"
       ],
-      "description": "Comparing remimazolam and propofol on delirium and recovery outcomes."
+      "description": "Comparing delirium incidence and recovery quality in gastrectomy."
     },
     {
-      "topic": "Postoperative Anemia and Iron Therapy",
+      "topic": "Stable Chronic Heart Failure and Surgical Outcomes",
       "count": 1,
       "related_keywords": [
-        "postoperative anaemia",
-        "intravenous iron",
-        "oral iron",
-        "haemoglobin",
-        "meta-analysis"
+        "stable chronic heart failure",
+        "major adverse cardiovascular events",
+        "transthoracic echocardiogram",
+        "non-cardiac surgery"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40127959/"
+        "https://pubmed.ncbi.nlm.nih.gov/40230320/"
       ],
-      "description": "Efficacy of postoperative intravenous versus oral iron supplementation."
+      "description": "Association between heart failure and postoperative cardiovascular events."
     },
     {
-      "topic": "Operating Room Efficiency and Airway Management",
+      "topic": "Rotational Thromboelastometry (ROTEM) Reference Ranges",
+      "count": 1,
+      "related_keywords": [
+        "ROTEM sigma",
+        "reference ranges",
+        "cardiac surgery",
+        "sex-specific variations"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40230308/"
+      ],
+      "description": "Establishing specific ROTEM reference values for cardiac surgery populations."
+    },
+    {
+      "topic": "Alcohol-Related Liver Disease in the ICU",
+      "count": 1,
+      "related_keywords": [
+        "alcohol-related liver disease",
+        "ICU mortality",
+        "organ support",
+        "gastrointestinal bleed"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40070011/"
+      ],
+      "description": "Outcomes of critically ill individuals with liver disease."
+    },
+    {
+      "topic": "Honey for Post-Tonsillectomy Recovery in Children",
+      "count": 1,
+      "related_keywords": [
+        "honey",
+        "tonsillectomy",
+        "multimodal analgesia",
+        "pediatric"
+      ],
+      "article_links": [
+        "https://pubmed.ncbi.nlm.nih.gov/40321015/"
+      ],
+      "description": "Evaluating honey's effect on postoperative recovery trajectory."
+    },
+    {
+      "topic": "Tracheal Extubation Location and Outcomes",
       "count": 1,
       "related_keywords": [
         "tracheal extubation",
         "operating theatre occupancy",
         "post-anaesthesia care unit",
-        "desaturation"
+        "postoperative complications"
       ],
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40351134/"
       ],
-      "description": "Impact of extubation location on OR time and complications."
+      "description": "Comparing operating theatre versus PACU extubation efficiency and safety."
     },
     {
-      "topic": "Intraoperative Ventilation Strategies",
+      "topic": "Low-Dose Ketamine and Postoperative Delirium",
       "count": 1,
       "related_keywords": [
-        "postoperative pulmonary complications",
-        "low tidal volume",
-        "PEEP",
-        "recruitment manoeuvres",
-        "meta-analysis"
+        "ketamine",
+        "postoperative delirium",
+        "low-dose",
+        "dose-response relationship"
       ],
       "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40133080/"
+        "https://pubmed.ncbi.nlm.nih.gov/40619168/"
       ],
-      "description": "Optimal ventilator settings to prevent postoperative pulmonary complications."
+      "description": "Association between intra-operative ketamine dose and delirium risk."
     },
     {
-      "topic": "ROTEM Reference Ranges in Cardiac Surgery",
-      "count": 1,
-      "related_keywords": [
-        "Rotational thromboelastometry",
-        "ROTEM",
-        "cardiac surgery",
-        "reference ranges",
-        "coagulation"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40230308/"
-      ],
-      "description": "Establishing procedure-specific coagulation profiles for cardiac populations."
-    },
-    {
-      "topic": "Pediatric Post-Tonsillectomy Analgesia",
-      "count": 1,
-      "related_keywords": [
-        "tonsillectomy",
-        "honey",
-        "multimodal analgesia",
-        "pediatric pain",
-        "coblation"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40321015/"
-      ],
-      "description": "Evaluating honey as an adjunct for recovery after childhood tonsillectomy."
-    },
-    {
-      "topic": "Laparoscopic Rectus Sheath Block",
+      "topic": "Laparoscopic Rectus Sheath Block for Inguinal Hernia Repair",
       "count": 1,
       "related_keywords": [
         "rectus sheath block",
@@ -730,675 +1526,7 @@
       "article_links": [
         "https://pubmed.ncbi.nlm.nih.gov/40653913/"
       ],
-      "description": "Efficacy of rectus sheath block for laparoscopic hernia repair."
-    }
-  ],
-  "Anesthesia and analgesia": [
-    {
-      "topic": "Neuromuscular Blockade Reversal and Outcomes",
-      "count": 4,
-      "related_keywords": [
-        "sugammadex",
-        "neostigmine",
-        "neuromuscular blockade",
-        "postoperative delirium",
-        "gastrointestinal function"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40327558/",
-        "https://pubmed.ncbi.nlm.nih.gov/40251137/",
-        "https://pubmed.ncbi.nlm.nih.gov/40601485/",
-        "https://pubmed.ncbi.nlm.nih.gov/40674253/"
-      ],
-      "description": "Comparing reversal agents on GI recovery, delirium, and inflammation."
-    },
-    {
-      "topic": "Opioid Management and Monitoring",
-      "count": 3,
-      "related_keywords": [
-        "opioid dependence",
-        "wearable sensor",
-        "intrathecal morphine pump",
-        "ketamine",
-        "analgo-sedation"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39413034/",
-        "https://pubmed.ncbi.nlm.nih.gov/39259695/",
-        "https://pubmed.ncbi.nlm.nih.gov/39207913/"
-      ],
-      "description": "Novel monitoring, delivery systems, and adjuncts for opioid therapy."
-    },
-    {
-      "topic": "Anesthetic Neurophysiology and Monitoring",
-      "count": 3,
-      "related_keywords": [
-        "EEG",
-        "permutation entropy",
-        "pediatric",
-        "GABA-A receptor",
-        "KSEB 01-S2"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40638527/",
-        "https://pubmed.ncbi.nlm.nih.gov/39466672/",
-        "https://pubmed.ncbi.nlm.nih.gov/40601488/"
-      ],
-      "description": "Analyzing EEG signatures of anesthetics in different age groups."
-    },
-    {
-      "topic": "Cardiothoracic Anesthesia and CPB",
-      "count": 3,
-      "related_keywords": [
-        "cardiopulmonary bypass",
-        "methadone",
-        "fibrinogen concentrate",
-        "insulin degradation",
-        "hemolysis"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39773745/",
-        "https://pubmed.ncbi.nlm.nih.gov/39116012/",
-        "https://pubmed.ncbi.nlm.nih.gov/38861464/"
-      ],
-      "description": "Pharmacokinetics and hemostasis management during cardiopulmonary bypass."
-    },
-    {
-      "topic": "Obstetric Anesthesia and Complications",
-      "count": 2,
-      "related_keywords": [
-        "hypertensive disorders of pregnancy",
-        "preeclampsia",
-        "cardiovascular events",
-        "point of care ultrasound"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39504272/",
-        "https://pubmed.ncbi.nlm.nih.gov/40690383/"
-      ],
-      "description": "Predicting CV risk and using POCUS in hypertensive pregnancy disorders."
-    },
-    {
-      "topic": "Health Disparities and Equity",
-      "count": 2,
-      "related_keywords": [
-        "health disparities",
-        "race",
-        "ethnicity",
-        "antiemetics",
-        "gender equity"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39178159/",
-        "https://pubmed.ncbi.nlm.nih.gov/39137053/"
-      ],
-      "description": "Investigating racial and gender-based differences in perioperative care."
-    },
-    {
-      "topic": "Perioperative Risk Prediction and Optimization",
-      "count": 3,
-      "related_keywords": [
-        "myosteatosis",
-        "sarcopenia",
-        "colorectal surgery",
-        "preoperative optimization",
-        "comorbidities"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39504268/",
-        "https://pubmed.ncbi.nlm.nih.gov/40608563/",
-        "https://pubmed.ncbi.nlm.nih.gov/40674264/"
-      ],
-      "description": "Identifying and managing preoperative risks like muscle deficits and comorbidities."
-    },
-    {
-      "topic": "Geriatric Anesthesia for Arthroplasty",
-      "count": 1,
-      "related_keywords": [
-        "octogenarians",
-        "total knee arthroplasty",
-        "total hip arthroplasty",
-        "major complications"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40700091/"
-      ],
-      "description": "Outcomes of joint replacement surgery in the very elderly."
-    },
-    {
-      "topic": "Airway Management: High-Flow Nasal Oxygen",
-      "count": 1,
-      "related_keywords": [
-        "high-flow nasal oxygen",
-        "laryngeal mask",
-        "apneic oxygenation",
-        "hypercarbia"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40690380/"
-      ],
-      "description": "Comparing HFNO with laryngeal mask for intraoperative respiratory support."
-    },
-    {
-      "topic": "Neuroprotection with Inert Gases",
-      "count": 1,
-      "related_keywords": [
-        "neuroprotection",
-        "xenon",
-        "argon",
-        "hypoxic-ischemic encephalopathy"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39453983/"
-      ],
-      "description": "Evaluating xenon and argon as treatments for perinatal brain injury."
-    },
-    {
-      "topic": "Anesthesiology Education and Assessment",
-      "count": 1,
-      "related_keywords": [
-        "ACGME Milestones",
-        "residency training",
-        "competency",
-        "board examination"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40638528/"
-      ],
-      "description": "Correlation between residency Milestones ratings and board exam performance."
-    },
-    {
-      "topic": "Developmental Anesthetic Neurotoxicity and Gut Microbiota",
-      "count": 1,
-      "related_keywords": [
-        "sevoflurane",
-        "neurotoxicity",
-        "gut-brain axis",
-        "fecal microbiota transplantation"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39899452/"
-      ],
-      "description": "Modulating gut microbiota to mitigate sevoflurane-induced learning disability."
-    },
-    {
-      "topic": "Loss of Resistance Technique for Epidural Access",
-      "count": 1,
-      "related_keywords": [
-        "loss of resistance",
-        "epidural",
-        "pneumocephalus",
-        "saline",
-        "air"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/42013784/"
-      ],
-      "description": "Debating the safety and efficacy of air versus saline."
-    }
-  ],
-  "Journal of clinical anesthesia": [
-    {
-      "topic": "Regional Anesthesia for Hip and Shoulder Surgery",
-      "count": 4,
-      "related_keywords": [
-        "PENG block",
-        "intrathecal morphine",
-        "diaphragm-sparing block",
-        "phenol neurolysis",
-        "parasternal intercostal plane block"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40609218/",
-        "https://pubmed.ncbi.nlm.nih.gov/40449315/",
-        "https://pubmed.ncbi.nlm.nih.gov/40494113/",
-        "https://pubmed.ncbi.nlm.nih.gov/40435923/"
-      ],
-      "description": "Comparing block techniques for major orthopedic and cardiac procedures."
-    },
-    {
-      "topic": "Perioperative Neurocognitive Disorders and Brain Health",
-      "count": 5,
-      "related_keywords": [
-        "postoperative delirium",
-        "cognitive impairment",
-        "AD8",
-        "dexmedetomidine",
-        "propofol"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40694882/",
-        "https://pubmed.ncbi.nlm.nih.gov/40513143/",
-        "https://pubmed.ncbi.nlm.nih.gov/40460592/",
-        "https://pubmed.ncbi.nlm.nih.gov/40479950/",
-        "https://pubmed.ncbi.nlm.nih.gov/40424777/"
-      ],
-      "description": "Screening, prevention, and management of postoperative cognitive changes."
-    },
-    {
-      "topic": "Pharmacology: Sedatives, Reversal, and Opioids",
-      "count": 6,
-      "related_keywords": [
-        "dexmedetomidine",
-        "sugammadex",
-        "oliceridine",
-        "propofol",
-        "pediatric premedication"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40517567/",
-        "https://pubmed.ncbi.nlm.nih.gov/40513143/",
-        "https://pubmed.ncbi.nlm.nih.gov/40513142/",
-        "https://pubmed.ncbi.nlm.nih.gov/40499279/",
-        "https://pubmed.ncbi.nlm.nih.gov/40446423/",
-        "https://pubmed.ncbi.nlm.nih.gov/40460592/"
-      ],
-      "description": "Evaluating effects of various drugs on sedation, recovery, and safety."
-    },
-    {
-      "topic": "Perioperative Monitoring and Technology",
-      "count": 3,
-      "related_keywords": [
-        "Non-Invasive Venous waveform Analysis",
-        "hemorrhage detection",
-        "deep learning",
-        "facial pain recognition",
-        "EEG"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40532359/",
-        "https://pubmed.ncbi.nlm.nih.gov/40516197/",
-        "https://pubmed.ncbi.nlm.nih.gov/40682867/"
-      ],
-      "description": "Applying novel tech for hemorrhage detection and automated pain assessment."
-    },
-    {
-      "topic": "Healthcare Systems and Patient Safety",
-      "count": 3,
-      "related_keywords": [
-        "surgical start time",
-        "mortality",
-        "racial disparities",
-        "surgical cancellation",
-        "SGLT2i"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40424777/",
-        "https://pubmed.ncbi.nlm.nih.gov/40627996/",
-        "https://pubmed.ncbi.nlm.nih.gov/40414168/"
-      ],
-      "description": "Impact of scheduling, disparities, and medication protocols on outcomes."
-    },
-    {
-      "topic": "Post-intubation Sore Throat Prevention",
-      "count": 1,
-      "related_keywords": [
-        "postoperative sore throat",
-        "dexamethasone",
-        "lidocaine",
-        "endotracheal intubation",
-        "cough"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40651058/"
-      ],
-      "description": "Evaluating dexamethasone-lidocaine combination to reduce POST incidence."
-    },
-    {
-      "topic": "Opioid-Free Anesthesia with Thoracic Paravertebral Block",
-      "count": 1,
-      "related_keywords": [
-        "opioid-free anaesthesia",
-        "thoracic paravertebral block",
-        "breast cancer surgery",
-        "quality of recovery"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40532358/"
-      ],
-      "description": "Improving recovery quality in breast surgery with an OFA protocol."
-    },
-    {
-      "topic": "Anesthesiology Education and Assessment",
-      "count": 1,
-      "related_keywords": [
-        "Entrustable Professional Activities",
-        "EPA",
-        "residency",
-        "workplace assessment",
-        "Web App"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40609217/"
-      ],
-      "description": "Validating EPA assessment tools for resident competency evaluation."
-    },
-    {
-      "topic": "Perioperative Respiratory Management",
-      "count": 1,
-      "related_keywords": [
-        "high-flow nasal cannula",
-        "thoracic surgery",
-        "diaphragmatic dysfunction",
-        "postoperative pulmonary complications"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40706477/"
-      ],
-      "description": "Role of HFNC in mitigating pulmonary complications after lobectomy."
-    },
-    {
-      "topic": "Preoperative Aerobic Capacity Assessment",
-      "count": 1,
-      "related_keywords": [
-        "modified steep ramp test",
-        "aerobic capacity",
-        "cardiopulmonary exercise testing",
-        "pancreatic surgery"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40617055/"
-      ],
-      "description": "Validating the SRT as a practical alternative to CPET."
-    },
-    {
-      "topic": "Concerns and Attitudes of Older Surgical Adults",
-      "count": 1,
-      "related_keywords": [
-        "preoperative concerns",
-        "prehabilitation",
-        "functional assessment",
-        "cognitive assessment",
-        "older adults"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40479950/"
-      ],
-      "description": "Exploring older adults' perspectives on pre-surgical preparation and testing."
-    }
-  ],
-  "Regional anesthesia and pain medicine": [
-    {
-      "topic": "Regional Anesthesia for Hip and Knee Arthroplasty",
-      "count": 5,
-      "related_keywords": [
-        "PENG block",
-        "genicular nerve RFA",
-        "total hip arthroplasty",
-        "regional anesthesia vs general anesthesia",
-        "anterior quadratus lumborum block"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/38925712/",
-        "https://pubmed.ncbi.nlm.nih.gov/40664401/",
-        "https://pubmed.ncbi.nlm.nih.gov/38677883/",
-        "https://pubmed.ncbi.nlm.nih.gov/38754991/",
-        "https://pubmed.ncbi.nlm.nih.gov/40609218/"
-      ],
-      "description": "Comparing analgesic techniques and imaging for lower limb joint replacement."
-    },
-    {
-      "topic": "Neuromodulation for Chronic Pain",
-      "count": 4,
-      "related_keywords": [
-        "peripheral nerve stimulation",
-        "spinal cord stimulation",
-        "dorsal root ganglion stimulation",
-        "micro-IPG",
-        "neuromodulation"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40659443/",
-        "https://pubmed.ncbi.nlm.nih.gov/38821535/",
-        "https://pubmed.ncbi.nlm.nih.gov/40639954/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623762/"
-      ],
-      "description": "Evaluating efficacy and protocols for implantable neurostimulation devices."
-    },
-    {
-      "topic": "Chronic Pain Pharmacology and Side Effects",
-      "count": 4,
-      "related_keywords": [
-        "gabapentin",
-        "dementia",
-        "chronic low back pain",
-        "intrathecal drug delivery system",
-        "opioid prescribing"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40639955/",
-        "https://pubmed.ncbi.nlm.nih.gov/40610220/",
-        "https://pubmed.ncbi.nlm.nih.gov/38677883/",
-        "https://pubmed.ncbi.nlm.nih.gov/39084703/"
-      ],
-      "description": "Investigating cognitive risks and prescribing patterns for chronic pain medications."
-    },
-    {
-      "topic": "Technology in Regional Anesthesia and Pain Medicine",
-      "count": 4,
-      "related_keywords": [
-        "large language models",
-        "artificial intelligence",
-        "extended reality",
-        "procedural navigation",
-        "curriculum development"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40610221/",
-        "https://pubmed.ncbi.nlm.nih.gov/38876802/",
-        "https://pubmed.ncbi.nlm.nih.gov/38754990/",
-        "https://pubmed.ncbi.nlm.nih.gov/40602806/"
-      ],
-      "description": "Exploring AI, LLMs, and XR for education and clinical support."
-    },
-    {
-      "topic": "Quadratus Lumborum and Other Truncal Blocks",
-      "count": 3,
-      "related_keywords": [
-        "quadratus lumborum block",
-        "intrathecal morphine",
-        "laparoscopic nephrectomy",
-        "motor block"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40639953/",
-        "https://pubmed.ncbi.nlm.nih.gov/38754991/",
-        "https://pubmed.ncbi.nlm.nih.gov/40707353/"
-      ],
-      "description": "Efficacy and motor-sparing properties of truncal fascial plane blocks."
-    },
-    {
-      "topic": "Practice Guidelines and Advisories",
-      "count": 4,
-      "related_keywords": [
-        "infection control",
-        "practice advisory",
-        "headache management",
-        "neurostimulation",
-        "local anesthetic systemic toxicity"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/39837579/",
-        "https://pubmed.ncbi.nlm.nih.gov/40602807/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623762/",
-        "https://pubmed.ncbi.nlm.nih.gov/40691088/"
-      ],
-      "description": "Developing evidence-based recommendations for clinical practice and safety."
-    },
-    {
-      "topic": "Brachial Plexus Blocks and Adjuncts",
-      "count": 2,
-      "related_keywords": [
-        "liposomal bupivacaine",
-        "brachial plexus block",
-        "postoperative analgesia",
-        "opioid consumption"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40701802/",
-        "https://pubmed.ncbi.nlm.nih.gov/40494113/"
-      ],
-      "description": "Assessing the efficacy of liposomal bupivacaine for upper limb blocks."
-    },
-    {
-      "topic": "Maxillofacial Regional Anesthesia",
-      "count": 1,
-      "related_keywords": [
-        "maxillary nerve block",
-        "mandibular nerve block",
-        "orthognathic surgery",
-        "ultrasound-guided"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/38697776/"
-      ],
-      "description": "Ultrasound-guided V2/V3 blocks for postoperative analgesia after jaw surgery."
-    },
-    {
-      "topic": "Multimodal Analgesia Optimization",
-      "count": 1,
-      "related_keywords": [
-        "multimodal analgesia",
-        "instrumental variable",
-        "NSAIDs",
-        "dexamethasone",
-        "opioid use"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40659442/"
-      ],
-      "description": "Identifying optimal non-opioid combinations for perioperative pain management."
-    }
-  ],
-  "Pain": [
-    {
-      "topic": "Neurobiology of Neuropathic and Chronic Pain",
-      "count": 6,
-      "related_keywords": [
-        "androgen receptor",
-        "SIRT1",
-        "neuropathic pain",
-        "autoimmunity",
-        "KCC2",
-        "gene expression"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40668025/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705707/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705692/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623266/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623248/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623285/"
-      ],
-      "description": "Investigating cellular, genetic, and immune mechanisms of persistent pain."
-    },
-    {
-      "topic": "Specific Pain Syndromes and Conditions",
-      "count": 5,
-      "related_keywords": [
-        "carpal tunnel syndrome",
-        "endometriosis",
-        "fibromyalgia",
-        "nociplastic pain",
-        "bortezomib-induced peripheral neuropathy"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40705706/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705703/",
-        "https://pubmed.ncbi.nlm.nih.gov/40667997/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623269/",
-        "https://pubmed.ncbi.nlm.nih.gov/40389332/"
-      ],
-      "description": "Exploring pathophysiology and treatment approaches for distinct pain disorders."
-    },
-    {
-      "topic": "Pain Mechanisms and Sensory Processing",
-      "count": 5,
-      "related_keywords": [
-        "sleep disordered breathing",
-        "spinal microglia",
-        "STIM1",
-        "TRPA1",
-        "offset analgesia"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40705710/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705704/",
-        "https://pubmed.ncbi.nlm.nih.gov/40668026/",
-        "https://pubmed.ncbi.nlm.nih.gov/40668023/",
-        "https://pubmed.ncbi.nlm.nih.gov/40667996/"
-      ],
-      "description": "Dissecting nociceptive pathways, glial activation, and central pain phenomena."
-    },
-    {
-      "topic": "Translational Pain Research and Biomarkers",
-      "count": 5,
-      "related_keywords": [
-        "Nppb",
-        "chronic itch",
-        "mouse grimace scale",
-        "NK1R antagonist",
-        "pain flare"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40705694/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705695/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623243/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623245/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623293/"
-      ],
-      "description": "Developing objective measures and biomarkers to bridge preclinical and clinical findings."
-    },
-    {
-      "topic": "Psychosocial Factors in Chronic Pain",
-      "count": 4,
-      "related_keywords": [
-        "anti-immigration attitudes",
-        "psychosocial factors",
-        "endometriosis",
-        "waitlist control",
-        "parent-child transmission"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40705855/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705703/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705692/",
-        "https://pubmed.ncbi.nlm.nih.gov/40623248/"
-      ],
-      "description": "Examining social, psychological, and familial influences on pain experience."
-    },
-    {
-      "topic": "Hormonal Influences on Pain Sensitivity",
-      "count": 2,
-      "related_keywords": [
-        "androgen receptor",
-        "testosterone",
-        "sex differences",
-        "adolescent",
-        "CGRP"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40668025/",
-        "https://pubmed.ncbi.nlm.nih.gov/40668003/"
-      ],
-      "description": "Role of androgens in modulating mechanical pain and sex-related differences."
-    },
-    {
-      "topic": "Pharmacology of Pain and Hyperalgesia",
-      "count": 3,
-      "related_keywords": [
-        "opioids",
-        "gabapentinoids",
-        "12/15-lipoxygenase",
-        "NK1R antagonist",
-        "preclinical"
-      ],
-      "article_links": [
-        "https://pubmed.ncbi.nlm.nih.gov/40705710/",
-        "https://pubmed.ncbi.nlm.nih.gov/40705707/",
-        "https://pubmed.ncbi.nlm.nih.gov/40667997/"
-      ],
-      "description": "Evaluating drug efficacy and novel targets in preclinical pain models."
+      "description": "Efficacy of rectus sheath block in transabdominal hernia procedures."
     }
   ]
 }

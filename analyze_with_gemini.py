@@ -3,6 +3,7 @@ import os
 import re
 import google.generativeai as genai
 from dotenv import load_dotenv
+from datetime import datetime
 
 # .env 파일에서 환경변수 로드
 load_dotenv()
@@ -38,9 +39,32 @@ except FileNotFoundError:
     print("💡 먼저 fetch_pubmed.py와 prepare_for_gemini.py를 실행하세요.")
     exit(1)
 
-# 2. 프롬프트 (세부 논문 링크 포함, 세분화된 키워드 그룹화)
+# 날짜 정보 분석
+papers_with_dates = [paper for paper in abstracts if paper.get("publication_date")]
+if papers_with_dates:
+    dates = [datetime.strptime(paper["publication_date"], "%Y-%m-%d") for paper in papers_with_dates]
+    newest_date = max(dates)
+    oldest_date = min(dates)
+    
+    print(f"📅 논문 발행 날짜 범위:")
+    print(f"   - 최신: {newest_date.strftime('%Y년 %m월 %d일')}")
+    print(f"   - 최오래된: {oldest_date.strftime('%Y년 %m월 %d일')}")
+    print(f"   - 날짜 정보가 있는 논문: {len(papers_with_dates)}개")
+
+# 2. 프롬프트 (날짜 정보 포함, 세부 논문 링크 포함, 세분화된 키워드 그룹화)
+date_context = ""
+if papers_with_dates:
+    date_context = f"""
+    
+    IMPORTANT DATE CONTEXT:
+    - This analysis covers papers published from {oldest_date.strftime('%Y-%m-%d')} to {newest_date.strftime('%Y-%m-%d')}
+    - Total papers with date information: {len(papers_with_dates)}
+    - This represents the most current research trends in anesthesia for 2025
+    """
+
 prompt = (
     "You are an expert research assistant. Analyze the following anesthesia-related paper abstracts grouped by journal.\n\n"
+    f"{date_context}\n\n"
     "Task:\n"
     "1. For each journal, identify 12-15 research topic clusters with specific focus areas.\n"
     "2. Do NOT create overly broad clusters (e.g., avoid 'Regional Anesthesia'); instead, split them into detailed subtopics (e.g., 'Adductor Canal Block', 'Erector Spinae Plane Block').\n"
@@ -53,12 +77,13 @@ prompt = (
     "4. Use only the provided article links when filling the 'article_links' field.\n"
     "5. Avoid generic words like 'patients', 'surgery', 'pain', 'human'.\n"
     "6. Include drug names, specific techniques, biomarkers, and precise clinical outcomes where applicable.\n"
-    "7. Return strictly a JSON object where each key is a journal name, and its value is an array of topic clusters.\n"
-    "8. Do not include markdown, code fences, or explanations.\n\n"
+    "7. Consider the temporal context - these are recent 2025 publications representing current research trends.\n"
+    "8. Return strictly a JSON object where each key is a journal name, and its value is an array of topic clusters.\n"
+    "9. Do not include markdown, code fences, or explanations.\n\n"
     "Example cluster entry: \n"
     "{ \"topic\": \"Adductor Canal Block\", \"count\": 7, \"related_keywords\": [\"ACB\", \"nerve block\", \"postoperative analgesia\"], \"article_links\": [\"https://pubmed.ncbi.nlm.nih.gov/12345678/\", \"https://pubmed.ncbi.nlm.nih.gov/23456789/\"], \"description\": \"Specific nerve block for knee surgery pain\" }\n\n"
-    "Abstracts (with journal and article link):\n" +
-    "\n\n".join(f"{i+1}. Journal: {item['journal']} | Link: {item['link']} | Abstract: {item['abstract']}" for i, item in enumerate(abstracts))
+    "Abstracts (with journal, publication date, and article link):\n" +
+    "\n\n".join(f"{i+1}. Journal: {item['journal']} | Date: {item.get('publication_date', 'Unknown')} | Link: {item['link']} | Abstract: {item['abstract']}" for i, item in enumerate(abstracts))
 )
 
 # 3. 모델 호출
@@ -86,10 +111,37 @@ except json.JSONDecodeError as e:
     print("Raw 출력 (처음 500자):\n", raw_text[:500])
     trends_by_journal = {}
 
-# 6. 저장
+# 6. 저장 (날짜 메타데이터 포함)
+output_data = {
+    "metadata": {
+        "analysis_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "total_papers": len(abstracts),
+        "papers_with_dates": len(papers_with_dates),
+        "date_range": {
+            "oldest": oldest_date.strftime("%Y-%m-%d") if papers_with_dates else None,
+            "newest": newest_date.strftime("%Y-%m-%d") if papers_with_dates else None,
+            "oldest_formatted": oldest_date.strftime("%Y년 %m월 %d일") if papers_with_dates else None,
+            "newest_formatted": newest_date.strftime("%Y년 %m월 %d일") if papers_with_dates else None
+        }
+    },
+    "trends_by_journal": trends_by_journal
+}
+
+# 기존 형식으로도 저장 (하위 호환성)
 output_file = "anesthesia_trends_by_journal_with_article_links.json"
 with open(output_file, "w", encoding="utf-8") as f:
     json.dump(trends_by_journal, f, ensure_ascii=False, indent=2)
 
-print(f"✅ 저장 완료 → {output_file} (세부 키워드별 논문 링크 포함)")
+# 메타데이터 포함 버전 저장
+output_file_with_meta = "anesthesia_trends_with_metadata.json"
+with open(output_file_with_meta, "w", encoding="utf-8") as f:
+    json.dump(output_data, f, ensure_ascii=False, indent=2)
+
+print(f"✅ 저장 완료:")
+print(f"   → {output_file} (기존 형식)")
+print(f"   → {output_file_with_meta} (메타데이터 포함)")
 print(f"📊 분석된 총 토픽 수: {sum(len(topics) for topics in trends_by_journal.values())}")
+
+if papers_with_dates:
+    print(f"📅 분석 기간: {oldest_date.strftime('%Y년 %m월 %d일')} ~ {newest_date.strftime('%Y년 %m월 %d일')}")
+print(f"💡 다음 단계: python visualize_trends.py")
