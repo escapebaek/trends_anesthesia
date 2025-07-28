@@ -1,0 +1,17 @@
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+
+# Data files (optional - 보안상 민감한 데이터는 제외)
+# *.json
+
+# OS
+.DS_Store
+Thumbs.db
