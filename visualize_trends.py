@@ -905,9 +905,9 @@ if len(df_categories) > 0:
         x=chart_data['total_papers'],
         y=chart_data['category_short'],
         orientation='h',
-        text=[f'{val}' for val in chart_data['total_papers']],  # 명시적으로 문자열로 변환
+        text=chart_data['total_papers'],  # 직접 값 전달
         textposition='outside',
-        texttemplate='%{text}',
+        texttemplate='%{text}',  # 이 부분이 올바르게 작동하도록 수정
         marker=dict(
             color=chart_data['total_papers'],
             colorscale='Viridis',
@@ -978,9 +978,9 @@ if len(df_categories) > 0:
             x=top_subtopics['count'],
             y=top_subtopics['subtopic'],
             orientation='h',
-            text=[f'{val}' for val in top_subtopics['count']],  # 명시적으로 문자열로 변환
+            text=top_subtopics['count'],  # 직접 값 전달
             textposition='outside',
-            texttemplate='%{text}',
+            texttemplate='%{text}',  # 템플릿 사용
             marker=dict(color=colors),
             hovertemplate='<b>%{y}</b><br>Papers: %{x}<br>Category: %{customdata}<extra></extra>',
             customdata=top_subtopics['category_short']
