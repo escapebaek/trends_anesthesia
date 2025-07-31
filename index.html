@@ -340,7 +340,7 @@
     </head><body><div class="container"><div class="header loading-animation"><h1>🏥 Anesthesia Research Trends</h1><p>Anesthesia Research Trends &amp; Classification Dashboard</p><p class="subtitle">Last Analysis: 2025-07-31 12:11:11</p></div><div class="stats-grid loading-animation"><div class="stat-card"><div class="stat-number">22</div><div class="stat-label">Research Areas</div></div><div class="stat-card"><div class="stat-number">130</div><div class="stat-label">Subtopics</div></div><div class="stat-card"><div class="stat-number">134</div><div class="stat-label">Classified Papers</div></div><div class="stat-card"><div class="stat-number">134</div><div class="stat-label">Total Analyzed</div></div></div><div class="loading-animation" style="animation-delay: 0.3s"><!DOCTYPE html>
 <html>
 <head>
-<title>마취학 연구 데이터 차트</title>
+<title>마취학 연구 데이터 시각화</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 body { font-family: sans-serif; }
@@ -394,77 +394,97 @@ const categoryData = {
 };
 
 const yearData = {
-  labels: ['2025'],
-  datasets: [{
-    label: '논문 수',
-    data: [134],
-    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-    borderColor: 'rgba(54, 162, 235, 1)',
-    borderWidth: 1
-  }]
+  "2025": 134
 };
 
 const journalData = {
-  labels: ['British journal of anaesthesia', 'Pain', 'Anesthesiology', 'Anesthesia and analgesia', 'Anaesthesia', 'European journal of anaesthesiology', 'Regional anesthesia and pain medicine', 'Journal of clinical anesthesia'],
-  datasets: [{
-    label: '논문 수',
-    data: [31, 24, 23, 20, 15, 11, 7, 3],
-    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-    borderColor: 'rgba(255, 99, 132, 1)',
-    borderWidth: 1
-  }]
+  "British journal of anaesthesia": 31,
+  "Pain": 24,
+  "Anesthesiology": 23,
+  "Anesthesia and analgesia": 20,
+  "Anaesthesia": 15,
+  "European journal of anaesthesiology": 11,
+  "Regional anesthesia and pain medicine": 7,
+  "Journal of clinical anesthesia": 3
 };
 
 
-const categoryLabels = Object.keys(categoryData);
-const categoryDataValues = Object.values(categoryData);
-
-new Chart(document.getElementById('categoryChart'), {
+// 카테고리별 분포 (도넛 차트)
+const categoryChartCanvas = document.getElementById('categoryChart');
+new Chart(categoryChartCanvas, {
   type: 'doughnut',
   data: {
-    labels: categoryLabels,
+    labels: Object.keys(categoryData),
     datasets: [{
-      label: '카테고리별 논문 수',
-      data: categoryDataValues,
+      data: Object.values(categoryData),
       backgroundColor: function(context) {
-        let index = context.dataIndex;
-        return Chart.helpers.color('#'+(Math.random()*0xFFFFFF<<0).toString(16)).alpha(0.6).rgbString();
-      },
-      borderColor: 'rgb(255, 255, 255)',
-      borderWidth: 1
+        const index = context.dataIndex;
+        const hue = index * 360 / Object.keys(categoryData).length;
+        return `hsl(${hue}, 100%, 50%)`;
+      }
     }]
   },
   options: {
     responsive: true,
     plugins: {
       legend: {
-        position: 'right',
+        position: 'bottom'
       }
     }
   }
 });
 
-new Chart(document.getElementById('yearChart'), {
-  type: 'line',
-  data: yearData,
-  options: {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true
-      }
+// 연도별 트렌드 (라인 차트) - 데이터가 하나라 라인 차트는 의미가 없으므로 바 차트로 변경
+const yearChartCanvas = document.getElementById('yearChart');
+new Chart(yearChartCanvas, {
+    type: 'bar',
+    data: {
+        labels: Object.keys(yearData),
+        datasets: [{
+            label: '논문 수',
+            data: Object.values(yearData),
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
     }
-  }
 });
 
-new Chart(document.getElementById('journalChart'), {
+
+// 상위 저널 (바 차트)
+const journalChartCanvas = document.getElementById('journalChart');
+new Chart(journalChartCanvas, {
   type: 'bar',
-  data: journalData,
+  data: {
+    labels: Object.keys(journalData),
+    datasets: [{
+      label: '논문 수',
+      data: Object.values(journalData),
+      backgroundColor: function(context) {
+        const index = context.dataIndex;
+        const hue = index * 360 / Object.keys(journalData).length;
+        return `hsl(${hue}, 70%, 50%)`;
+      }
+    }]
+  },
   options: {
     responsive: true,
     scales: {
       y: {
         beginAtZero: true
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
       }
     }
   }

@@ -17,8 +17,8 @@ import requests
 import time
 from dotenv import load_dotenv
 
-# .env 파일에서 환경변수 로드
-load_dotenv()
+# 환경변수에서 API 키 가져오기
+API_KEY = os.getenv("GEMINI_API_KEY")
 
 # GitHub 설정 (사용자가 수정해야 할 부분)
 GITHUB_REPO_PATH = "."  # 현재 디렉토리가 git 레포지토리라고 가정
@@ -195,7 +195,7 @@ class GeminiChartGenerator:
     def __init__(self, api_key: str):
         if api_key:
             genai.configure(api_key=api_key)
-            self.model = genai.GenerativeModel('gemini-1.5-flash')
+            self.model = genai.GenerativeModel('gemini-2.5-pro')
             self.enabled = True
         else:
             self.enabled = False
@@ -314,152 +314,184 @@ class GeminiChartGenerator:
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 <script>
-// 차트 설정
-Chart.defaults.font.family = 'Inter, sans-serif';
-Chart.defaults.color = '#6c757d';
+// Chart.js가 완전히 로드될 때까지 대기
+document.addEventListener('DOMContentLoaded', function() {{
+    // Chart.js가 로드되었는지 확인
+    if (typeof Chart === 'undefined') {{
+        console.error('Chart.js가 로드되지 않았습니다.');
+        return;
+    }}
 
-// 색상 팔레트
-const colors = [
-    '#4a90e2', '#50e3c2', '#f39c12', '#e74c3c', '#9b59b6',
-    '#1abc9c', '#34495e', '#f1c40f', '#e67e22', '#95a5a6',
-    '#3498db', '#2ecc71', '#ff7675', '#a29bfe', '#fd79a8'
-];
+    console.log('Chart.js 버전:', Chart.version);
 
-// 카테고리 도넛 차트
-const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-new Chart(categoryCtx, {{
-    type: 'doughnut',
-    data: {{
-        labels: {json.dumps(categories, ensure_ascii=False)},
-        datasets: [{{
-            data: {category_values},
-            backgroundColor: colors.slice(0, {len(categories)}),
-            borderWidth: 2,
-            borderColor: '#ffffff'
-        }}]
-    }},
-    options: {{
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {{
-            legend: {{
-                position: 'bottom',
-                labels: {{
-                    padding: 20,
-                    usePointStyle: true
-                }}
-            }},
-            tooltip: {{
-                callbacks: {{
-                    label: function(context) {{
-                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                        const percentage = ((context.parsed * 100) / total).toFixed(1);
-                        return context.label + ': ' + context.parsed + '편 (' + percentage + '%)';
-                    }}
-                }}
-            }}
+    // 차트 기본 설정
+    Chart.defaults.font.family = 'Inter, sans-serif';
+    Chart.defaults.color = '#6c757d';
+
+    // 색상 팔레트
+    const colors = [
+        '#4a90e2', '#50e3c2', '#f39c12', '#e74c3c', '#9b59b6',
+        '#1abc9c', '#34495e', '#f1c40f', '#e67e22', '#95a5a6',
+        '#3498db', '#2ecc71', '#ff7675', '#a29bfe', '#fd79a8'
+    ];
+
+    // 카테고리 도넛 차트
+    const categoryCtx = document.getElementById('categoryChart');
+    if (categoryCtx) {{
+        try {{
+            new Chart(categoryCtx, {{{{ // Corrected: Removed extra backslashes
+                type: 'doughnut',
+                data: {{{{ // Corrected: Removed extra backslashes
+                    labels: {json.dumps(categories, ensure_ascii=False)},
+                    datasets: [{{{{ // Corrected: Removed extra backslashes
+                        data: {category_values},
+                        backgroundColor: colors.slice(0, {len(categories)}),
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }}}}
+                }}}},
+                options: {{{{ // Corrected: Removed extra backslashes
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{{{ // Corrected: Removed extra backslashes
+                        legend: {{{{ // Corrected: Removed extra backslashes
+                            position: 'bottom',
+                            labels: {{{{ // Corrected: Removed extra backslashes
+                                padding: 20,
+                                usePointStyle: true
+                            }}}}
+                        }}}},
+                        tooltip: {{{{ // Corrected: Removed extra backslashes
+                            callbacks: {{{{ // Corrected: Removed extra backslashes
+                                label: function(context) {{
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed * 100) / total).toFixed(1);
+                                    return context.label + ': ' + context.parsed + '편 (' + percentage + '%)';
+                                }}
+                            }}}}
+                        }}}}
+                    }}}}
+                }}}}
+            }}}});
+            console.log('카테고리 차트 생성 완료');
+        }} catch (error) {{
+            console.error('카테고리 차트 생성 실패:', error);
         }}
     }}
-}});
 
-// 연도별 라인 차트
-const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
-new Chart(yearlyCtx, {{
-    type: 'line',
-    data: {{
-        labels: {json.dumps(years)},
-        datasets: [{{
-            label: '논문 수',
-            data: {yearly_values},
-            borderColor: '#4a90e2',
-            backgroundColor: 'rgba(74, 144, 226, 0.1)',
-            fill: true,
-            tension: 0.4,
-            borderWidth: 3,
-            pointBackgroundColor: '#4a90e2',
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2,
-            pointRadius: 6
-        }}]
-    }},
-    options: {{
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {{
-            y: {{
-                beginAtZero: true,
-                grid: {{
-                    color: 'rgba(0,0,0,0.1)'
-                }}
-            }},
-            x: {{
-                grid: {{
-                    color: 'rgba(0,0,0,0.1)'
-                }}
-            }}
-        }},
-        plugins: {{
-            legend: {{
-                display: false
-            }},
-            tooltip: {{
-                backgroundColor: 'rgba(0,0,0,0.8)',
-                titleColor: '#ffffff',
-                bodyColor: '#ffffff',
-                borderColor: '#4a90e2',
-                borderWidth: 1
-            }}
+    // 연도별 라인 차트
+    const yearlyCtx = document.getElementById('yearlyChart');
+    if (yearlyCtx) {{
+        try {{
+            new Chart(yearlyCtx, {{{{ // Corrected: Removed extra backslashes
+                type: 'line',
+                data: {{{{ // Corrected: Removed extra backslashes
+                    labels: {json.dumps(years)},
+                    datasets: [{{{{ // Corrected: Removed extra backslashes
+                        label: '논문 수',
+                        data: {yearly_values},
+                        borderColor: '#4a90e2',
+                        backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#4a90e2',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }}}}
+                }}}},
+                options: {{{{ // Corrected: Removed extra backslashes
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {{{{ // Corrected: Removed extra backslashes
+                        y: {{{{ // Corrected: Removed extra backslashes
+                            beginAtZero: true,
+                            grid: {{{{ // Corrected: Removed extra backslashes
+                                color: 'rgba(0,0,0,0.1)'
+                            }}}}
+                        }}}},
+                        x: {{{{ // Corrected: Removed extra backslashes
+                            grid: {{{{ // Corrected: Removed extra backslashes
+                                color: 'rgba(0,0,0,0.1)'
+                            }}}}
+                        }}}}
+                    }}}},
+                    plugins: {{{{ // Corrected: Removed extra backslashes
+                        legend: {{{{ // Corrected: Removed extra backslashes
+                            display: false
+                        }}}},
+                        tooltip: {{{{ // Corrected: Removed extra backslashes
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: '#4a90e2',
+                            borderWidth: 1
+                        }}}}
+                    }}}}
+                }}}}
+            }}}});
+            console.log('연도별 차트 생성 완료');
+        }} catch (error) {{
+            console.error('연도별 차트 생성 실패:', error);
         }}
     }}
-}});
 
-// 저널 바 차트
-const journalCtx = document.getElementById('journalChart').getContext('2d');
-new Chart(journalCtx, {{
-    type: 'bar',
-    data: {{
-        labels: {json.dumps(journal_names, ensure_ascii=False)},
-        datasets: [{{
-            label: '논문 수',
-            data: {journal_counts},
-            backgroundColor: colors.slice(0, {len(journal_names)}),
-            borderColor: colors.slice(0, {len(journal_names)}),
-            borderWidth: 1
-        }}]
-    }},
-    options: {{
-        responsive: true,
-        maintainAspectRatio: false,
-        indexAxis: 'y',
-        scales: {{
-            x: {{
-                beginAtZero: true,
-                grid: {{
-                    color: 'rgba(0,0,0,0.1)'
-                }}
-            }},
-            y: {{
-                grid: {{
-                    display: false
-                }}
-            }}
-        }},
-        plugins: {{
-            legend: {{
-                display: false
-            }},
-            tooltip: {{
-                backgroundColor: 'rgba(0,0,0,0.8)',
-                titleColor: '#ffffff',
-                bodyColor: '#ffffff'
-            }}
+    // 저널 바 차트
+    const journalCtx = document.getElementById('journalChart');
+    if (journalCtx) {{
+        try {{
+            new Chart(journalCtx, {{{{ // Corrected: Removed extra backslashes
+                type: 'bar',
+                data: {{{{ // Corrected: Removed extra backslashes
+                    labels: {json.dumps(journal_names, ensure_ascii=False)},
+                    datasets: [{{{{ // Corrected: Removed extra backslashes
+                        label: '논문 수',
+                        data: {journal_counts},
+                        backgroundColor: colors.slice(0, {len(journal_names)}),
+                        borderColor: colors.slice(0, {len(journal_names)}),
+                        borderWidth: 1
+                    }}}}
+                }}}},
+                options: {{{{ // Corrected: Removed extra backslashes
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {{{{ // Corrected: Removed extra backslashes
+                        x: {{{{ // Corrected: Removed extra backslashes
+                            beginAtZero: true,
+                            grid: {{{{ // Corrected: Removed extra backslashes
+                                color: 'rgba(0,0,0,0.1)'
+                            }}}}
+                        }}}},
+                        y: {{{{ // Corrected: Removed extra backslashes
+                            grid: {{{{ // Corrected: Removed extra backslashes
+                                display: false
+                            }}}}
+                        }}}}
+                    }}}},
+                    plugins: {{{{ // Corrected: Removed extra backslashes
+                        legend: {{{{ // Corrected: Removed extra backslashes
+                            display: false
+                        }}}},
+                        tooltip: {{{{ // Corrected: Removed extra backslashes
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff'
+                        }}}}
+                    }}}}
+                }}}}
+            }}}});
+            console.log('저널 차트 생성 완료');
+        }} catch (error) {{
+            console.error('저널 차트 생성 실패:', error);
         }}
     }}
-}});
 
-console.log('📊 모든 차트가 성공적으로 로드되었습니다!');
+    console.log('📊 모든 차트가 성공적으로 로드되었습니다!');
+}});
 </script>
 """
 
