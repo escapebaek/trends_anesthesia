@@ -905,9 +905,8 @@ if len(df_categories) > 0:
         x=chart_data['total_papers'],
         y=chart_data['category_short'],
         orientation='h',
-        text=chart_data['total_papers'],  # 직접 값 전달
+        text=chart_data['total_papers'],
         textposition='outside',
-        texttemplate='%{text}',  # 이 부분이 올바르게 작동하도록 수정
         marker=dict(
             color=chart_data['total_papers'],
             colorscale='Viridis',
@@ -915,9 +914,7 @@ if len(df_categories) > 0:
         ),
         hovertemplate='<b>%{y}</b><br>Papers: %{x}<extra></extra>'
     ))
-    
-    fig1.update_traces(texttemplate='%{text}', textposition='outside')
-    
+
     fig1.update_layout(
         title="📊 Research Distribution by Category",
         xaxis_title="Number of Papers",
@@ -982,9 +979,8 @@ if len(df_categories) > 0:
             x=top_subtopics['count'],
             y=top_subtopics['subtopic'],
             orientation='h',
-            text=top_subtopics['count'],  # 직접 값 전달
+            text=top_subtopics['count'],
             textposition='outside',
-            texttemplate='%{text}',  # 템플릿 사용
             marker=dict(color=colors),
             hovertemplate='<b>%{y}</b><br>Papers: %{x}<br>Category: %{customdata}<extra></extra>',
             customdata=top_subtopics['category_short']
