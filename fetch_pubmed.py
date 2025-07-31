@@ -86,7 +86,7 @@ def parse_publication_date(dp_field):
 try:
     # 1) UID 검색
     print("📡 PubMed에서 논문 ID 검색 중...")
-    handle = Entrez.esearch(db="pubmed", term=query, retmax=500, sort="pub date")
+    handle = Entrez.esearch(db="pubmed", term=query, retmax=300, sort="pub date")
     search_results = Entrez.read(handle)
     uids = search_results["IdList"]
     handle.close()
