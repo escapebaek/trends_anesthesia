@@ -894,41 +894,7 @@ if len(df_categories) > 0:
     print(f"📊 차트 생성 시작...")
     print(f"   카테고리 데이터: {len(df_categories)}개")
     
-    # 1. 수정된 카테고리별 논문 수 바 차트
-    chart_data = df_categories.sort_values('total_papers', ascending=True)
-    print(f"   바 차트 데이터: {len(chart_data)}개 항목")
-    print(f"   데이터 타입 확인: {chart_data['total_papers'].dtype}")
     
-    # 바 차트 생성 - text 파라미터 수정
-    fig1 = go.Figure()
-    fig1.add_trace(go.Bar(
-        x=chart_data['total_papers'],
-        y=chart_data['category_short'],
-        orientation='h',
-        text=chart_data['total_papers'],
-        textposition='outside',
-        marker=dict(
-            color=chart_data['total_papers'],
-            colorscale='Viridis',
-            showscale=False
-        ),
-        hovertemplate='<b>%{y}</b><br>Papers: %{x}<extra></extra>'
-    ))
-
-    fig1.update_layout(
-        title="📊 Research Distribution by Category",
-        xaxis_title="Number of Papers",
-        yaxis_title="Research Category",
-        height=max(500, len(df_categories) * 50),
-        font=dict(family="Inter, Arial, sans-serif", size=12),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        title_font_size=20,
-        title_x=0.5,
-        margin=dict(l=200, r=100, t=100, b=80),
-        yaxis=dict(tickfont=dict(size=11)),
-        xaxis=dict(tickfont=dict(size=12), title_font_size=14)
-    )
 
     # 2. 수정된 도넛 차트
     pie_data = df_categories[df_categories['total_papers'] > 0].copy()
@@ -1004,47 +970,8 @@ if len(df_categories) > 0:
         print("   ⚠️ 세부주제 데이터가 없습니다.")
         fig3 = None
 
-    # 4. 최신 트렌드 차트 (시간별 논문 발행 동향)
-    if len(trend_data) > 0:
-        print(f"   트렌드 차트 데이터: {len(trend_data)}개 데이터포인트")
-        fig4 = px.line(
-            trend_data,
-            x='month_year_str',
-            y='count',
-            color='category_short',
-            title="📈 Recent Publication Trends (Last 12 Months)",
-            labels={"count": "Number of Papers", "month_year_str": "Month", "category_short": "Category"},
-            color_discrete_sequence=modern_colors,
-            markers=True
-        )
-        fig4.update_layout(
-            font=dict(family="Inter, Arial, sans-serif", size=12),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            title_font_size=20,
-            title_x=0.5,
-            xaxis_title="Publication Month",
-            yaxis_title="Number of Papers",
-            legend=dict(title="Research Category"),
-            hovermode='x unified',
-            height=500
-        )
-        fig4.update_traces(
-            mode='lines+markers',
-            line=dict(width=3),
-            marker=dict(size=8)
-        )
-    else:
-        print("   ⚠️ 트렌드 데이터가 없습니다.")
-        fig4 = None
-
     # HTML에 차트 추가
     with tag("div", klass="dashboard-grid loading-animation"):
-        with tag("div", klass="chart-container"):
-            with tag("div", klass="chart-title"):
-                text("Research Distribution by Category")
-            doc.asis(fig1.to_html(full_html=False, include_plotlyjs=False, div_id="category-chart"))
-        
         with tag("div", klass="chart-container"):
             with tag("div", klass="chart-title"):
                 text("Category Distribution Overview")
@@ -1056,13 +983,6 @@ if len(df_categories) > 0:
             with tag("div", klass="chart-title"):
                 text("Top Research Subtopics")
             doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="subtopic-chart"))
-
-    # 트렌드 차트 추가 (데이터가 있는 경우)
-    if fig4 is not None:
-        with tag("div", klass="chart-container full-width loading-animation"):
-            with tag("div", klass="chart-title"):
-                text("Publication Trends Over Time")
-            doc.asis(fig4.to_html(full_html=False, include_plotlyjs=False, div_id="trend-chart"))
 
 else:
     # 데이터가 없는 경우 오류 메시지 표시
