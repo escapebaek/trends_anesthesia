@@ -11,12 +11,35 @@ from datetime import datetime, timedelta
 import signal
 import threading
 import numpy as np
+import google.generativeai as genai
+from typing import Dict, List, Any
+import requests
+import time
+from dotenv import load_dotenv
+
+# .env 파일에서 환경변수 로드
+load_dotenv()
 
 # GitHub 설정 (사용자가 수정해야 할 부분)
 GITHUB_REPO_PATH = "."  # 현재 디렉토리가 git 레포지토리라고 가정
 GITHUB_REPO_URL = "https://github.com/escapebaek/trends_anesthesia.git"
 AUTO_DEPLOY = True      # 자동 배포 여부
 AUTO_OPEN_BROWSER = True  # 자동으로 브라우저 열기 여부
+
+# Gemini API 설정
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')  # 환경변수에서 API 키 읽기
+if not GEMINI_API_KEY:
+    print("⚠️ GEMINI_API_KEY 환경변수가 설정되지 않았습니다.")
+    print("💡 다음 명령어로 설정하세요:")
+    print("   export GEMINI_API_KEY='your_api_key_here'")
+    GEMINI_API_KEY = input("또는 여기에 API 키를 입력하세요: ").strip()
+    if not GEMINI_API_KEY:
+        print("❌ API 키가 없으면 차트 생성 기능을 사용할 수 없습니다.")
+        USE_GEMINI_CHARTS = False
+    else:
+        USE_GEMINI_CHARTS = True
+else:
+    USE_GEMINI_CHARTS = True
 
 def safe_input(prompt, timeout=10, default='n'):
     """타임아웃이 있는 안전한 입력 함수"""
@@ -166,6 +189,280 @@ def deploy_to_github():
     
     return True
 
+class GeminiChartGenerator:
+    """Gemini API를 사용한 차트 생성 클래스"""
+    
+    def __init__(self, api_key: str):
+        if api_key:
+            genai.configure(api_key=api_key)
+            self.model = genai.GenerativeModel('gemini-1.5-flash')
+            self.enabled = True
+        else:
+            self.enabled = False
+    
+    def generate_chart_code(self, data_summary: Dict[str, Any]) -> str:
+        """데이터 요약을 바탕으로 차트 생성 코드를 생성"""
+        if not self.enabled:
+            return ""
+        
+        prompt = f"""
+다음 마취학 연구 데이터를 분석하여 Chart.js를 사용한 인터랙티브 차트 코드를 생성해주세요.
+
+데이터 요약:
+- 총 카테고리 수: {data_summary['total_categories']}
+- 총 서브토픽 수: {data_summary['total_subtopics']}
+- 총 논문 수: {data_summary['total_papers']}
+- 카테고리별 논문 수: {json.dumps(data_summary['category_counts'], ensure_ascii=False, indent=2)}
+- 연도별 논문 수: {json.dumps(data_summary['yearly_counts'], ensure_ascii=False, indent=2)}
+- 상위 저널: {json.dumps(data_summary['top_journals'], ensure_ascii=False, indent=2)}
+
+요구사항:
+1. Chart.js를 사용해서 3-4개의 다양한 차트를 생성
+2. 카테고리별 분포 (도넛 차트)
+3. 연도별 트렌드 (라인 차트)
+4. 상위 저널 (바 차트)
+5. 반응형 디자인
+6. 모던한 색상 팔레트 사용
+7. HTML div 요소들과 JavaScript 코드를 모두 포함
+8. 차트는 실제 데이터를 사용
+
+응답 형식:
+```html
+<!-- 차트 컨테이너 HTML -->
+<div class="charts-section">
+    <div class="chart-container">
+        <canvas id="categoryChart"></canvas>
+    </div>
+    <!-- 추가 차트들... -->
+</div>
+
+<script>
+// Chart.js 코드
+// 실제 데이터를 사용한 차트 생성
+</script>
+```
+
+한국어 라벨은 그대로 사용하고, 차트가 시각적으로 매력적이고 정보가 명확하게 전달되도록 해주세요.
+"""
+        
+        try:
+            print("🤖 Gemini AI에서 차트 코드를 생성 중...")
+            response = self.model.generate_content(prompt)
+            
+            if response and response.text:
+                # HTML과 JavaScript 코드 추출
+                text = response.text
+                
+                # ```html 블록에서 코드 추출
+                if "```html" in text:
+                    code_start = text.find("```html") + 7
+                    code_end = text.find("```", code_start)
+                    if code_end != -1:
+                        return text[code_start:code_end].strip()
+                
+                # 전체 응답이 코드인 경우
+                return text
+                
+            else:
+                print("⚠️ Gemini API 응답이 비어있습니다.")
+                return ""
+                
+        except Exception as e:
+            print(f"❌ Gemini API 호출 실패: {e}")
+            return ""
+    
+    def generate_fallback_charts(self, data_summary: Dict[str, Any]) -> str:
+        """Gemini API 실패 시 기본 차트 생성"""
+        category_data = data_summary['category_counts']
+        yearly_data = data_summary['yearly_counts']
+        journal_data = data_summary['top_journals']
+        
+        # 카테고리 데이터를 Chart.js 형식으로 변환
+        categories = list(category_data.keys())
+        category_values = list(category_data.values())
+        
+        # 연도 데이터 정렬
+        sorted_years = sorted(yearly_data.items())
+        years = [str(year) for year, _ in sorted_years]
+        yearly_values = [count for _, count in sorted_years]
+        
+        # 상위 저널 데이터
+        top_journals = list(journal_data.items())[:10]  # 상위 10개만
+        journal_names = [name for name, _ in top_journals]
+        journal_counts = [count for _, count in top_journals]
+        
+        return f"""
+<!-- 차트 섹션 -->
+<div class="charts-section">
+    <h2 class="section-title">📊 Research Analytics Dashboard</h2>
+    
+    <div class="charts-grid">
+        <div class="chart-container">
+            <h3 class="chart-title">카테고리별 논문 분포</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h3 class="chart-title">연도별 논문 트렌드</h3>
+            <canvas id="yearlyChart"></canvas>
+        </div>
+        
+        <div class="chart-container full-width">
+            <h3 class="chart-title">상위 저널별 논문 수</h3>
+            <canvas id="journalChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+// 차트 설정
+Chart.defaults.font.family = 'Inter, sans-serif';
+Chart.defaults.color = '#6c757d';
+
+// 색상 팔레트
+const colors = [
+    '#4a90e2', '#50e3c2', '#f39c12', '#e74c3c', '#9b59b6',
+    '#1abc9c', '#34495e', '#f1c40f', '#e67e22', '#95a5a6',
+    '#3498db', '#2ecc71', '#ff7675', '#a29bfe', '#fd79a8'
+];
+
+// 카테고리 도넛 차트
+const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+new Chart(categoryCtx, {{
+    type: 'doughnut',
+    data: {{
+        labels: {json.dumps(categories, ensure_ascii=False)},
+        datasets: [{{
+            data: {category_values},
+            backgroundColor: colors.slice(0, {len(categories)}),
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        }}]
+    }},
+    options: {{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {{
+            legend: {{
+                position: 'bottom',
+                labels: {{
+                    padding: 20,
+                    usePointStyle: true
+                }}
+            }},
+            tooltip: {{
+                callbacks: {{
+                    label: function(context) {{
+                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                        const percentage = ((context.parsed * 100) / total).toFixed(1);
+                        return context.label + ': ' + context.parsed + '편 (' + percentage + '%)';
+                    }}
+                }}
+            }}
+        }}
+    }}
+}});
+
+// 연도별 라인 차트
+const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+new Chart(yearlyCtx, {{
+    type: 'line',
+    data: {{
+        labels: {json.dumps(years)},
+        datasets: [{{
+            label: '논문 수',
+            data: {yearly_values},
+            borderColor: '#4a90e2',
+            backgroundColor: 'rgba(74, 144, 226, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointBackgroundColor: '#4a90e2',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 6
+        }}]
+    }},
+    options: {{
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {{
+            y: {{
+                beginAtZero: true,
+                grid: {{
+                    color: 'rgba(0,0,0,0.1)'
+                }}
+            }},
+            x: {{
+                grid: {{
+                    color: 'rgba(0,0,0,0.1)'
+                }}
+            }}
+        }},
+        plugins: {{
+            legend: {{
+                display: false
+            }},
+            tooltip: {{
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: '#4a90e2',
+                borderWidth: 1
+            }}
+        }}
+    }}
+}});
+
+// 저널 바 차트
+const journalCtx = document.getElementById('journalChart').getContext('2d');
+new Chart(journalCtx, {{
+    type: 'bar',
+    data: {{
+        labels: {json.dumps(journal_names, ensure_ascii=False)},
+        datasets: [{{
+            label: '논문 수',
+            data: {journal_counts},
+            backgroundColor: colors.slice(0, {len(journal_names)}),
+            borderColor: colors.slice(0, {len(journal_names)}),
+            borderWidth: 1
+        }}]
+    }},
+    options: {{
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        scales: {{
+            x: {{
+                beginAtZero: true,
+                grid: {{
+                    color: 'rgba(0,0,0,0.1)'
+                }}
+            }},
+            y: {{
+                grid: {{
+                    display: false
+                }}
+            }}
+        }},
+        plugins: {{
+            legend: {{
+                display: false
+            }},
+            tooltip: {{
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff'
+            }}
+        }}
+    }}
+}});
+
+console.log('📊 모든 차트가 성공적으로 로드되었습니다!');
+</script>
+"""
+
 def extract_first_author(author_string):
     """저자 문자열에서 첫 번째 저자만 추출"""
     if not author_string or author_string in ['N/A', 'Unknown author']:
@@ -195,6 +492,47 @@ def parse_date(date_string):
             return datetime.strptime(date_string + "-01-01", "%Y-%m-%d")
     except:
         return None
+
+def create_data_summary(classified_data: Dict, all_papers: List[Dict]) -> Dict[str, Any]:
+    """차트 생성을 위한 데이터 요약 생성"""
+    # 카테고리별 논문 수
+    category_counts = {}
+    for category, subtopics in classified_data.items():
+        total = sum(len(papers) for papers in subtopics.values() if isinstance(papers, list))
+        if total > 0:
+            # 카테고리 이름 단순화
+            simple_name = category.split("(")[0].strip()
+            category_counts[simple_name] = total
+    
+    # 연도별 논문 수
+    yearly_counts = {}
+    for paper in all_papers:
+        date_str = paper.get('issue_date', '')
+        if date_str:
+            try:
+                year = int(date_str.split('-')[0])
+                yearly_counts[year] = yearly_counts.get(year, 0) + 1
+            except:
+                pass
+    
+    # 상위 저널
+    journal_counts = {}
+    for paper in all_papers:
+        journal = paper.get('journal', 'Unknown')
+        if journal and journal != 'Unknown':
+            journal_counts[journal] = journal_counts.get(journal, 0) + 1
+    
+    # 상위 10개 저널만 선택
+    top_journals = dict(sorted(journal_counts.items(), key=lambda x: x[1], reverse=True)[:10])
+    
+    return {
+        'total_categories': len(category_counts),
+        'total_subtopics': sum(len(subtopics) for subtopics in classified_data.values()),
+        'total_papers': len(all_papers),
+        'category_counts': category_counts,
+        'yearly_counts': yearly_counts,
+        'top_journals': top_journals
+    }
 
 # 1. JSON 로드
 json_path = "anesthesia_classified_with_metadata.json"
@@ -264,6 +602,24 @@ if not df_subtopics.empty:
     df_subtopics['count'] = df_subtopics['count'].astype(int)
 
 print("\n✅ 데이터프레임 생성 완료.")
+
+# 3. 차트 생성을 위한 데이터 요약
+data_summary = create_data_summary(classified_data, all_papers)
+
+# 4. Gemini를 사용한 차트 생성
+chart_html = ""
+if USE_GEMINI_CHARTS:
+    print("🤖 Gemini AI로 차트 생성 중...")
+    chart_generator = GeminiChartGenerator(GEMINI_API_KEY)
+    chart_html = chart_generator.generate_chart_code(data_summary)
+    
+    if not chart_html:
+        print("⚠️ Gemini 차트 생성 실패, 기본 차트 사용")
+        chart_html = chart_generator.generate_fallback_charts(data_summary)
+else:
+    print("📊 기본 차트 생성 중...")
+    chart_generator = GeminiChartGenerator(None)  # API 키 없이 초기화
+    chart_html = chart_generator.generate_fallback_charts(data_summary)
 
 print("📊 HTML 문서 생성 중...")
 
@@ -352,6 +708,71 @@ def create_enhanced_css():
             color: #6c757d;
             font-size: 1.1em;
             font-weight: 600;
+        }
+        
+        /* 차트 섹션 스타일 */
+        .charts-section {
+            background: #ffffff;
+            border-radius: 20px;
+            margin: 40px 0;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 800;
+            color: #343a40;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #4a90e2, #50e3c2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 400px;
+        }
+        
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        
+        .chart-container.full-width {
+            grid-column: 1 / -1;
+            height: 500px;
+        }
+        
+        .chart-title {
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #343a40;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .chart-container canvas {
+            max-height: 300px;
+        }
+        
+        .chart-container.full-width canvas {
+            max-height: 400px;
         }
         
         .category-section {
@@ -521,11 +942,13 @@ def create_enhanced_css():
         }
         
         @media (max-width: 768px) {
-            .stats-grid, .subtopics-grid {
+            .stats-grid, .subtopics-grid, .charts-grid {
                 grid-template-columns: 1fr;
             }
             .header h1 { font-size: 2.2em; }
             .category-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .chart-container { height: 300px; }
+            .chart-container.full-width { height: 350px; }
         }
         
         .papers-list::-webkit-scrollbar { width: 6px; }
@@ -552,7 +975,7 @@ with tag("html", lang="ko"):
         doc.asis('<meta charset="UTF-8">')
         doc.asis('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
         with tag("title"):
-            text("마취학 연구 분류 대시보드 - Anesthesia Research Trends")
+            text("Anesthesia Research Trends")
         doc.asis(create_enhanced_css())
     
     with tag("body"):
@@ -560,7 +983,7 @@ with tag("html", lang="ko"):
             # 헤더
             with tag("div", klass="header loading-animation"):
                 with tag("h1"):
-                    text("🏥 마취학 연구 동향 분석")
+                    text("🏥 Anesthesia Research Trends")
                 with tag("p"):
                     text("Anesthesia Research Trends & Classification Dashboard")
                 with tag("p", klass="subtitle"):
@@ -595,12 +1018,16 @@ with tag("html", lang="ko"):
                     with tag("div", klass="stat-label"):
                         text("Total Analyzed")
 
+            # 차트 섹션 추가
+            if chart_html:
+                doc.asis(f'<div class="loading-animation" style="animation-delay: 0.3s">{chart_html}</div>')
+
 # 카테고리별 상세 섹션
 for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', ascending=False).iterrows()):
     category = cat_row['category']
     category_subtopics = df_subtopics[df_subtopics['category'] == category].sort_values('count', ascending=False)
     
-    with tag("div", klass="category-section loading-animation", style=f"animation-delay: {idx * 0.1}s"):
+    with tag("div", klass="category-section loading-animation", style=f"animation-delay: {(idx + 1) * 0.1}s"):
         with tag("div", klass="category-header"):
             with tag("div", klass="category-title"):
                 text(f"📚 {category}")
@@ -660,9 +1087,12 @@ for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', asc
 # 푸터 추가
 with tag("div", klass="footer"):
     with tag("p", style="font-size: 1.1em; font-weight: 600;"):
-        text("🔬 Generated with Python & Gemini AI")
+        if USE_GEMINI_CHARTS:
+            text("🔬 Generated with Python & Gemini AI + Chart.js")
+        else:
+            text("🔬 Generated with Python & Chart.js")
     with tag("p", style="font-size: 0.95em;"):
-        text("Anesthesia research classification system")
+        text("Anesthesia research classification system with interactive charts")
     if metadata.get("date_range", {}).get("oldest_formatted"):
         with tag("p", style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;"):
             date_range = metadata["date_range"]
@@ -748,12 +1178,17 @@ with open(output_html, "w", encoding="utf-8") as f:
     f.write(doc.getvalue())
 
 print(f"✅ 마취학 분류 대시보드 생성 완료 → {output_html}")
-print("\n🔧 변경사항:")
-print("   ✓ 모든 Plotly 차트 제거")
-print("   ✓ 불필요한 import 제거 (plotly 관련)")
-print("   ✓ 차트 생성 코드 모두 삭제")
-print("   ✓ 깔끔한 카드형 레이아웃 유지")
-print("   ✓ 통계 정보와 논문 리스트만 표시")
+print("\n🔧 새로운 기능:")
+if USE_GEMINI_CHARTS:
+    print("   ✓ Gemini AI 기반 인터랙티브 차트 생성")
+    print("   ✓ Chart.js를 사용한 반응형 차트")
+else:
+    print("   ✓ Chart.js를 사용한 기본 인터랙티브 차트")
+print("   ✓ 카테고리별 도넛 차트")
+print("   ✓ 연도별 트렌드 라인 차트")
+print("   ✓ 상위 저널 바 차트")
+print("   ✓ 반응형 차트 레이아웃")
+print("   ✓ 모던한 색상 팔레트")
 
 # 자동 배포 실행
 if AUTO_DEPLOY:
@@ -784,3 +1219,7 @@ else:
         print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
 
 print("\n🏁 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
+if USE_GEMINI_CHARTS:
+    print("🤖 Gemini AI가 생성한 인터랙티브 차트가 포함되었습니다!")
+else:
+    print("📊 기본 인터랙티브 차트가 포함되었습니다!")
