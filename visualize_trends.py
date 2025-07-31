@@ -243,60 +243,10 @@ print(f"전체 카테고리 수: {len(classified_data)}")
 
 # 데이터 구조 파악을 위한 디버깅
 print("\n🐛 JSON 구조 디버깅:")
-for i, (category, subtopics) in enumerate(list(classified_data.items())[:2]):
-    print(f"  카테고리 {i+1}: {category}")
-    print(f"    타입: {type(subtopics)}")
-    if isinstance(subtopics, dict):
-        print(f"    세부주제 수: {len(subtopics)}")
-        for j, (subtopic_name, papers) in enumerate(list(subtopics.items())[:2]):
-            print(f"      세부주제 {j+1}: {subtopic_name}")
-            print(f"        타입: {type(papers)}")
-            if isinstance(papers, list):
-                print(f"        논문 수: {len(papers)}")
-                if len(papers) > 0:
-                    print(f"        첫 번째 논문 키: {list(papers[0].keys()) if isinstance(papers[0], dict) else 'Not a dict'}")
-    print()
-
-# 실제 데이터 전처리
 for category, subtopics in classified_data.items():
-    category_count = 0
-    category_subtopics = 0
-    
-    print(f"\n📂 처리 중: {category}")
-    
-    if isinstance(subtopics, dict):
-        print(f"   세부주제 수: {len(subtopics)}")
-        
-        for subtopic, papers in subtopics.items():
-            if papers and isinstance(papers, list) and len(papers) > 0:
-                paper_count = len(papers)
-                category_count += paper_count
-                category_subtopics += 1
-                
-                print(f"   - {subtopic}: {paper_count}개 논문")
-                
-                # 세부주제 통계
-                subtopic_stats.append({
-                    "category": category,
-                    "subtopic": subtopic,
-                    "count": paper_count,
-                    "category_short": category.split("(")[0].strip()
-                })
-                
-                # 개별 논문 데이터
-                for paper in papers:
-                    if isinstance(paper, dict):
-                        paper_data = paper.copy()
-                        paper_data["category"] = category
-                        paper_data["subtopic"] = subtopic
-                        paper_data["category_short"] = category.split("(")[0].strip()
-                        # 저자 이름 개선
-                        paper_data["first_author"] = extract_first_author(paper_data.get("author", "N/A"))
-                        all_papers.append(paper_data)
-    
-    print(f"   총 논문 수: {category_count}")
-    
-    # 논문이 있는 카테고리만 추가 (중요: 0개인 카테고리 제외)
+    category_count = sum(len(papers) for papers in subtopics.values() if isinstance(papers, list))
+    category_subtopics = len(subtopics)
+
     if category_count > 0:
         category_stats.append({
             "category": category,
@@ -304,6 +254,23 @@ for category, subtopics in classified_data.items():
             "total_papers": category_count,
             "subtopics": category_subtopics
         })
+
+    for subtopic, papers in subtopics.items():
+        if papers and isinstance(papers, list):
+            subtopic_stats.append({
+                "category": category,
+                "subtopic": subtopic,
+                "count": len(papers),
+                "category_short": category.split("(")[0].strip()
+            })
+            for paper in papers:
+                if isinstance(paper, dict):
+                    paper_data = paper.copy()
+                    paper_data["category"] = category
+                    paper_data["subtopic"] = subtopic
+                    paper_data["category_short"] = category.split("(")[0].strip()
+                    paper_data["first_author"] = extract_first_author(paper_data.get("author", "N/A"))
+                    all_papers.append(paper_data)
 
 print(f"- 총 논문: {len(all_papers)}개")
 
