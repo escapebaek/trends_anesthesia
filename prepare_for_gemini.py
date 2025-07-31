@@ -35,6 +35,7 @@ for _, row in df.iterrows():
         "pmid": row["pmid"],
         "journal": row["journal"],
         "title": row["title"],
+        "authors": row.get("authors", ""),   # ✅ 저자 필드 추가
         "abstract": row["abstract"],
         "link": row["link"],
         "publication_date": row.get("publication_date", ""),
@@ -48,5 +49,5 @@ for _, row in df.iterrows():
 with open("abstracts_for_gemini.json", "w", encoding="utf-8") as f:
     json.dump(output_data, f, ensure_ascii=False, indent=2)
 
-print(f"✅ {len(output_data)}개의 abstract 준비 완료 → abstracts_for_gemini.json")
+print(f"✅ {len(output_data)}개의 abstract 준비 완료 (저자 포함) → abstracts_for_gemini.json")
 print("💡 다음 단계: python analyze_with_gemini.py")
