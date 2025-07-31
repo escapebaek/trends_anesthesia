@@ -1058,7 +1058,27 @@ with tag("html", lang="ko"):
                 doc.asis(f'<div class="loading-animation" style="animation-delay: 0.3s">{chart_html}</div>')
 
 # 카테고리별 상세 섹션
-for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', ascending=False).iterrows()):
+# 사용자 정의 순서
+category_order = [
+    '마취전 관리 (Pre-op Evaluation)', '마취 약리(Pharmacology of Anesthetics)', 
+    '법의학 및 윤리(Forensic and Ethical Considerations in Anesthesia)', '마취장비 및 감시(Anesthesia Equipment and Monitoring)', 
+    '기도관리(Airway Management)', '흡입마취(Inhalation Anesthesia)', '정맥마취(Intravenous Anesthesia)', 
+    '신경근차단(Neuromuscular Blockade)', '부위마취(Regional Anesthesia)', '수액 및 수혈(Fluid Management and Transfusion)', 
+    '산과마취(Obstetric Anesthesia)', '소아마취(Pediatric Anesthesia)', '심장마취(Cardiac Anesthesia)', 
+    '폐마취(Thoracic Anesthesia)', '뇌신경마취(Neuroanesthesia)', 
+    '수술장 밖 진정 및 마취(Sedation and Anesthesia Outside the Operating Room)', 
+    '수술 후 통증관리(Postoperative Pain Management)', '통증관리(Pain Management)', 
+    '노인마취(Geriatric Anesthesia)', '외래마취(Outpatient Anesthesia)', '심폐소생술(CPR)', 
+    '중환자관리(Critical Care Management)', '장기이식(Transplantation Anesthesia)'
+]
+
+# 'category' 컬럼을 Categorical 타입으로 변환하여 순서 지정
+df_categories['category'] = pd.Categorical(df_categories['category'], categories=category_order, ordered=True)
+
+# 지정된 순서로 정렬하고, 순서에 없는 카테고리는 뒤에 붙임
+df_categories_sorted = df_categories.sort_values('category')
+
+for idx, (_, cat_row) in enumerate(df_categories_sorted.iterrows()):
     category = cat_row['category']
     category_subtopics = df_subtopics[df_subtopics['category'] == category].sort_values('count', ascending=False)
     
