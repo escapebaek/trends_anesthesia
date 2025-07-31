@@ -1,9 +1,5 @@
 import json
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import plotly.offline as pyo
 from yattag import Doc
 import webbrowser
 import os
@@ -200,25 +196,6 @@ def parse_date(date_string):
     except:
         return None
 
-def get_recent_trend_data(df_papers, months=6):
-    """최근 N개월간의 트렌드 데이터 생성"""
-    current_date = datetime.now()
-    cutoff_date = current_date - timedelta(days=months*30)
-    
-    # 날짜 파싱
-    df_papers['parsed_date'] = df_papers['issue_date'].apply(parse_date)
-    recent_papers = df_papers[df_papers['parsed_date'] >= cutoff_date].copy()
-    
-    if len(recent_papers) == 0:
-        return pd.DataFrame()
-    
-    # 월별 그룹핑
-    recent_papers['month_year'] = recent_papers['parsed_date'].dt.to_period('M')
-    trend_data = recent_papers.groupby(['month_year', 'category_short']).size().reset_index(name='count')
-    trend_data['month_year_str'] = trend_data['month_year'].astype(str)
-    
-    return trend_data
-
 # 1. JSON 로드
 json_path = "anesthesia_classified_with_metadata.json"
 if not os.path.exists(json_path):
@@ -288,16 +265,9 @@ if not df_subtopics.empty:
 
 print("\n✅ 데이터프레임 생성 완료.")
 
-# 3. 색상 팔레트 정의
-modern_colors = [
-    '#4a90e2', '#50e3c2', '#f5a623', '#bd10e0', '#7ed321', 
-    '#9013fe', '#f8e71c', '#e24a4a', '#2ab7ca', '#f78da7',
-    '#4a4a4a', '#d0021b', '#b8e986', '#417505', '#d8bfd8'
-]
+print("📊 HTML 문서 생성 중...")
 
-print("📈 차트 생성 중...")
-
-# 4. HTML 문서 생성
+# HTML 문서 생성
 doc, tag, text = Doc().tagtext()
 
 def create_enhanced_css():
@@ -348,54 +318,6 @@ def create_enhanced_css():
             margin-top: 15px;
             opacity: 0.8;
             font-style: italic;
-        }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .chart-container {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .chart-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
-        }
-        
-        .full-width {
-            grid-column: 1 / -1;
-        }
-        
-        .chart-title {
-            font-size: 1.5em;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: #212529;
-            text-align: center;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .chart-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 3px;
-            background: linear-gradient(135deg, #4a90e2, #50e3c2);
-            border-radius: 2px;
         }
         
         .stats-grid {
@@ -599,7 +521,7 @@ def create_enhanced_css():
         }
         
         @media (max-width: 768px) {
-            .dashboard-grid, .stats-grid, .subtopics-grid {
+            .stats-grid, .subtopics-grid {
                 grid-template-columns: 1fr;
             }
             .header h1 { font-size: 2.2em; }
@@ -632,7 +554,6 @@ with tag("html", lang="ko"):
         with tag("title"):
             text("마취학 연구 분류 대시보드 - Anesthesia Research Trends")
         doc.asis(create_enhanced_css())
-        doc.asis('<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>')
     
     with tag("body"):
         with tag("div", klass="container"):
@@ -673,104 +594,6 @@ with tag("html", lang="ko"):
                         text(str(metadata.get("total_papers_analyzed", len(df_papers))))
                     with tag("div", klass="stat-label"):
                         text("Total Analyzed")
-
-# 차트 생성 (데이터가 있는 경우에만)
-if len(df_categories) > 0:
-    print(f"📊 차트 생성 시작...")
-    print(f"   카테고리 데이터: {len(df_categories)}개")
-    
-    
-
-    # 2. 수정된 도넛 차트
-    pie_data = df_categories[df_categories['total_papers'] > 0].copy()
-    
-    fig2 = go.Figure()
-    fig2.add_trace(go.Pie(
-        labels=pie_data['category_short'],
-        values=pie_data['total_papers'],
-        hole=0.4,
-        textinfo='percent+label',
-        hoverinfo='label+value+percent',
-        marker=dict(colors=modern_colors, line=dict(color='#ffffff', width=2)),
-        pull=[0.05] * len(pie_data)
-    ))
-
-    fig2.update_layout(
-        title="🥧 Research Category Distribution",
-        font=dict(family="Inter, Arial, sans-serif", size=12),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        title_font_size=20,
-        title_x=0.5,
-        showlegend=True,
-        legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.02),
-        width=800,
-        height=600
-    )
-
-    # 3. 수정된 세부주제 상위 15개 차트
-    if len(df_subtopics) > 0:
-        top_subtopics = df_subtopics.nlargest(15, 'count').sort_values('count', ascending=True)
-        
-        category_color_map = {cat: color for cat, color in zip(df_categories['category_short'].unique(), modern_colors)}
-        colors = top_subtopics['category_short'].map(category_color_map).fillna('#d3d3d3')
-
-        fig3 = go.Figure()
-        fig3.add_trace(go.Bar(
-            x=top_subtopics['count'],
-            y=top_subtopics['subtopic'],
-            orientation='h',
-            text=top_subtopics['count'],
-            textposition='auto',
-            marker=dict(color=colors),
-            customdata=top_subtopics['category_short'],
-            hovertemplate='<b>%{y}</b><br>Category: %{customdata}<br>Papers: %{x}<extra></extra>'
-        ))
-        
-        fig3.update_layout(
-            title="🔍 Top 15 Research Subtopics",
-            xaxis_title="Number of Papers",
-            yaxis_title="Research Subtopic",
-            height=700,
-            font=dict(family="Inter, Arial, sans-serif", size=11),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            title_font_size=20,
-            title_x=0.5,
-            margin=dict(l=300, r=100, t=100, b=80),
-            yaxis=dict(tickfont=dict(size=10)),
-            xaxis=dict(tickfont=dict(size=12))
-        )
-    else:
-        print("   ⚠️ 세부주제 데이터가 없습니다.")
-        fig3 = None
-
-    # HTML에 차트 추가
-    with tag("div", klass="dashboard-grid loading-animation"):
-        with tag("div", klass="chart-container"):
-            with tag("div", klass="chart-title"):
-                text("Category Distribution Overview")
-            doc.asis(fig2.to_html(full_html=False, include_plotlyjs=False, div_id="category-pie"))
-    
-    # 세부주제 차트 (데이터가 있는 경우만)
-    if fig3 is not None:
-        with tag("div", klass="chart-container full-width loading-animation"):
-            with tag("div", klass="chart-title"):
-                text("Top Research Subtopics")
-            doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="subtopic-chart"))
-
-else:
-    # 데이터가 없는 경우 오류 메시지 표시
-    with tag("div", klass="chart-container full-width loading-animation"):
-        with tag("div", style="text-align: center; padding: 50px;"):
-            with tag("h2", style="color: #e74c3c;"):
-                text("⚠️ 데이터 로딩 오류")
-            with tag("p", style="color: #666; font-size: 1.1em;"):
-                text("분류된 데이터를 찾을 수 없습니다. JSON 파일 구조를 확인해주세요.")
-            with tag("p", style="color: #666; margin-top: 20px;"):
-                text("예상 JSON 구조: {'카테고리': {'세부주제': [논문리스트]}}")
-
-print("📊 차트 생성 완료!")
 
 # 카테고리별 상세 섹션
 for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', ascending=False).iterrows()):
@@ -837,9 +660,9 @@ for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', asc
 # 푸터 추가
 with tag("div", klass="footer"):
     with tag("p", style="font-size: 1.1em; font-weight: 600;"):
-        text("🔬 Generated with Python, Gemini AI & Advanced Data Visualization")
+        text("🔬 Generated with Python & Gemini AI")
     with tag("p", style="font-size: 0.95em;"):
-        text("Real-time anesthesia research trends and classification system")
+        text("Anesthesia research classification system")
     if metadata.get("date_range", {}).get("oldest_formatted"):
         with tag("p", style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;"):
             date_range = metadata["date_range"]
@@ -920,20 +743,19 @@ with tag("script"):
 
 # HTML 저장
 output_html = "index.html"
-print("💾 수정된 HTML 대시보드 생성 중...")
+print("💾 HTML 대시보드 생성 중...")
 with open(output_html, "w", encoding="utf-8") as f:
     f.write(doc.getvalue())
 
-print(f"✅ 수정된 마취학 분류 대시보드 생성 완료 → {output_html}")
-print("\n🔧 주요 수정사항:")
-print("   ✓ 바 차트 숫자 표시 문제 해결 (plotly.graph_objects 사용)")
-print("   ✓ 파이 차트 카운팅 정확성 개선 (0개 카테고리 제외)")
-print("   ✓ 세부주제 차트 정확성 개선")
-print("   ✓ 불필요한 저널 차트 제거")
-print("   ✓ 데이터 타입 명시적 설정")
-print("   ✓ 차트 텍스트 레이블 수정")
+print(f"✅ 마취학 분류 대시보드 생성 완료 → {output_html}")
+print("\n🔧 변경사항:")
+print("   ✓ 모든 Plotly 차트 제거")
+print("   ✓ 불필요한 import 제거 (plotly 관련)")
+print("   ✓ 차트 생성 코드 모두 삭제")
+print("   ✓ 깔끔한 카드형 레이아웃 유지")
+print("   ✓ 통계 정보와 논문 리스트만 표시")
 
-# 자동 배포 실행 (기존 코드와 동일)
+# 자동 배포 실행
 if AUTO_DEPLOY:
     print("\n🚀 GitHub Pages 자동 배포를 시작합니다...")
     
@@ -961,4 +783,4 @@ else:
     except Exception:
         print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
 
-print("\n🏁 수정된 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
+print("\n🏁 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
