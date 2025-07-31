@@ -17,6 +17,9 @@ import requests
 import time
 from dotenv import load_dotenv
 
+# .env 파일에서 환경변수 로드
+load_dotenv()
+
 # 환경변수에서 API 키 가져오기
 API_KEY = os.getenv("GEMINI_API_KEY")
 
