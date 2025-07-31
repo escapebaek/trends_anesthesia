@@ -220,7 +220,7 @@ def get_recent_trend_data(df_papers, months=6):
     return trend_data
 
 # 1. JSON 로드
-json_path = "anesthesia_classified_abstracts.json"
+json_path = "anesthesia_classified_with_metadata.json"
 if not os.path.exists(json_path):
     print(f"❌ {json_path} 파일을 찾을 수 없습니다.")
     print("💡 먼저 analyze_with_gemini.py를 실행하세요.")
@@ -228,15 +228,10 @@ if not os.path.exists(json_path):
 
 print("📊 분류된 데이터 로드 중...")
 with open(json_path, "r", encoding="utf-8") as f:
-    classified_data = json.load(f)
+    full_data = json.load(f)
 
-# 메타데이터 로드 (있다면)
-metadata = {}
-meta_path = "anesthesia_classified_with_metadata.json"
-if os.path.exists(meta_path):
-    with open(meta_path, "r", encoding="utf-8") as f:
-        full_data = json.load(f)
-        metadata = full_data.get("metadata", {})
+classified_data = full_data.get("classified_abstracts", {})
+metadata = full_data.get("metadata", {})
 
 # 2. 개선된 데이터 전처리 
 category_stats = []
