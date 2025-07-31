@@ -693,6 +693,138 @@
     "publication_month": "2025-08"
   },
   {
+    "pmid": 40737083,
+    "journal": "Anesthesiology",
+    "title": "Impact of the Standardized ICU Admission Ratio on Outcomes in Rapid Response System Activations: A Retrospective Multicenter Study in Japan.",
+    "abstract": "BACKGROUND: ICU admission rates after Rapid Response System (RRS) activation vary widely across institutions. This study examined institutional differences in ICU admission rates and their association with outcomes. METHODS: A multicenter retrospective observational study was conducted using a Japanese in-hospital emergency registry, including patients with RRS activation between 2018 and 2022. We calculated the ICU admission rate (ICU admissions/RRS activations) and the Standardized ICU Admission Ratio (SIAR; actual/predicted ICU admissions) for each of 35 participating institutions. The association between SIAR and outcomes was assessed using generalized estimating equation logistic regression with hospital-level clustering. The primary outcome was \"death within 30 days\", and the secondary outcome was a composite of \"Cerebral Performance Category (CPC) >/= 3 or death within 30 days\". Outcomes were defined as events occurring during hospitalization, within a maximum of 30 days following RRS activation. RESULTS: The study included 8,794 patients. The median ICU admission rate was 0.33 (IQR, 0.21-0.47), and the median SIAR was 0.98 (IQR, 0.75-1.17). In univariable analysis, SIAR showed a non-significant association with the incidence of \"death within 30 days\" (beta = -0.05, 95% CI [-0.12, 0.01]; P = 0.108) and a significant negative association with the incidence of \"CPC >/= 3 or death within 30 days\" (beta = -0.15, 95% CI [-0.27, -0.03]; P = 0.015). In multivariable analysis, a 0.1-unit increase in SIAR was associated with an odds ratio of 0.98 (95% CI, 0.97-0.99; P = 0.104) for \"death within 30 days\", and 0.94 (95% CI, 0.92-0.96; P < 0.001) for \"CPC >/= 3 or death within 30 days\". CONCLUSIONS: Higher SIAR values were significantly associated with a lower incidence of \"CPC >/= 3 or death within 30 days\". Greater ICU utilization after RRS activation may improve outcomes, though underlying mechanisms require further study.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40737083/",
+    "publication_date": "2025-07-30",
+    "publication_date_raw": "2025 Jul 30",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40728533,
+    "journal": "Pain",
+    "title": "Translational control by general control nonderepressible 2 kinase regulates methylglyoxal-induced pain in mice.",
+    "abstract": "Neuropathic pain is pervasive among people with diabetes. The integrated stress response (ISR) is a key mechanism of translational regulation implicated in diabetic pain. In this study, we demonstrate that a reactive glycolytic metabolite, methylglyoxal (MGO), which is strongly associated with painful diabetic neuropathy, activates the ISR through the kinase general control nonderepressible 2 (GCN2). Methylglyoxal disrupts elongating ribosomes, triggering the recruitment of ribosome quality control factors and collision sensors. GCN2 activation by MGO requires the ribosomal P-stalk, a critical sensor for elongation factors. Moreover, neuronal sensitization and mechanical allodynia produced by MGO are GCN2-dependent. Overall, this study links ribosomal elongation dysfunction to metabolic pain and identifies GCN2 as a novel analgesic target for diabetic neuropathy.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40728533/",
+    "publication_date": "2025-07-30",
+    "publication_date_raw": "2025 Jul 30",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40728530,
+    "journal": "Pain",
+    "title": "Cortical astrocyte activation triggers meningeal nociception and migraine-like pain.",
+    "abstract": "Cortical astrocytes were implicated in migraine attacks involving cortical spreading depolarizations and related aura symptoms. However, whether the activation of cortical astrocytes is sufficient to generate migraine headaches is unknown. We investigated the role of cortical astrocytes in migraine pain triggering using a DREADD-based chemogenetic approach to activate visual cortex astrocytes, assessing its effect on the responses of meningeal nociceptors, the development of migraine-like behaviors, and their dependence on peripheral CGRP signaling. In a rat model, activating cortical astrocytes was sufficient to induce prolonged ongoing discharge and mechanical sensitization of meningeal nociceptors. Cortical astrocytic activation also generated cephalic mechanical pain hypersensitivity, reduced exploratory behavior, and anxiety-like behaviors linked to migraine headaches. Blocking CGRP signaling with a monoclonal antibody suppressed astrocyte-driven meningeal nociceptor discharge and alleviated migraine-related behaviors. We propose that augmented activation of visual cortex astrocytes during cortical hyperexcitability events in migraine attacks with and without aura is sufficient to trigger meningeal nociception and the ensuing migraine pain. Our findings could aid the development of novel effective migraine treatments.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40728530/",
+    "publication_date": "2025-07-30",
+    "publication_date_raw": "2025 Jul 30",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40728524,
+    "journal": "Pain",
+    "title": "Measurement instruments of pain-related avoidance in chronic pain: a systematic review of psychometric properties.",
+    "abstract": "Avoiding harmful events is adaptive in the short term but eventually may compromise functioning in daily life. Therefore, assessing pain-related avoidance is important in both pain research and treatment. Despite a variety of available measurement instruments, a systematic analysis of their quality and limitations is lacking. We evaluated the measurement properties of instruments used to assess pain-related avoidance in individuals with chronic pain. A systematic review following COSMIN guidelines was conducted (PROSPERO registration: CRD42020181461), including an electronic search of Cochrane, PsycArticles, PubMed, PubPsych, Scopus, and Web of Science as well as grey literature from inception to January 2024. Eligible studies were English, German, or French publications that explicitly claimed to evaluate one or more psychometric properties of measurement instruments assessing pain-related avoidance in adults with chronic pain. Of 703 screened records, 140 original articles were included, covering 20 self-reported questionnaires, one therapist-reported outcome measure, and one performance-based measure. Based on the current evidence, only the Brazilian Portuguese language version of the Chronic Pain Coping Inventory and the Italian version of the Chronic Pain Coping Inventory-42 fulfilled criteria to be recommended for use. Although the commonly used Fear-Avoidance Beliefs Questionnaire and Tampa Scale of Kinesiophobia were the most extensively studied, the study quality was mixed. The review further highlights extensive research on internal consistency, reliability, and construct validity but reveals a lack of high-quality evidence on measurement error and criterion validity. This work was supported by funding from the Flemish Government (METH/15/011).",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40728524/",
+    "publication_date": "2025-07-30",
+    "publication_date_raw": "2025 Jul 30",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40728516,
+    "journal": "Pain",
+    "title": "Prior use-dependent plasticity triggers different individual corticomotor responses during persistent musculoskeletal pain.",
+    "abstract": "Movement repetition is crucial for pain interventions. It facilitates the rehabilitation of motor patterns, the acquisition of motor skills, and the genesis of adaptive use-dependent plasticity. However, the influence of prior motor experience and preexisting use-dependent plasticity on pain severity and progression remains poorly investigated. This study investigated the effects of preexisting use-dependent plasticity during the development of prolonged experimental musculoskeletal pain. Using transcranial magnetic stimulation, corticospinal excitability was assessed by measuring the Rest motor threshold (RMT), motor-evoked potential (MEP), representational area of the motor map, volume, and center of gravity of the first dorsal interosseous (FDI) muscle in musicians (n = 19), a well-known ecological model of use-dependent plasticity, and in nonmusicians (n = 20). All participants attended 3 sessions (day 1, day 3, day 8). Prolonged pain for several days was induced by intramuscular injection of nerve growth factor (NGF) into the right FDI muscle at the end of day 1. Compared to day 1, prolonged pain uniquely led to reduced motor map volume in nonmusicians on day 3 (P = 0.004), who also showed higher NGF-related pain intensity compared to musicians. The motor maps of musicians, which were already smaller in pain-free conditions (day 1) compared to nonmusicians (P = 0.021), remained nonsignificantly different across days. Notably, corticomotor responses (map volume, MEP amplitude, and RMT) were correlated to weekly and accumulated musical training. These findings demonstrate that preexisting use-dependent plasticity associated with motor training may counteract the effects of prolonged pain in the motor system. Moreover, it confirms that prior motor experience acts as a source of individual variability to pain.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40728516/",
+    "publication_date": "2025-07-30",
+    "publication_date_raw": "2025 Jul 30",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40727984,
+    "journal": "Anaesthesia",
+    "title": "Age, ASA physical status and surgical outcomes: insights from a nationwide cohort study.",
+    "abstract": "INTRODUCTION: With over 300 million surgical procedures performed worldwide annually and an ageing population with increasing comorbidities, peri-operative risk assessment is more important than ever. Whilst the ASA physical status is used widely to assess surgical risk, its association with age remains underexplored in contemporary, broad surgical populations. This study examines the relationship between ASA physical status, age and postoperative mortality in an adult surgical cohort. METHODS: This nationwide cohort study analysed data from the Swedish Perioperative Register on patients aged >/= 18 y undergoing major non-cardiac surgery from January 2019 to March 2023. Data on comorbidities, socioeconomic factors and mortality were retrieved from national health registries. The primary outcome was 30-day mortality. Secondary outcomes were 365-day mortality and days at home alive at 30 days. RESULTS: A total of 262,938 elective and 197,108 acute procedures were analysed, with median ages of 66 and 68 y, respectively. Crude mortality rates in elective surgery were 1369 (0.5%) at 30 days and 10,437 (4.0%) at 365 days. For acute surgery, mortality was 10,602 (5.4%) at 30 days and 27,912 (14.2%) at 365 days. Adjusted odds ratios (OR) for 30-day mortality indicated a 14-fold increased risk for ASA physical status 3 compared with ASA physical status 1 in both elective (OR 13.7, 95%CI 7.5-25.0) and acute (OR 14.0, 95%CI 10.2-19.3) surgeries. Correspondingly, ASA physical status >/= 4 was associated with odds ratios of 62.2 (95%CI 33.5-115.5) for elective and 51.1 (95%CI 37.1-70.3) for acute surgery. DISCUSSION: As populations age and surgical demand increases, continuous evaluation of risk assessment tools like the ASA physical status is essential. This study shows a strong association between ASA physical status and mortality across all ages in a contemporary adult surgical cohort. These findings could enhance our understanding of peri-operative risk stratification in the context of shifting demographic trends.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40727984/",
+    "publication_date": "2025-07-29",
+    "publication_date_raw": "2025 Jul 29",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40727983,
+    "journal": "Anaesthesia",
+    "title": "Views of people who have given birth on the environmental and occupational exposure risks of nitrous oxide for labour analgesia: an interview-based qualitative study.",
+    "abstract": "INTRODUCTION: A 50:50 nitrous oxide/oxygen mix is commonly used for labour analgesia in the UK; however, nitrous oxide is associated with comparatively high environmental impact and potential exposure risks to staff if appropriate measures are not taken. Reduction of the impact of nitrous oxide in line with net zero emissions targets would require widespread changes in the way nitrous oxide is administered or in the availability of alternative options for labour analgesia. The aims of this qualitative study were to understand nitrous oxide use from the perspective of the parturient in the context of concerns regarding the environment and occupational exposure, and to provide evidence to guide the development of patient-centred nitrous oxide mitigation strategies. METHODS: We conducted semi-structured interviews with participants who had used nitrous oxide for labour analgesia. Participants were recruited purposively. Data were analysed using reflexive thematic analysis. RESULTS: We conducted 12 interviews and identified three themes: nitrous oxide is the default for labour analgesia in the UK; mitigating nitrous oxide harm depends on personal priorities; and institutions have a responsibility to mitigate nitrous oxide harm. Participants viewed nitrous oxide as a safe option, readily available in the context of limited choices for labour analgesia. They would be interested to know about the environmental risk of nitrous oxide, though this would not necessarily influence their choice to use it. They were less interested in its occupational risks and considered institutions, rather than individuals in labour, to have a responsibility to mitigate these. Though they felt that investment in reducing NHS emissions is important, participants also felt there may be other more pressing financial priorities. DISCUSSION: This study provides evidence to support the development of strategies to reduce nitrous oxide emissions, which consider the views of people who have used nitrous oxide for labour analgesia.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40727983/",
+    "publication_date": "2025-07-29",
+    "publication_date_raw": "2025 Jul 29",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40727959,
+    "journal": "Anaesthesia",
+    "title": "Comparing the pericapsular nerve group block and fascia iliaca block for acute pain management in patients with hip fracture: a randomised clinical trial.",
+    "abstract": "INTRODUCTION: The fascia iliaca block (FIB) is currently recommended as a component of multimodal acute pain management for patients with hip fracture. The pericapsular nerve group (PENG) block is a newer technique that may provide superior analgesia. We therefore designed this study in an academic emergency department to compare the acute analgesic effect of these two approaches in patients with a hip fracture. METHODS: Adult patients with an acute hip fracture who reported at least moderate pain were eligible for inclusion. Patients were allocated randomly to receive either a PENG block with 20 ml 0.375% levobupivacaine plus 4 mg dexamethasone or infra-inguinal FIB with 30 ml 0.25% levobupivacaine plus 4 mg dexamethasone. Primary outcome was the percentage of summed pain intensity difference (%SPID) calculated from visual analogue pain scores measured during the first hour post-block. Secondary outcomes included: number of patients reaching 33% and 50% SPID; dose of rescue opioid administered in morphine milligram equivalents; and incidence of adverse events. RESULTS: In total, 92 patients were screened for eligibility and 64 were enrolled (32 in each group). Patients allocated to the PENG block group showed a greater %SPID when compared with those allocated to the FIB group (62.7% (95%CI 52.9-72.4%) vs. 38.0% (95%CI 30.7-45.4%), respectively; difference: -24.7% (95%CI -36.6 to -12.7%), p < 0.001). In the PENG group, 24/32 patients achieved 50% SPID compared with 7/32 in the FIB group (p < 0.001). Similarly, in the PENG group, 28/32 patients achieved 33% SPID compared with 19/32 in the FIB group (p = 0.022). There was no significant difference in the rescue opioid dose administered or in the incidence of adverse events. DISCUSSION: The PENG block provides superior analgesia for the first hour after intervention when compared with the infra-inguinal FIB and represents a promising modality for acute pain management in emergency departments.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40727959/",
+    "publication_date": "2025-07-29",
+    "publication_date_raw": "2025 Jul 29",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40721388,
+    "journal": "Pain",
+    "title": "A ligand-receptor interactome of the bone tumor microenvironment in multiple myeloma bone pain.",
+    "abstract": "Multiple myeloma bone pain is a complex multifactorial disease, to which different cell types in the bone marrow microenvironment contribute through ligand-receptor interactions with sensory neurons. We conducted computational analyses of publicly available human and mouse transcriptomic datasets to assess multiple myeloma (MM) microenvironment diversity and identify potential nociceptive interactions. Our results highlight the MM microenvironment heterogeneity and identify cell-type-specific ligand-receptor pairs that potentially stimulate sensory neurons. We tested 7 ligands identified from MM plasma cells and bone marrow stromal cells (insulin-like growth factor 1, macrophage migration inhibitory factor, neuregulin 2, Wnt Family Member 5A, thrombospondin 1, fibroblast growth factor 7, and semaphorin 6A) using Ca2+ imaging assays in primary cultures of sensory neurons to induce Ca2+ signaling or affect TRPV1 sensitization. The results showed increased intracellular Ca2+ levels upon the direct application of thrombospondin 1. To suggest potential targets for future analgesic drug development, we computationally identified MAPK14 and CSNK2A1 as putative regulatory kinases upstream of the identified ligands. Together, our analysis maps potential nociceptive signaling pathways of different MM microenvironment cell types. These pathways extend from upstream regulatory kinases to transcription factors to secreted ligands, which can potentially stimulate sensory neuron receptors in the bone.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40721388/",
+    "publication_date": "2025-07-29",
+    "publication_date_raw": "2025 Jul 29",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40719881,
+    "journal": "Pain",
+    "title": "Proteomic analysis of isolated nerve terminals from NaV1.9 knockout mice reveals pathways relevant for pain perception.",
+    "abstract": "Neuropathic pain substantially affects the mental and physical well-being of patients and magnifies the socio-economic burden on the healthcare system. It is important to understand the molecular mechanisms underlying chronic pain to effectively target it. To investigate peripheral mechanisms relevant to pain signalling, we isolated nerve terminals from mouse footpads of wild type and NaV1.9-deficient mice, which exhibit impaired pain sensation and chronification. The isolated peripheral terminals are functionally active and capable of endocytosis. They contain both pre- and postsynaptic proteins in samples from mice and humans. Components of the protein translational machinery and mitochondria are enriched in nerve terminals, and these components are altered in NaV1.9 deficient terminals. An unbiased proteomic analysis of nerve terminals from footpads of NaV1.9 knockout mice shows dysregulation of the mitogen-activated protein kinase and extracellular regulated kinase 1/2 pathways. Preliminary proteomic analysis reveals a strong similarity between mouse and human skin samples, highlighting the broad and translational value of our approach. Our findings uncover peripheral signalling mechanisms involved in nociception, paving the way for unprecedented translational approaches using human biomaterials in pain research.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40719881/",
+    "publication_date": "2025-07-29",
+    "publication_date_raw": "2025 Jul 29",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40717423,
+    "journal": "Anaesthesia",
+    "title": "Consensus recommendations for paediatric airway topicalisation using lidocaine.",
+    "abstract": "INTRODUCTION: Lidocaine is commonly used to provide airway topicalisation in children. However, there is a paucity of evidence and no guidance available on safe dosing practices. METHODS: An international expert multidisciplinary, multi-society working group conducted a systematic review of the literature, followed by a three-round Delphi process to produce consensus recommendations. These recommendations aim to improve the safety of children having their airways topicalised with lidocaine. RESULTS: The systematic review identified 26 articles, with 21 recommendations agreed across five domains of practice: dosing; recovery; adverse reactions; institutional responsibilities; and learning from events. Evidence was limited and mainly grades C and D but the strength of the recommendations, based on the expert consensus, was mainly moderate (65-79% consensus) and strong (>/= 80% consensus). DISCUSSION: It is hoped these consensus recommendations will promote safe practice when lidocaine is used for airway topicalisation in children.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40717423/",
+    "publication_date": "2025-07-27",
+    "publication_date_raw": "2025 Jul 27",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40728514,
+    "journal": "Pain",
+    "title": "Stable individual differences in habituation and sensitization to prolonged painful stimulation are underpinned by activity in the hippocampus, amygdala, and sensorimotor cortices.",
+    "abstract": "Acute pain serves to warn an organism of potential damage. Two plausible theoretical response scenarios for prolonged painful stimulation could be hypothesised: If the organism does not sense potential harm an individual may habituate. Whereas, if harm is possible, pain sensitization may be more probable. Examining how an individual adapts to prolonged stimulation will provide unique insight into the mechanisms underlying pain habituation and sensitisation and, potentially, a valuable perspective on the development of chronic pain. However, currently little is known about the stability of these individual differences or their underlying neural mechanisms. To address this, 85 participants completed an MRI session, involving a noxious stimulation task and a resting-state scan. Habituation/sensitization was operationalized as the slope of change in pain ratings across the task. Habituation was associated with increasing activity in the anterior hippocampus and amygdala over time, with sensitization associated with increasing activity in the sensorimotor cortices. These regions were then used as seeds for a resting-state functional connectivity analysis, which revealed that habituation was associated with higher connectivity between the hippocampus and ventromedial prefrontal cortex, as well as higher connectivity between sensorimotor regions and the hippocampus, amygdala, and insula cortex. We have shown that habituation/sensitization to pain is a stable trait underpinned by differential activity in brain regions supporting sensory processing and appraisal. The perspective of these stable phenotypical patterns could have clinical applications and potential for improving our understanding of the development of chronic pain.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40728514/",
+    "publication_date": "2025-07-24",
+    "publication_date_raw": "2025 Jul 24",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
     "pmid": 40713194,
     "journal": "British journal of anaesthesia",
     "title": "Perioperative cardiac arrest requiring admission to intensive care units in Japan: epidemiological differences between emergency and elective surgery.",
@@ -810,6 +942,17 @@
     "link": "https://pubmed.ncbi.nlm.nih.gov/40702899/",
     "publication_date": "2025-07-24",
     "publication_date_raw": "2025 Jul 24",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40717606,
+    "journal": "Pain",
+    "title": "Immersion in nature through virtual reality attenuates the development and spread of mechanical secondary hyperalgesia: a role for insulo-thalamic effective connectivity.",
+    "abstract": "Nature-based social prescribing has been shown to improve physical and mental health and is increasingly used to manage chronic pain. However, the mechanisms of nature-based analgesia remain unclear. In this study, we used immersive virtual reality (VR) alongside pain psychophysics, functional magnetic resonance imaging, and psychometric assessments to assess the brain-based mechanisms of nature-based pain relief. Specifically, we experimentally induced sensitisation within central nociceptive pathways using the high frequency stimulation model of pain in 30 healthy participants and tracked the development of secondary mechanical hyperalgesia across 3 conditions: immersive VR nature, nonimmersive 2D nature video, and no intervention. Immersive nature VR significantly reduced the development and spread of mechanical secondary hyperalgesia, with sustained analgesic effects correlating with perceived presence. Bayesian modelling of neuroimaging end points collected separately revealed that nature VR-induced analgesic effects correlated with insulo-thalamic effective connectivity. We propose that the analgesic effects of nature are likely mediated through top-down endogenous analgesic systems which could be working to reduce the development and spread of heterotopic plasticity in the spinal cord.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40717606/",
+    "publication_date": "2025-07-23",
+    "publication_date_raw": "2025 Jul 23",
     "publication_year": 2025,
     "publication_month": "2025-07"
   },
@@ -1041,6 +1184,28 @@
     "link": "https://pubmed.ncbi.nlm.nih.gov/40685291/",
     "publication_date": "2025-07-19",
     "publication_date_raw": "2025 Jul 19",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40728528,
+    "journal": "Pain",
+    "title": "Autoreactive immunoglobulin G levels and Fc receptor gamma subunit upregulation drive mechanical allodynia after nerve constriction or crush injury.",
+    "abstract": "B cells contribute to the development of pain after sciatic nerve chronic constriction injury (CCI) through binding of immunoglobulin G (IgG) to Fc gamma receptors (FcgammaRs) in the lumbar dorsal root ganglia (DRG) and spinal cord. Yet the contribution of B cells to pain after different types of peripheral nerve injury is uncertain. Using male and female mice, we demonstrate a divergent role for B cell-IgG-FcgammaR signaling underlying mechanical allodynia between CCI, nerve crush (NC), spared nerve injury (SNI), and spinal nerve ligation (SNL). Depletion (monoclonal anti-CD20) or genetic deletion (muMT mice) of B cells prevented development of allodynia after NC and CCI, but not SNI or SNL. In apparent contradiction, circulating levels of autoreactive IgG and circulating immune complexes were increased in all models, although more prominent after NC and CCI. Passive transfer of IgG from SNI donor mice induced allodynia in CCI muMT recipient mice, demonstrating that IgG secreted after SNI is pronociceptive. To investigate why pronociceptive IgG did not contribute to mechanical allodynia after SNI, we evaluated the levels of the Fc receptor gamma subunit. Spared nerve injury or spinal nerve ligation did not increase gamma subunit levels in the DRG and spinal cord, whereas CCI and NC did, in agreement with B cell-dependent allodynia in these models. Together, the results suggest that traumatic peripheral nerve injury drives secretion of autoreactive IgG from B cells. However, levels of cognate FcgammaRs are increased after sciatic nerve constriction and crush, but not transection, nerve injury.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40728528/",
+    "publication_date": "2025-07-18",
+    "publication_date_raw": "2025 Jul 18",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40728519,
+    "journal": "Pain",
+    "title": "A catheter-associated urinary tract infection mouse model to study bladder dysfunction and pain.",
+    "abstract": "Bladder pain and dysfunction are common symptoms in patients with urinary tract infections (UTIs), including catheter-associated UTIs (CAUTIs). Underlying mechanisms of chronic bladder pain and recurrent UTIs remain poorly understood, and good translational mice models are sparse. Here, we developed a female mouse suprapubic CAUTI model, and combined in vivo and ex vivo imaging techniques and behavioral assays to longitudinally evaluate the consequences for bladder function, inflammation, abdominal pain, bacterial colonization, and biofilm. Catheter-associated urinary tract infection animals, with an implanted suprapubic bladder catheter infected with the bioluminescent uropathogenic Escherichia coli (UPEC) UTI89-Lux strain, were compared with sham-operated mice (SHAM), mice with a sterile catheter (CACON), and mice infected via transurethral instillation (UTI). Compared to transient infections in UTI mice, CAUTI mice exhibited sustained bacterial infection during >2 weeks, which was associated with bacterial biofilm formation on the catheter inner surface. Compared to CACON mice, CAUTI mice showed a more pronounced increase in suprapubic sensitivity, which was sensitive to antibiotic treatment. Void spot assays and fluoroscopic volumetry further revealed a smaller bladder capacity in both CAUTI and CACON mice, but only in CAUTI mice this was associated with reduced voiding efficiency. This model successfully recapitulates clinically relevant symptoms of CAUTI in patients and demonstrates that sustained bacterial colonization of the catheter directly contributes to bladder hypersensitivity and voiding dysfunction. This novel in vivo research model may be instrumental in the search for new therapies aimed at disrupting biofilms and treatments of bladder-related pain, infections, and dysfunction.",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40728519/",
+    "publication_date": "2025-07-18",
+    "publication_date_raw": "2025 Jul 18",
     "publication_year": 2025,
     "publication_month": "2025-07"
   },
@@ -1525,6 +1690,17 @@
     "link": "https://pubmed.ncbi.nlm.nih.gov/40640044/",
     "publication_date": "2025-07-09",
     "publication_date_raw": "2025 Jul 9",
+    "publication_year": 2025,
+    "publication_month": "2025-07"
+  },
+  {
+    "pmid": 40726206,
+    "journal": "European journal of anaesthesiology",
+    "title": "Mean arterial pressure is all you need in a machine learning model for mean arterial pressure prediction.",
+    "abstract": "BACKGROUND: Anaesthesiology and intensive care use monitoring to identify patients in danger of deterioration. Traditionally, trends and early warning scores allow clinicians to predict deterioration with moderate reliability. Reduced mean arterial blood pressure has been associated with complications, and models have been sought to predict its value. Machine learning methods with complex inputs have been used for predictive monitoring in hospital care. OBJECTIVES: This study evaluates whether machine learning can predict mean arterial pressure (MAP) from previous values. DESIGN: This is a monocentre, retrospective, exploratory, observational cohort study using the MIMIC-III-WDB, VitalDB and an internal study centre dataset, training machine learning models on adult patients with invasively measured blood pressure (IBP) as input during an observation window up to 20 min before the prediction horizon (5 to 20 min). SETTING: Kepler University Hospital, Linz, Austria. PARTICIPANTS: Two thousand three hundred and forty-six patients from the internal dataset, 4741 patients from MIMIC-III-WDB and 3357 patients from VitalDB were analysed. MAIN OUTCOME MEASURES: The primary endpoint was model performance in predicting whether MAP would fall below 65 mmHg in a given time frame. In a secondary analysis, we restricted the input set to stable patients with current MAP above 65 mmHg. RESULTS: Models using the complete training data achieved receiver operating characteristic area under the curves (ROC AUCs) of 0.963, 0.946, 0.934 and 0.923 on the internal dataset for 5, 10, 15 and 20 min of prediction horizon, respectively, and 0.856, 0.837, 0.821 and 0.804 in the secondary analysis. The maximum difference of ROC AUC to baseline measurement (ROC AUC of last measured MAP as trivial estimator) was 0.006 for the complete training data and 0.051 for stable patients. The prediction of MAP may allow clinicians to intervene in time before MAP deterioration becomes clinically relevant. CONCLUSION: Predicting MAP below 65 mmHg within 5, 10, 15 and 20 min for patients with and without a MAP above 65 mmHg is possible and requires only MAP as input for machine learning models. TRIAL REGISTRATION: ClinicalTrials.gov (NCT05471193).",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/40726206/",
+    "publication_date": "2025-07-08",
+    "publication_date_raw": "2025 Jul 8",
     "publication_year": 2025,
     "publication_month": "2025-07"
   },
@@ -2350,61 +2526,6 @@
     "link": "https://pubmed.ncbi.nlm.nih.gov/40393818/",
     "publication_date": "2025-07-01",
     "publication_date_raw": "2025 Jul",
-    "publication_year": 2025,
-    "publication_month": "2025-07"
-  },
-  {
-    "pmid": 40389332,
-    "journal": "British journal of anaesthesia",
-    "title": "A survey of perioperative medicine services with a focus on provision for older surgical patients in the UK and Republic of Ireland: SNAP-3.",
-    "abstract": "BACKGROUND: Perioperative medicine aims to improve care for high-risk patients, and is endorsed by national guidelines in the UK and Republic of Ireland (ROI). However, comprehensive perioperative medicine services are not yet uniformly available. This survey addressed the current state of perioperative medicine services for older surgical patients in the UK and ROI and how these services align with current national guidance. METHODS: A survey was distributed electronically to all publicly administered UK and ROI hospitals performing surgical procedures. The survey examined perioperative care against national recommendations regarding service organisation and conduct. RESULTS: Of 339 eligible hospitals, 54.9% (186/339) responded. A hospital frailty lead was appointed in 54% (101/186) of hospitals, and 9% (16/186) had a designated anaesthetist for cognitive impairment. Hospital anaesthetic services outside the theatre were focused on preoperative assessment clinics (146/172), with few reporting routine postoperative involvement (17/166). Nurse-led preoperative assessments of frailty, cognition, and delirium risk were conducted in 49.5% (90/182), 44.3% (78/176), and 13.7% (24/175) of hospitals, respectively. The Clinical Frailty Scale was used in 87.0% (147/169) of hospitals for frailty screening. The 4 'A's Test (45.7% [85/186]) and Abbreviated Mental Test (43.0% [80/186]) were the preferred cognitive assessment tools. CONCLUSIONS: The survey highlights the variation in perioperative medicine services that exist for older surgical patients despite national guidelines advocating their widespread implementation. Opportunity exists to develop interspecialty perioperative services further and promote identification of frailty, cognitive impairment, and delirium, all of which negatively impact postoperative outcomes for older surgical patients.",
-    "link": "https://pubmed.ncbi.nlm.nih.gov/40389332/",
-    "publication_date": "2025-07-01",
-    "publication_date_raw": "2025 Jul",
-    "publication_year": 2025,
-    "publication_month": "2025-07"
-  },
-  {
-    "pmid": 40379536,
-    "journal": "British journal of anaesthesia",
-    "title": "Perioperative management of patients taking glucagon-like peptide 1 receptor agonists: Society for Perioperative Assessment and Quality Improvement (SPAQI) multidisciplinary consensus statement.",
-    "abstract": "The perioperative management of patients using glucagon-like peptide 1 receptor agonists remains a topic of debate. While several multisociety statements have been published recently, the recommendations vary significantly in terms of medication management and preoperative fasting protocols for these patients. This document represents a multidisciplinary consensus statement led by the Society for Perioperative Assessment and Quality Improvement (SPAQI). It provides updated recommendations based on a modified Delphi process and supported by a systematic review of the current literature. The recommendations address management of the glucagon-like peptide 1 receptor agonists perioperatively, and preoperative fasting times for both solids and liquids. SYSTEMATIC REVIEW PROTOCOL: PROSPERO (CRD42023438624).",
-    "link": "https://pubmed.ncbi.nlm.nih.gov/40379536/",
-    "publication_date": "2025-07-01",
-    "publication_date_raw": "2025 Jul",
-    "publication_year": 2025,
-    "publication_month": "2025-07"
-  },
-  {
-    "pmid": 40374400,
-    "journal": "British journal of anaesthesia",
-    "title": "Multimodal prehabilitation before lung resection surgery: a multicentre randomised controlled trial.",
-    "abstract": "BACKGROUND: Respiratory muscle training may improve ventilatory efficiency (V(E)/VCO(2) slope), a strong predictor of postoperative pulmonary complications. We hypothesised that multimodal prehabilitation, incorporating high-intensity respiratory muscle training, before lung resection would reduce postoperative complications and length of hospital stay. METHODS: We conducted a prospective multicentre, randomised controlled trial (NCT04826575) to examine the effect of prehabilitation in individuals undergoing lung resection. Participants were defined as high-risk for postoperative pulmonary complications if they achieved V(E)/VCO(2) slope >/=33, as determined by cardiopulmonary exercise testing. Participants were then randomised to either usual care or multimodal prehabilitation, which consisted of a 14-day programme of high-intensity respiratory muscle training, smoking cessation, nutritional support, and psychological support. The primary outcome were postoperative pulmonary and cardiovascular complications (pneumonia, atelectasis, respiratory failure necessitating mechanical ventilation, adult respiratory distress syndrome, prolonged air leak). RESULTS: A total of 122 patients (46% female; age range: 64-75 yr) completed the study. Postoperative pulmonary complications occurred in 20/58 (34%) of patients randomised to multimodal prehabilitation, compared with 35/64 (55%) patients receiving usual care (odds ratio 2.29 [95% confidence interval 1.10-4.77]; P=0.029). Hospital length of stay was shorter after multimodal rehabilitation compared with patients randomised to receive usual care (from 9 [7-11] days to 7 [6-9] days; P=0.038). After prehabilitation, mean (sd) V(E)/VCO(2) slope decreased from 39 (8) to 36 (9); P=0.01. Prehabilitation also improved patient-reported quality of life measures. CONCLUSIONS: In high-risk patients undergoing elective lung resection surgery, multimodal prehabilitation, including high-intensity respiratory muscle training to target V(E)/VCO(2), reduced postoperative pulmonary complications and hospital length of stay.",
-    "link": "https://pubmed.ncbi.nlm.nih.gov/40374400/",
-    "publication_date": "2025-07-01",
-    "publication_date_raw": "2025 Jul",
-    "publication_year": 2025,
-    "publication_month": "2025-07"
-  },
-  {
-    "pmid": 40368685,
-    "journal": "British journal of anaesthesia",
-    "title": "Interleukin-1 receptor antagonist polymorphisms in women receiving epidural analgesia who develop maternal intrapartum fever: a prospective, multicentre Mendelian randomised study.",
-    "abstract": "BACKGROUND: Genetically predicted higher levels of the anti-inflammatory cytokine interleukin-1 receptor antagonist (IL1-Ra) might reduce the risk of developing epidural-related maternal fever, a phenomenon that occurs exclusively in women having epidural analgesia in labour. We hypothesised that in women having epidural analgesia, the absence of specific alleles that lower circulating levels of IL1-Ra would be associated with the development of epidural-related maternal fever, administration of intrapartum antibiotics, or both. METHODS: We prospectively enrolled women >/=18 yr of age receiving epidural analgesia during labour, excluding those with pre-existing fever, antibiotic therapy, or immunodeficiency. Allele scores were constructed from genotyping the C-allele frequency at variants rs6743376 and rs1542176; more copies of each allele independently raise IL-1Ra. The composite primary outcome was maternal intrapartum fever (>38 degrees C) or administration of intrapartum antibiotics after epidural placement. The exposure of interest was the IL1-Ra allele score, comparing 0 (lowest genetically predicted IL-1Ra levels) with >/=1 allele scores. Maternal fever and antibiotic administration were compared in women with 0 or >/=1 allele scores. RESULTS: Of 624 women genotyped, 155 (24.8%) developed maternal fever or received antibiotics. Fever or antibiotic administration occurred in 19/74 (25.7%) labouring women with an IL-1Ra allele score of 0, compared with 136/550 (24.7%) women with IL-1Ra allele scores >/=1 (odds ratio 1.05, 95% confidence interval 0.60-1.83; P=0.89). CONCLUSIONS: In women who receive epidural analgesia during labour, genetically predicted (higher) interleukin-1 receptor antagonist levels do not alter the incidence of maternal intrapartum fever or use of intrapartum antibiotics. CLINICAL TRIAL REGISTRATION: ISRCTN99641204.",
-    "link": "https://pubmed.ncbi.nlm.nih.gov/40368685/",
-    "publication_date": "2025-07-01",
-    "publication_date_raw": "2025 Jul",
-    "publication_year": 2025,
-    "publication_month": "2025-07"
-  },
-  {
-    "pmid": 40364780,
-    "journal": "European journal of anaesthesiology",
-    "title": "Repeat-dose dexamethasone to prevent pain relapse after total knee arthroplasty in high-pain-response patients: A randomised, double-blind, placebo-controlled superiority trial.",
-    "abstract": "BACKGROUND: Peri-operative glucocorticoids reduce pain after total knee arthroplasty, with evidence suggesting potential benefits of increased dosing in specific patient groups. However, the impact of repeat-dose glucocorticoids has not been studied in high-pain-response patients receiving pre-operative high-dose glucocorticoids. OBJECTIVE: To investigate the effect on pain of an oral dose of dexamethasone after total knee arthroplasty in selected high-pain-response patients who had received a pre-operative high dose of intravenous dexamethasone (1 mg kg -1 ). DESIGN: Randomised, double-blind, placebo-controlled superiority study. SETTING: A multicentre study conducted at two major arthroplasty centres in Denmark from November 2021 to March 2024. PATIENTS: One hundred and ten patients undergoing total knee arthroplasty who had received multimodal analgesia including pre-operative intravenous dexamethasone 1 mg kg -1 . Selection criteria included a Pain Catastrophising Scale score greater than 20 and moderate-to-severe pain (VAS >30) during walking 24 h postoperatively. INTERVENTION: Patients were randomised to either oral dexamethasone 24 mg or placebo on postoperative day 1. MAIN OUTCOME MEASURES: The primary outcome was the proportion of patients experiencing moderate-to-severe pain during walking at 48 h postoperatively. Secondary outcomes included pain scores at various time points within 1 week postoperatively, rescue analgesics, quality of sleep, length of hospital stay and morbidity with follow-up at 30 days. RESULTS: At 48 h postoperatively, 65% of patients in the dexamethasone group and 79% in the placebo group reported moderate-to-severe pain during walking: odds ratio 0.48 [95% confidence interval (CI), 0.20 to 1.16]; P  = 0.100. The mean +/- SD Visual Analogue Scale (VAS) at 48 h during walking was 43 +/- 21 in the dexamethasone group and 51 +/- 22 in the placebo group ( P  = 0.051). There were no differences between the groups regarding secondary pain outcomes or the use of rescue analgesics. CONCLUSION: The administration of a high oral dose of dexamethasone following an initial pre-operative dose of 1 mg kg -1 intravenously in selected high-pain-response patients had no effect on postoperative pain following total knee arthroplasty. TRIAL REGISTRATION: ClinicalTrials.gov identifier NCT05563155.",
-    "link": "https://pubmed.ncbi.nlm.nih.gov/40364780/",
-    "publication_date": "2025-07-01",
-    "publication_date_raw": "2025 Jul 1",
     "publication_year": 2025,
     "publication_month": "2025-07"
   }

@@ -51,7 +51,34 @@ if papers_with_dates:
     print(f"   - 최오래된: {oldest_date.strftime('%Y년 %m월 %d일')}")
     print(f"   - 날짜 정보가 있는 논문: {len(papers_with_dates)}개")
 
-# 2. 프롬프트 (날짜 정보 포함, 세부 논문 링크 포함, 세분화된 키워드 그룹화)
+# 2. 마취학 분류 카테고리 정의
+anesthesia_categories = [
+    "마취전 관리 (Pre-op Evaluation)",
+    "마취 약리(Pharmacology of Anesthetics)",
+    "법의학 및 윤리(Forensic and Ethical Considerations in Anesthesia)",
+    "마취장비 및 감시(Anesthesia Equipment and Monitoring)",
+    "기도관리(Airway Management)",
+    "흡입마취(Inhalation Anesthesia)",
+    "정맥마취(Intravenous Anesthesia)",
+    "신경근차단(Neuromuscular Blockade)",
+    "부위마취(Regional Anesthesia)",
+    "수액 및 수혈(Fluid Management and Transfusion)",
+    "산과마취(Obstetric Anesthesia)",
+    "소아마취(Pediatric Anesthesia)",
+    "심장마취(Cardiac Anesthesia)",
+    "폐마취(Thoracic Anesthesia)",
+    "뇌신경마취(Neuroanesthesia)",
+    "수술장 밖 진정 및 마취(Sedation and Anesthesia Outside the Operating Room)",
+    "수술 후 통증관리(Postoperative Pain Management)",
+    "통증관리(Pain Management)",
+    "노인마취(Geriatric Anesthesia)",
+    "외래마취(Outpatient Anesthesia)",
+    "심폐소생술(CPR)",
+    "중환자관리(Critical Care Management)",
+    "장기이식(Transplantation Anesthesia)"
+]
+
+# 3. 프롬프트 생성 (새로운 분류 방식)
 date_context = ""
 if papers_with_dates:
     date_context = f"""
@@ -62,33 +89,73 @@ if papers_with_dates:
     - This represents the most current research trends in anesthesia for 2025
     """
 
-prompt = (
-    "You are an expert research assistant. Analyze the following anesthesia-related paper abstracts grouped by journal.\n\n"
-    f"{date_context}\n\n"
-    "Task:\n"
-    "1. For each journal, identify 12-15 research topic clusters with specific focus areas.\n"
-    "2. Do NOT create overly broad clusters (e.g., avoid 'Regional Anesthesia'); instead, split them into detailed subtopics (e.g., 'Adductor Canal Block', 'Erector Spinae Plane Block').\n"
-    "3. For each cluster, provide:\n"
-    "   - topic (string): a specific representative name (avoid generic terms)\n"
-    "   - count (integer): number of abstracts mentioning any keyword in this cluster\n"
-    "   - related_keywords (array): 3-5 specific keywords contained in the cluster\n"
-    "   - article_links (array): PubMed links of 3-5 representative articles related to this cluster\n"
-    "   - description (string): concise summary (5-10 words)\n"
-    "4. Use only the provided article links when filling the 'article_links' field.\n"
-    "5. Avoid generic words like 'patients', 'surgery', 'pain', 'human'.\n"
-    "6. Include drug names, specific techniques, biomarkers, and precise clinical outcomes where applicable.\n"
-    "7. Consider the temporal context - these are recent 2025 publications representing current research trends.\n"
-    "8. Return strictly a JSON object where each key is a journal name, and its value is an array of topic clusters.\n"
-    "9. Do not include markdown, code fences, or explanations.\n\n"
-    "Example cluster entry: \n"
-    "{ \"topic\": \"Adductor Canal Block\", \"count\": 7, \"related_keywords\": [\"ACB\", \"nerve block\", \"postoperative analgesia\"], \"article_links\": [\"https://pubmed.ncbi.nlm.nih.gov/12345678/\", \"https://pubmed.ncbi.nlm.nih.gov/23456789/\"], \"description\": \"Specific nerve block for knee surgery pain\" }\n\n"
-    "Abstracts (with journal, publication date, and article link):\n" +
-    "\n\n".join(f"{i+1}. Journal: {item['journal']} | Date: {item.get('publication_date', 'Unknown')} | Link: {item['link']} | Abstract: {item['abstract']}" for i, item in enumerate(abstracts))
-)
+categories_text = "\n".join(f"- {cat}" for cat in anesthesia_categories)
 
-# 3. 모델 호출
+prompt = f"""You are an expert anesthesiologist and research analyst. Analyze the following anesthesia-related paper abstracts and classify them into specific categories.
+
+{date_context}
+
+CLASSIFICATION CATEGORIES:
+{categories_text}
+
+TASK:
+1. For each abstract, determine the most appropriate category from the list above
+2. Within each category, identify specific subtopics (e.g., "Kidney transplantation", "Liver transplantation" under "장기이식")
+3. Provide a concise summary of each abstract (2-3 sentences)
+4. Return the results in the following JSON structure:
+
+{{
+  "마취전 관리 (Pre-op Evaluation)": {{
+    "Preoperative Risk Assessment": [
+      {{
+        "pmid": "12345678",
+        "title": "Risk factors for postoperative complications",
+        "author": "Kim HS, Lee JW",
+        "journal": "Anesthesiology",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/12345678/",
+        "issue_date": "2025-07",
+        "abstract_summary": "This study investigated preoperative risk factors..."
+      }}
+    ]
+  }},
+  "마취 약리(Pharmacology of Anesthetics)": {{
+    "Propofol Pharmacokinetics": [
+      {{
+        "pmid": "...",
+        "title": "...",
+        "author": "...",
+        "journal": "...",
+        "link": "...",
+        "issue_date": "...",
+        "abstract_summary": "..."
+      }}
+    ]
+  }}
+}}
+
+INSTRUCTIONS:
+- Create specific subtopic names based on the content (avoid generic terms)
+- Each subtopic should contain an array of papers
+- Abstract summaries should be concise but informative (2-3 sentences)
+- Use the exact PMID, title, author, journal, and link from the provided data
+- Format issue_date as "YYYY-MM" if available
+- If a paper doesn't clearly fit any category, classify it as the closest match
+- Do not include markdown, code fences, or explanations - return only valid JSON
+
+ABSTRACTS TO ANALYZE:
+"""
+
+# 논문 데이터를 프롬프트에 추가
+for i, item in enumerate(abstracts):
+    prompt += f"\n{i+1}. PMID: {item.get('pmid', 'N/A')} | Journal: {item['journal']} | Date: {item.get('publication_date', 'Unknown')} | Link: {item['link']}\n"
+    prompt += f"Title: {item['title']}\n"
+    prompt += f"Authors: {item.get('authors', 'N/A')}\n"
+    prompt += f"Abstract: {item['abstract']}\n"
+
+# 4. 모델 호출
 try:
     print("🤖 Gemini API 호출 중...")
+    print(f"📊 분석할 논문 수: {len(abstracts)}개")
     model = genai.GenerativeModel("gemini-2.5-pro")
     response = model.generate_content(prompt)
     print("✅ API 호출 성공")
@@ -97,51 +164,105 @@ except Exception as e:
     print("💡 API 키가 올바른지, 할당량이 남아있는지 확인하세요.")
     exit(1)
 
-# 4. JSON 추출
+# 5. JSON 추출 및 파싱
 raw_text = response.text.strip()
-match = re.search(r"\{.*\}", raw_text, re.S)
-json_str = match.group(0) if match else raw_text
+print("🔍 JSON 추출 중...")
 
-# 5. JSON 파싱
+# JSON 블록 찾기
+json_match = re.search(r'\{.*\}', raw_text, re.DOTALL)
+if json_match:
+    json_str = json_match.group(0)
+else:
+    # 백틱이나 다른 마크다운 요소 제거
+    json_str = re.sub(r'```json\s*', '', raw_text)
+    json_str = re.sub(r'```\s*$', '', json_str)
+    json_str = json_str.strip()
+
+# 6. JSON 파싱
 try:
-    trends_by_journal = json.loads(json_str)
-    print(f"✅ JSON 파싱 성공 - {len(trends_by_journal)}개 저널 데이터")
+    classified_data = json.loads(json_str)
+    print(f"✅ JSON 파싱 성공")
+    
+    # 분류 결과 통계
+    total_papers = 0
+    category_counts = {}
+    
+    for category, subtopics in classified_data.items():
+        category_count = 0
+        for subtopic, papers in subtopics.items():
+            category_count += len(papers)
+        category_counts[category] = category_count
+        total_papers += category_count
+    
+    print(f"📊 분류 결과:")
+    print(f"   - 총 분류된 논문: {total_papers}개")
+    print(f"   - 활성 카테고리: {len([c for c in category_counts.values() if c > 0])}개")
+    
+    # 상위 5개 카테고리 출력
+    sorted_categories = sorted(category_counts.items(), key=lambda x: x[1], reverse=True)
+    print(f"   - 상위 카테고리:")
+    for cat, count in sorted_categories[:5]:
+        if count > 0:
+            print(f"     • {cat}: {count}개")
+
 except json.JSONDecodeError as e:
     print("❌ JSON 파싱 실패:", e)
-    print("Raw 출력 (처음 500자):\n", raw_text[:500])
-    trends_by_journal = {}
+    print("Raw 출력 (처음 1000자):\n", raw_text[:1000])
+    print("\n마지막 1000자:\n", raw_text[-1000:])
+    
+    # 빈 구조로 초기화
+    classified_data = {}
+    for category in anesthesia_categories:
+        classified_data[category] = {}
 
-# 6. 저장 (날짜 메타데이터 포함)
+# 7. 메타데이터와 함께 저장
 output_data = {
     "metadata": {
         "analysis_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "total_papers": len(abstracts),
+        "total_papers_analyzed": len(abstracts),
+        "total_papers_classified": sum(
+            len(papers) for subtopics in classified_data.values() 
+            for papers in subtopics.values()
+        ) if classified_data else 0,
         "papers_with_dates": len(papers_with_dates),
         "date_range": {
             "oldest": oldest_date.strftime("%Y-%m-%d") if papers_with_dates else None,
             "newest": newest_date.strftime("%Y-%m-%d") if papers_with_dates else None,
             "oldest_formatted": oldest_date.strftime("%Y년 %m월 %d일") if papers_with_dates else None,
             "newest_formatted": newest_date.strftime("%Y년 %m월 %d일") if papers_with_dates else None
-        }
+        },
+        "categories_used": len([cat for cat, subtopics in classified_data.items() 
+                              if any(len(papers) > 0 for papers in subtopics.values())]) if classified_data else 0,
+        "category_distribution": {
+            category: sum(len(papers) for papers in subtopics.values())
+            for category, subtopics in classified_data.items()
+        } if classified_data else {}
     },
-    "trends_by_journal": trends_by_journal
+    "classified_abstracts": classified_data
 }
 
-# 기존 형식으로도 저장 (하위 호환성)
-output_file = "anesthesia_trends_by_journal_with_article_links.json"
+# 8. 파일 저장
+# 기본 분류 결과
+output_file = "anesthesia_classified_abstracts.json"
 with open(output_file, "w", encoding="utf-8") as f:
-    json.dump(trends_by_journal, f, ensure_ascii=False, indent=2)
+    json.dump(classified_data, f, ensure_ascii=False, indent=2)
 
-# 메타데이터 포함 버전 저장
-output_file_with_meta = "anesthesia_trends_with_metadata.json"
+# 메타데이터 포함 버전
+output_file_with_meta = "anesthesia_classified_with_metadata.json"
 with open(output_file_with_meta, "w", encoding="utf-8") as f:
     json.dump(output_data, f, ensure_ascii=False, indent=2)
 
-print(f"✅ 저장 완료:")
-print(f"   → {output_file} (기존 형식)")
+print(f"\n✅ 분류 결과 저장 완료:")
+print(f"   → {output_file} (분류 결과만)")
 print(f"   → {output_file_with_meta} (메타데이터 포함)")
-print(f"📊 분석된 총 토픽 수: {sum(len(topics) for topics in trends_by_journal.values())}")
+
+if classified_data:
+    print(f"📈 분류 통계:")
+    print(f"   - 총 카테고리: {len(anesthesia_categories)}개")
+    print(f"   - 사용된 카테고리: {len([cat for cat, subtopics in classified_data.items() if any(len(papers) > 0 for papers in subtopics.values())])}개")
+    print(f"   - 총 세부주제: {sum(len(subtopics) for subtopics in classified_data.values())}개")
 
 if papers_with_dates:
     print(f"📅 분석 기간: {oldest_date.strftime('%Y년 %m월 %d일')} ~ {newest_date.strftime('%Y년 %m월 %d일')}")
-print(f"💡 다음 단계: python visualize_trends.py")
+
+print(f"💡 다음 단계: python visualize_classified_trends.py")

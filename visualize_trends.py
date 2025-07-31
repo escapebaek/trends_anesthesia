@@ -22,26 +22,19 @@ AUTO_DEPLOY = True      # 자동 배포 여부
 AUTO_OPEN_BROWSER = True  # 자동으로 브라우저 열기 여부
 
 def safe_input(prompt, timeout=10, default='n'):
-    """
-    타임아웃이 있는 안전한 입력 함수
-    timeout 초 후에 default 값을 반환
-    """
+    """타임아웃이 있는 안전한 입력 함수"""
     def timeout_handler():
         print(f"\n⏰ {timeout}초 타임아웃 - 기본값 '{default}' 사용")
         return default
     
     try:
-        # 프롬프트 출력
         print(prompt, end='', flush=True)
-        
-        # 타이머 설정
         timer = threading.Timer(timeout, timeout_handler)
         timer.start()
         
-        # 입력 시도
         try:
             result = input().strip().lower()
-            timer.cancel()  # 입력이 성공하면 타이머 취소
+            timer.cancel()
             return result if result else default
         except (EOFError, KeyboardInterrupt):
             timer.cancel()
@@ -63,7 +56,6 @@ def setup_git_repo():
         try:
             subprocess.run(["git", "init"], check=True)
             
-            # .gitignore 생성
             with open(".gitignore", "w") as f:
                 f.write("""
 # Python
@@ -102,34 +94,27 @@ Thumbs.db
 def deploy_to_github():
     """GitHub Pages로 자동 배포"""
     try:
-        # Git 상태 확인
         result = subprocess.run(["git", "status", "--porcelain"], 
                               capture_output=True, text=True, check=True)
         
         if result.stdout.strip():
             print("📤 변경사항을 GitHub에 업로드합니다...")
             
-            # 현재 시간으로 커밋 메시지 생성
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            commit_message = f"Update dashboard - {timestamp}"
+            commit_message = f"Update anesthesia classification dashboard - {timestamp}"
             
-            # Git 명령어 실행
             subprocess.run(["git", "add", "."], check=True, timeout=30)
             subprocess.run(["git", "commit", "-m", commit_message], check=True, timeout=30)
             subprocess.run(["git", "push"], check=True, timeout=60)
             
             print("✅ GitHub에 업로드 완료!")
             
-            # GitHub Pages URL 추정
             try:
-                # 원격 URL 가져오기
                 result = subprocess.run(["git", "remote", "get-url", "origin"], 
                                       capture_output=True, text=True, check=True, timeout=10)
                 remote_url = result.stdout.strip()
                 
-                # GitHub Pages URL 생성
                 if "github.com" in remote_url:
-                    # https://github.com/user/repo.git -> user/repo
                     repo_path = remote_url.split("github.com/")[1].replace(".git", "")
                     username, repo_name = repo_path.split("/")
                     pages_url = f"https://{username}.github.io/{repo_name}/"
@@ -137,7 +122,6 @@ def deploy_to_github():
                     print(f"🌐 GitHub Pages URL: {pages_url}")
                     print("⏳ 배포까지 5-10분 정도 소요될 수 있습니다.")
                     
-                    # 자동으로 브라우저 열기 옵션
                     if AUTO_OPEN_BROWSER:
                         print("🚀 자동으로 GitHub Pages를 브라우저에서 엽니다...")
                         try:
@@ -146,7 +130,6 @@ def deploy_to_github():
                         except Exception as e:
                             print(f"⚠️ 브라우저 열기 실패: {e}")
                     else:
-                        # 사용자에게 물어보기 (타임아웃 포함)
                         open_browser = safe_input(
                             "GitHub Pages를 브라우저에서 열까요? (y/n, 10초 후 자동으로 'n'): ", 
                             timeout=10, 
@@ -186,54 +169,81 @@ def deploy_to_github():
     
     return True
 
-# 기존 시각화 코드
 # 1. JSON 로드
-json_path = "anesthesia_trends_by_journal_with_article_links.json"
+json_path = "anesthesia_classified_abstracts.json"
 if not os.path.exists(json_path):
     print(f"❌ {json_path} 파일을 찾을 수 없습니다.")
     print("💡 먼저 analyze_with_gemini.py를 실행하세요.")
     sys.exit(1)
 
-print("📊 데이터 로드 중...")
+print("📊 분류된 데이터 로드 중...")
 with open(json_path, "r", encoding="utf-8") as f:
-    data = json.load(f)
+    classified_data = json.load(f)
 
-# 2. DataFrame 변환 및 데이터 전처리
-rows = []
-all_keywords = []
-for journal, clusters in data.items():
-    for cluster in clusters:
-        keywords = cluster.get("related_keywords", [])
-        all_keywords.extend(keywords)
-        rows.append({
-            "journal": journal,
-            "topic": cluster["topic"],
-            "count": cluster["count"],
-            "description": cluster.get("description", ""),
-            "keywords": ", ".join(keywords),
-            "num_keywords": len(keywords),
-            "links": cluster.get("article_links", []),
-            "num_links": len(cluster.get("article_links", []))
+# 메타데이터 로드 (있다면)
+metadata = {}
+meta_path = "anesthesia_classified_with_metadata.json"
+if os.path.exists(meta_path):
+    with open(meta_path, "r", encoding="utf-8") as f:
+        full_data = json.load(f)
+        metadata = full_data.get("metadata", {})
+
+# 2. 데이터 전처리
+category_stats = []
+subtopic_stats = []
+all_papers = []
+
+for category, subtopics in classified_data.items():
+    category_count = 0
+    category_subtopics = 0
+    
+    for subtopic, papers in subtopics.items():
+        if papers:  # 빈 리스트가 아닌 경우만
+            category_count += len(papers)
+            category_subtopics += 1
+            
+            # 세부주제 통계
+            subtopic_stats.append({
+                "category": category,
+                "subtopic": subtopic,
+                "count": len(papers),
+                "category_short": category.split("(")[0].strip()
+            })
+            
+            # 개별 논문 데이터
+            for paper in papers:
+                paper_data = paper.copy()
+                paper_data["category"] = category
+                paper_data["subtopic"] = subtopic
+                paper_data["category_short"] = category.split("(")[0].strip()
+                all_papers.append(paper_data)
+    
+    if category_count > 0:  # 논문이 있는 카테고리만
+        category_stats.append({
+            "category": category,
+            "category_short": category.split("(")[0].strip(),
+            "total_papers": category_count,
+            "subtopics": category_subtopics
         })
 
-df = pd.DataFrame(rows)
-print(f"✅ {len(df)}개 토픽 데이터 처리 완료")
+# DataFrame 생성
+df_categories = pd.DataFrame(category_stats)
+df_subtopics = pd.DataFrame(subtopic_stats)
+df_papers = pd.DataFrame(all_papers)
 
-# 키워드 빈도 분석
-keyword_counts = Counter(all_keywords)
-top_keywords = dict(keyword_counts.most_common(20))
-
-# 저널별 통계
-journal_stats = df.groupby('journal').agg({
-    'count': ['sum', 'mean', 'max'],
-    'topic': 'count'
-}).round(2)
-journal_stats.columns = ['total_articles', 'avg_per_topic', 'max_topic', 'num_topics']
-journal_stats = journal_stats.reset_index()
+print(f"✅ 데이터 처리 완료:")
+print(f"   - 활성 카테고리: {len(df_categories)}개")
+print(f"   - 총 세부주제: {len(df_subtopics)}개")
+print(f"   - 총 논문: {len(df_papers)}개")
 
 # 3. 색상 팔레트 정의
-colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9']
-journal_colors = {journal: colors[i % len(colors)] for i, journal in enumerate(df['journal'].unique())}
+colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', 
+          '#BB8FCE', '#85C1E9', '#F8C471', '#82E0AA', '#F1948A', '#AED6F1']
+
+category_colors = {}
+if len(df_categories) > 0:
+    for i, category in enumerate(df_categories['category'].unique()):
+        category_colors[category] = colors[i % len(colors)]
 
 print("📈 차트 생성 중...")
 
@@ -306,7 +316,7 @@ def create_modern_css():
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin: 30px 0;
         }
@@ -333,7 +343,7 @@ def create_modern_css():
             font-weight: 500;
         }
         
-        .journal-section {
+        .category-section {
             background: white;
             border-radius: 20px;
             margin: 30px 0;
@@ -341,7 +351,7 @@ def create_modern_css():
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
-        .journal-header {
+        .category-header {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             padding: 20px 30px;
@@ -350,93 +360,137 @@ def create_modern_css():
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
         }
         
-        .journal-title {
-            font-size: 1.8em;
+        .category-title {
+            font-size: 1.5em;
             font-weight: 600;
         }
         
-        .journal-count {
+        .category-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .category-stat {
             background: rgba(255,255,255,0.2);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9em;
         }
         
-        .topics-grid {
+        .subtopics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
         }
         
-        .topic-card {
+        .subtopic-card {
             background: #f8f9fa;
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             border-left: 5px solid #667eea;
             transition: all 0.3s ease;
             cursor: pointer;
         }
         
-        .topic-card:hover {
+        .subtopic-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             background: #fff;
         }
         
-        .topic-title {
-            font-size: 1.2em;
+        .subtopic-title {
+            font-size: 1.3em;
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         
-        .topic-count {
-            display: inline-block;
+        .paper-count {
             background: #667eea;
             color: white;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.8em;
             font-weight: 600;
+        }
+        
+        .papers-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .paper-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .paper-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .paper-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+            line-height: 1.3;
+        }
+        
+        .paper-details {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .paper-journal {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .paper-date {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        
+        .paper-summary {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.4;
             margin-bottom: 10px;
         }
         
-        .topic-description {
-            color: #666;
-            font-size: 0.95em;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
-        .topic-keywords {
-            margin-bottom: 15px;
-        }
-        
-        .keyword-tag {
-            display: inline-block;
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            margin: 2px;
-        }
-        
-        .topic-links a {
+        .paper-link {
             display: inline-block;
             background: #28a745;
             color: white;
             text-decoration: none;
             padding: 6px 12px;
             border-radius: 15px;
-            font-size: 0.8em;
-            margin: 2px;
+            font-size: 0.85em;
             transition: all 0.3s ease;
         }
         
-        .topic-links a:hover {
+        .paper-link:hover {
             background: #218838;
             transform: scale(1.05);
         }
@@ -456,9 +510,33 @@ def create_modern_css():
             .header h1 {
                 font-size: 2em;
             }
-            .topics-grid {
+            .subtopics-grid {
                 grid-template-columns: 1fr;
             }
+            .category-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+        
+        /* 스크롤바 스타일링 */
+        .papers-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .papers-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .papers-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .papers-list::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
     </style>
     """
@@ -470,7 +548,7 @@ with tag("html", lang="en"):
         doc.asis('<meta charset="UTF-8">')
         doc.asis('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
         with tag("title"):
-            text("Anesthesia Research Trends - Interactive Dashboard")
+            text("Anesthesia Research Classification - Interactive Dashboard")
         doc.asis(create_modern_css())
         doc.asis('<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>')
     
@@ -479,183 +557,187 @@ with tag("html", lang="en"):
             # 헤더
             with tag("div", klass="header"):
                 with tag("h1"):
-                    text("🏥 Anesthesia Research Trends")
+                    text("🏥 마취학 연구 분류 대시보드")
                 with tag("p"):
-                    text("Interactive Analysis of Current Research Topics Across Major Journals")
+                    text("Anesthesia Research Classification Dashboard")
                 with tag("p", style="font-size: 0.9em; margin-top: 10px; opacity: 0.7;"):
-                    text(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+                    if metadata.get("analysis_date"):
+                        text(f"Last updated: {metadata['analysis_date']}")
+                    else:
+                        text(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
             
             # 통계 카드
             with tag("div", klass="stats-grid"):
                 with tag("div", klass="stat-card"):
                     with tag("div", klass="stat-number"):
-                        text(str(len(df)))
+                        text(str(len(df_categories)))
                     with tag("div", klass="stat-label"):
-                        text("Research Topics")
+                        text("활성 카테고리")
                 
                 with tag("div", klass="stat-card"):
                     with tag("div", klass="stat-number"):
-                        text(str(df['count'].sum()))
+                        text(str(len(df_subtopics)))
                     with tag("div", klass="stat-label"):
-                        text("Total Articles")
+                        text("세부 주제")
                 
                 with tag("div", klass="stat-card"):
                     with tag("div", klass="stat-number"):
-                        text(str(len(df['journal'].unique())))
+                        text(str(len(df_papers)))
                     with tag("div", klass="stat-label"):
-                        text("Journals")
+                        text("분류된 논문")
                 
                 with tag("div", klass="stat-card"):
                     with tag("div", klass="stat-number"):
-                        text(str(len(all_keywords)))
+                        text(str(metadata.get("total_papers_analyzed", len(df_papers))))
                     with tag("div", klass="stat-label"):
-                        text("Keywords")
+                        text("분석된 총 논문")
 
-# 차트 생성
-# 메인 바 차트
-fig1 = px.bar(
-    df.sort_values('count', ascending=True).tail(20),
-    x="count",
-    y="topic",
-    color="journal",
-    color_discrete_map=journal_colors,
-    orientation="h",
-    hover_data={"description": True, "keywords": True},
-    title="🔝 Top 20 Research Topics by Article Count",
-    labels={"count": "Number of Articles", "topic": "Research Topic"}
-)
-fig1.update_layout(
-    height=900,
-    font=dict(family="Arial, sans-serif", size=11),
-    plot_bgcolor='rgba(0,0,0,0)',
-    paper_bgcolor='rgba(0,0,0,0)',
-    title_font_size=18,
-    title_x=0.5,
-    title_y=0.98,
-    showlegend=True,
-    legend=dict(
-        orientation="h", 
-        yanchor="top", 
-        y=-0.05, 
-        xanchor="center", 
-        x=0.5,
-        bgcolor="rgba(255,255,255,0.8)",
-        bordercolor="rgba(0,0,0,0.1)",
-        borderwidth=1
-    ),
-    margin=dict(l=200, r=50, t=80, b=120),
-    yaxis=dict(
-        tickfont=dict(size=10),
-        automargin=True
-    ),
-    xaxis=dict(
-        tickfont=dict(size=11),
-        title_font=dict(size=12)
+# 차트 생성 (데이터가 있는 경우에만)
+if len(df_categories) > 0:
+    # 카테고리별 논문 수 바 차트
+    fig1 = px.bar(
+        df_categories.sort_values('total_papers', ascending=True),
+        x="total_papers",
+        y="category_short",
+        color="category_short",
+        orientation="h",
+        title="📊 카테고리별 논문 분포",
+        labels={"total_papers": "논문 수", "category_short": "카테고리"},
+        color_discrete_sequence=colors
     )
-)
+    fig1.update_layout(
+        height=max(400, len(df_categories) * 40),
+        font=dict(family="Arial, sans-serif", size=11),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font_size=18,
+        title_x=0.5,
+        showlegend=False,
+        margin=dict(l=200, r=50, t=80, b=60),
+        yaxis=dict(tickfont=dict(size=10)),
+        xaxis=dict(tickfont=dict(size=11))
+    )
 
-# 도넛 차트
-journal_totals = df.groupby('journal')['count'].sum().reset_index()
-fig2 = px.pie(
-    journal_totals,
-    values='count',
-    names='journal',
-    color='journal',
-    color_discrete_map=journal_colors,
-    title="📊 Article Distribution by Journal",
-    hole=0.4
-)
-fig2.update_traces(
-    textposition='inside',
-    textinfo='percent+label',
-    hovertemplate='<b>%{label}</b><br>Articles: %{value}<br>Percentage: %{percent}<extra></extra>'
-)
-fig2.update_layout(
-    font=dict(family="Arial, sans-serif", size=12),
-    plot_bgcolor='rgba(0,0,0,0)',
-    paper_bgcolor='rgba(0,0,0,0)',
-    title_font_size=20,
-    title_x=0.5
-)
+    # 도넛 차트
+    fig2 = px.pie(
+        df_categories,
+        values='total_papers',
+        names='category_short',
+        title="🥧 카테고리별 비율",
+        hole=0.4,
+        color_discrete_sequence=colors
+    )
+    fig2.update_traces(
+        textposition='inside',
+        textinfo='percent+label',
+        hovertemplate='<b>%{label}</b><br>논문 수: %{value}<br>비율: %{percent}<extra></extra>'
+    )
+    fig2.update_layout(
+        font=dict(family="Arial, sans-serif", size=12),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font_size=18,
+        title_x=0.5
+    )
 
-# 키워드 차트
-keyword_df = pd.DataFrame(list(top_keywords.items()), columns=['keyword', 'frequency'])
-fig3 = px.bar(
-    keyword_df.sort_values('frequency', ascending=True),
-    x='frequency',
-    y='keyword',
-    orientation='h',
-    title="🏷️ Most Frequent Keywords",
-    color='frequency',
-    color_continuous_scale='Viridis'
-)
-fig3.update_layout(
-    height=600,
-    font=dict(family="Arial, sans-serif", size=12),
-    plot_bgcolor='rgba(0,0,0,0)',
-    paper_bgcolor='rgba(0,0,0,0)',
-    title_font_size=20,
-    title_x=0.5,
-    showlegend=False
-)
+    # 세부주제 상위 20개 차트
+    top_subtopics = df_subtopics.sort_values('count', ascending=True).tail(20)
+    fig3 = px.bar(
+        top_subtopics,
+        x='count',
+        y='subtopic',
+        color='category_short',
+        orientation='h',
+        title="🔍 상위 세부주제 (Top 20)",
+        labels={"count": "논문 수", "subtopic": "세부주제"},
+        color_discrete_sequence=colors
+    )
+    fig3.update_layout(
+        height=800,
+        font=dict(family="Arial, sans-serif", size=10),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font_size=18,
+        title_x=0.5,
+        margin=dict(l=250, r=50, t=80, b=60),
+        yaxis=dict(tickfont=dict(size=9)),
+        legend=dict(title="카테고리")
+    )
 
-# HTML에 차트 추가
-with tag("div", klass="dashboard-grid"):
-    with tag("div", klass="chart-container full-width"):
-        doc.asis(fig1.to_html(full_html=False, include_plotlyjs=False, div_id="main-chart"))
-    
-    with tag("div", klass="chart-container"):
-        doc.asis(fig2.to_html(full_html=False, include_plotlyjs=False, div_id="journal-pie"))
-    
-    with tag("div", klass="chart-container"):
-        doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="keywords-chart"))
-
-# 저널별 상세 섹션
-for journal in sorted(df["journal"].unique()):
-    journal_data = df[df["journal"] == journal].sort_values('count', ascending=False)
-    
-    with tag("div", klass="journal-section"):
-        with tag("div", klass="journal-header"):
-            with tag("div", klass="journal-title"):
-                text(f"📖 {journal}")
-            with tag("div", klass="journal-count"):
-                text(f"{len(journal_data)} topics • {journal_data['count'].sum()} articles")
+    # HTML에 차트 추가
+    with tag("div", klass="dashboard-grid"):
+        with tag("div", klass="chart-container"):
+            doc.asis(fig1.to_html(full_html=False, include_plotlyjs=False, div_id="category-chart"))
         
-        with tag("div", klass="topics-grid"):
-            for _, row in journal_data.iterrows():
-                with tag("div", klass="topic-card"):
-                    with tag("div", klass="topic-title"):
-                        text(row["topic"])
+        with tag("div", klass="chart-container"):
+            doc.asis(fig2.to_html(full_html=False, include_plotlyjs=False, div_id="category-pie"))
+        
+        with tag("div", klass="chart-container full-width"):
+            doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="subtopic-chart"))
+
+# 카테고리별 상세 섹션
+for _, cat_row in df_categories.sort_values('total_papers', ascending=False).iterrows():
+    category = cat_row['category']
+    category_subtopics = df_subtopics[df_subtopics['category'] == category].sort_values('count', ascending=False)
+    
+    with tag("div", klass="category-section"):
+        with tag("div", klass="category-header"):
+            with tag("div", klass="category-title"):
+                text(f"📚 {category}")
+            with tag("div", klass="category-stats"):
+                with tag("div", klass="category-stat"):
+                    text(f"{cat_row['total_papers']}편")
+                with tag("div", klass="category-stat"):
+                    text(f"{cat_row['subtopics']}개 주제")
+        
+        with tag("div", klass="subtopics-grid"):
+            for _, subtopic_row in category_subtopics.iterrows():
+                subtopic = subtopic_row['subtopic']
+                papers = [p for p in all_papers if p['category'] == category and p['subtopic'] == subtopic]
+                
+                with tag("div", klass="subtopic-card"):
+                    with tag("div", klass="subtopic-title"):
+                        with tag("span"):
+                            text(subtopic)
+                        with tag("span", klass="paper-count"):
+                            text(f"{len(papers)}편")
                     
-                    with tag("div", klass="topic-count"):
-                        text(f"{row['count']} articles")
-                    
-                    with tag("div", klass="topic-description"):
-                        text(row["description"])
-                    
-                    if row["keywords"]:
-                        with tag("div", klass="topic-keywords"):
-                            for keyword in row["keywords"].split(", "):
-                                with tag("span", klass="keyword-tag"):
-                                    text(keyword)
-                    
-                    if row["links"]:
-                        with tag("div", klass="topic-links"):
-                            for i, url in enumerate(row["links"]):
-                                with tag("a", href=url, target="_blank"):
-                                    text(f"📄 Article {i+1}")
+                    with tag("div", klass="papers-list"):
+                        for paper in papers:
+                            with tag("div", klass="paper-item"):
+                                with tag("div", klass="paper-title"):
+                                    text(paper.get('title', 'No title'))
+                                
+                                with tag("div", klass="paper-details"):
+                                    with tag("span", klass="paper-journal"):
+                                        text(paper.get('journal', 'Unknown journal'))
+                                    with tag("span"):
+                                        text(f"by {paper.get('author', 'Unknown author')}")
+                                    if paper.get('issue_date'):
+                                        with tag("span", klass="paper-date"):
+                                            text(paper['issue_date'])
+                                
+                                if paper.get('abstract_summary'):
+                                    with tag("div", klass="paper-summary"):
+                                        text(paper['abstract_summary'])
+                                
+                                if paper.get('link'):
+                                    with tag("a", href=paper['link'], target="_blank", klass="paper-link"):
+                                        text("📄 PubMed에서 보기")
 
 # 푸터 추가
 with tag("div", klass="footer"):
     with tag("p"):
-        text("Generated with Python, Plotly & GitHub Pages")
-    with tag("p", style="font-size: 0.9em; margin-top: 5px;"):
-        text("Auto-deployed research trends dashboard")
+        text("Generated with Python, Gemini AI & GitHub Pages")
+    if metadata.get("date_range", {}).get("oldest_formatted"):
+        with tag("p", style="font-size: 0.9em; margin-top: 5px;"):
+            date_range = metadata["date_range"]
+            text(f"논문 발행 기간: {date_range['oldest_formatted']} ~ {date_range['newest_formatted']}")
 
-# JavaScript
+# JavaScript 추가
 with tag("script"):
     doc.asis("""
-    document.querySelectorAll('.topic-card').forEach(card => {
+    document.querySelectorAll('.subtopic-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.style.borderLeftWidth = '8px';
         });
@@ -664,8 +746,9 @@ with tag("script"):
         });
     });
     
+    // 부드러운 등장 애니메이션
     window.addEventListener('load', function() {
-        document.querySelectorAll('.chart-container, .topic-card, .stat-card').forEach((el, index) => {
+        document.querySelectorAll('.chart-container, .subtopic-card, .stat-card, .category-section').forEach((el, index) => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'all 0.6s ease';
@@ -673,7 +756,17 @@ with tag("script"):
             setTimeout(() => {
                 el.style.opacity = '1';
                 el.style.transform = 'translateY(0)';
-            }, index * 100);
+            }, index * 50);
+        });
+    });
+    
+    // 논문 아이템 호버 효과
+    document.querySelectorAll('.paper-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(5px)';
+        });
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
         });
     });
     """)
@@ -684,7 +777,7 @@ print("💾 HTML 파일 생성 중...")
 with open(output_html, "w", encoding="utf-8") as f:
     f.write(doc.getvalue())
 
-print(f"✅ 대시보드 생성 완료 → {output_html}")
+print(f"✅ 마취학 분류 대시보드 생성 완료 → {output_html}")
 
 # 자동 배포 실행
 if AUTO_DEPLOY:
@@ -717,4 +810,9 @@ else:
         print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
     print("💡 자동 배포를 원하시면 스크립트 상단의 AUTO_DEPLOY = True로 설정하세요.")
 
-print("\n🏁 모든 작업이 완료되었습니다!")
+print("\n🏁 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
+print("📊 대시보드 주요 기능:")
+print("   - 카테고리별 논문 분포 차트")
+print("   - 세부주제별 상세 정보")
+print("   - 각 논문의 요약 및 PubMed 링크")
+print("   - 반응형 디자인으로 모바일 지원")
