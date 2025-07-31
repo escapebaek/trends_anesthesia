@@ -935,19 +935,25 @@ if len(df_categories) > 0:
     pie_data = df_categories[df_categories['total_papers'] > 0].copy()
     print(f"   파이 차트 데이터: {len(pie_data)}개 항목")
     print(f"   파이 차트 값 확인: {pie_data['total_papers'].tolist()}")
-    
+
+    # 데이터 타입 명시적 확인 및 변환
+    pie_data = df_categories[df_categories['total_papers'] > 0].copy()
+    pie_values = pie_data['total_papers'].astype(int).tolist()
+    pie_labels = pie_data['category_short'].tolist()
+
     fig2 = go.Figure()
     fig2.add_trace(go.Pie(
-        labels=pie_data['category_short'],
-        values=pie_data['total_papers'],
+        labels=pie_labels,
+        values=pie_values,
         hole=0.5,
         textposition='auto',
-        textinfo='percent+label',
+        textinfo='percent+label+value',
         hovertemplate='<b>%{label}</b><br>Papers: %{value}<br>Percentage: %{percent}<extra></extra>',
         textfont_size=11,
-        marker=dict(colors=modern_colors[:len(pie_data)])
+        marker=dict(colors=modern_colors[:len(pie_data)]),
+        customdata=pie_values
     ))
-    
+
     fig2.update_layout(
         title="🥧 Research Category Distribution",
         font=dict(family="Inter, Arial, sans-serif", size=12),
@@ -956,7 +962,9 @@ if len(df_categories) > 0:
         title_font_size=20,
         title_x=0.5,
         showlegend=True,
-        legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.02)
+        legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.02),
+        width=800,
+        height=600
     )
 
     # 3. 수정된 세부주제 상위 15개 차트
