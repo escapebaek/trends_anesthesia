@@ -21,33 +21,6 @@ GITHUB_REPO_URL = "https://github.com/escapebaek/trends_anesthesia.git"
 AUTO_DEPLOY = True      # 자동 배포 여부
 AUTO_OPEN_BROWSER = True  # 자동으로 브라우저 열기 여부
 
-# 전체 마취학 대주제 구조 정의
-ANESTHESIA_CATEGORIES = [
-    "마취전 관리 (Pre-op Evaluation)",
-    "마취 약리(Pharmacology of Anesthetics)", 
-    "법의학 및 윤리(Forensic and Ethical Considerations in Anesthesia)",
-    "마취장비 및 감시(Anesthesia Equipment and Monitoring)",
-    "기도관리(Airway Management)",
-    "흡입마취(Inhalation Anesthesia)",
-    "정맥마취(Intravenous Anesthesia)",
-    "신경근차단(Neuromuscular Blockade)",
-    "부위마취(Regional Anesthesia)",
-    "수액 및 수혈(Fluid Management and Transfusion)",
-    "산과마취(Obstetric Anesthesia)",
-    "소아마취(Pediatric Anesthesia)",
-    "심장마취(Cardiac Anesthesia)",
-    "폐마취(Thoracic Anesthesia)",
-    "뇌신경마취(Neuroanesthesia)",
-    "수술장 밖 진정 및 마취(Sedation and Anesthesia Outside the Operating Room)",
-    "수술 후 통증관리(Postoperative Pain Management)",
-    "통증관리(Pain Management)",
-    "노인마취(Geriatric Anesthesia)",
-    "외래마취(Outpatient Anesthesia)",
-    "심폐소생술(CPR)",
-    "중환자관리(Critical Care Management)",
-    "장기이식(Transplantation Anesthesia)"
-]
-
 def safe_input(prompt, timeout=10, default='n'):
     """타임아웃이 있는 안전한 입력 함수"""
     def timeout_handler():
@@ -215,67 +188,21 @@ if os.path.exists(meta_path):
         full_data = json.load(f)
         metadata = full_data.get("metadata", {})
 
-# 2. 전체 마취학 구조를 기반으로 데이터 전처리
-def create_complete_category_structure(data):
-    """전체 마취학 카테고리 구조 생성"""
-    complete_structure = []
-    
-    for category in ANESTHESIA_CATEGORIES:
-        category_short = category.split("(")[0].strip()
-        
-        if category in data and data[category]:
-            # 데이터가 있는 카테고리
-            subtopic_count = 0
-            paper_count = 0
-            subtopics = []
-            
-            for subtopic, papers in data[category].items():
-                if papers:  # 빈 리스트가 아닌 경우만
-                    subtopic_count += 1
-                    paper_count += len(papers)
-                    subtopics.append({
-                        'name': subtopic,
-                        'count': len(papers)
-                    })
-            
-            complete_structure.append({
-                'category': category,
-                'category_short': category_short,
-                'status': 'active',
-                'paper_count': paper_count,
-                'subtopic_count': subtopic_count,
-                'subtopics': subtopics
-            })
-        else:
-            # 데이터가 없는 카테고리
-            complete_structure.append({
-                'category': category,
-                'category_short': category_short,
-                'status': 'empty',
-                'paper_count': 0,
-                'subtopic_count': 0,
-                'subtopics': []
-            })
-    
-    return complete_structure
-
-category_structure = create_complete_category_structure(classified_data)
-
-# 활성 카테고리와 전체 카테고리 분리
-active_categories = [cat for cat in category_structure if cat['status'] == 'active']
-empty_categories = [cat for cat in category_structure if cat['status'] == 'empty']
-
-# DataFrame 생성
-df_all_categories = pd.DataFrame(category_structure)
-df_active = pd.DataFrame(active_categories)
-
-# 개별 논문 데이터 처리
-all_papers = []
+# 2. 데이터 전처리
+category_stats = []
 subtopic_stats = []
+all_papers = []
 
 for category, subtopics in classified_data.items():
+    category_count = 0
+    category_subtopics = 0
+    
     for subtopic, papers in subtopics.items():
         if papers:  # 빈 리스트가 아닌 경우만
+            category_count += len(papers)
+            category_subtopics += 1
+            
+            # 세부주제 통계
             subtopic_stats.append({
                 "category": category,
                 "subtopic": subtopic,
@@ -283,51 +210,47 @@ for category, subtopics in classified_data.items():
                 "category_short": category.split("(")[0].strip()
             })
             
+            # 개별 논문 데이터
             for paper in papers:
                 paper_data = paper.copy()
                 paper_data["category"] = category
                 paper_data["subtopic"] = subtopic
                 paper_data["category_short"] = category.split("(")[0].strip()
                 all_papers.append(paper_data)
+    
+    if category_count > 0:  # 논문이 있는 카테고리만
+        category_stats.append({
+            "category": category,
+            "category_short": category.split("(")[0].strip(),
+            "total_papers": category_count,
+            "subtopics": category_subtopics
+        })
 
+# DataFrame 생성
+df_categories = pd.DataFrame(category_stats)
 df_subtopics = pd.DataFrame(subtopic_stats)
 df_papers = pd.DataFrame(all_papers)
 
 print(f"✅ 데이터 처리 완료:")
-print(f"   - 전체 마취학 카테고리: {len(ANESTHESIA_CATEGORIES)}개")
-print(f"   - 활성 카테고리: {len(active_categories)}개")
-print(f"   - 빈 카테고리: {len(empty_categories)}개")
+print(f"   - 활성 카테고리: {len(df_categories)}개")
 print(f"   - 총 세부주제: {len(df_subtopics)}개")
 print(f"   - 총 논문: {len(df_papers)}개")
 
-# 3. 향상된 색상 팔레트 정의
-def create_color_palette():
-    """카테고리별 색상 팔레트 생성"""
-    colors = [
-        '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', 
-        '#BB8FCE', '#85C1E9', '#F8C471', '#82E0AA', '#F1948A', '#AED6F1',
-        '#D7BDE2', '#A9DFBF', '#F9E79F', '#F8D7DA', '#D4EDDA', '#D1ECF1',
-        '#E2E3E5', '#F8F9FA', '#FFF3CD', '#FCF8E3', '#E7F3FF'
-    ]
-    
-    category_colors = {}
-    for i, category in enumerate(ANESTHESIA_CATEGORIES):
-        if i < len(colors):
-            category_colors[category] = colors[i]
-        else:
-            # 추가 색상이 필요한 경우 색상 재사용
-            category_colors[category] = colors[i % len(colors)]
-            
-    return category_colors
+# 3. 색상 팔레트 정의
+colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', 
+          '#BB8FCE', '#85C1E9', '#F8C471', '#82E0AA', '#F1948A', '#AED6F1']
 
-category_colors = create_color_palette()
+category_colors = {}
+if len(df_categories) > 0:
+    for i, category in enumerate(df_categories['category'].unique()):
+        category_colors[category] = colors[i % len(colors)]
 
-print("📈 향상된 차트 생성 중...")
+print("📈 차트 생성 중...")
 
 # 4. HTML 문서 생성
 doc, tag, text = Doc().tagtext()
 
-def create_enhanced_css():
+def create_modern_css():
     return """
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -339,7 +262,7 @@ def create_enhanced_css():
         }
         
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -352,181 +275,72 @@ def create_enhanced_css():
         }
         
         .header h1 {
-            font-size: 3.5em;
+            font-size: 3em;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         .header p {
-            font-size: 1.3em;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-        
-        .overview-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
-        }
-        
-        .overview-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .overview-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .overview-number {
-            font-size: 3em;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .overview-number.active { color: #28a745; }
-        .overview-number.empty { color: #6c757d; }
-        .overview-number.subtopics { color: #17a2b8; }
-        .overview-number.papers { color: #dc3545; }
-        
-        .overview-label {
-            color: #666;
             font-size: 1.2em;
-            font-weight: 500;
+            opacity: 0.9;
         }
         
-        .charts-section {
-            background: white;
-            border-radius: 25px;
-            margin: 40px 0;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .charts-title {
-            text-align: center;
-            font-size: 2.2em;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 40px;
-        }
-        
-        .chart-grid {
+        .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            gap: 30px;
             margin-bottom: 40px;
         }
         
         .chart-container {
-            background: #f8f9fa;
+            background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
         }
         
-        .full-width-chart {
+        .full-width {
             grid-column: 1 / -1;
-            background: #f8f9fa;
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
         
         .chart-title {
-            font-size: 1.6em;
+            font-size: 1.5em;
             font-weight: 600;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: #2c3e50;
             text-align: center;
         }
         
-        .category-overview {
-            background: white;
-            border-radius: 25px;
-            margin: 40px 0;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .category-overview-title {
-            text-align: center;
-            font-size: 2.2em;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 40px;
-        }
-        
-        .category-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
         }
         
-        .category-item {
+        .stat-card {
+            background: rgba(255,255,255,0.95);
             border-radius: 15px;
             padding: 25px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
         }
         
-        .category-item.active {
-            background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
-            border-color: #28a745;
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
         }
         
-        .category-item.empty {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-color: #dee2e6;
-            opacity: 0.7;
-        }
-        
-        .category-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .category-name {
-            font-size: 1.3em;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-        
-        .category-stats-inline {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .category-stat-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
             font-weight: 500;
-        }
-        
-        .active .category-stat-badge {
-            background: #28a745;
-            color: white;
-        }
-        
-        .empty .category-stat-badge {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .detailed-categories {
-            margin-top: 50px;
         }
         
         .category-section {
@@ -540,45 +354,44 @@ def create_enhanced_css():
         .category-header {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 25px 35px;
+            padding: 20px 30px;
             border-radius: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
         }
         
-        .category-title-main {
-            font-size: 1.6em;
+        .category-title {
+            font-size: 1.5em;
             font-weight: 600;
         }
         
-        .category-stats-header {
+        .category-stats {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
         
-        .category-stat-header {
+        .category-stat {
             background: rgba(255,255,255,0.2);
-            padding: 10px 18px;
-            border-radius: 25px;
-            font-size: 1em;
-            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
         }
         
         .subtopics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
         }
         
         .subtopic-card {
             background: #f8f9fa;
             border-radius: 15px;
             padding: 25px;
-            border-left: 6px solid #667eea;
+            border-left: 5px solid #667eea;
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -590,7 +403,7 @@ def create_enhanced_css():
         }
         
         .subtopic-title {
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: 600;
             color: #2c3e50;
             margin-bottom: 15px;
@@ -602,48 +415,47 @@ def create_enhanced_css():
         .paper-count {
             background: #667eea;
             color: white;
-            padding: 6px 14px;
-            border-radius: 25px;
-            font-size: 0.85em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
             font-weight: 600;
         }
         
         .papers-list {
-            max-height: 350px;
+            max-height: 300px;
             overflow-y: auto;
             padding-right: 10px;
         }
         
         .paper-item {
             background: white;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 12px;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
             border: 1px solid #e9ecef;
             transition: all 0.3s ease;
         }
         
         .paper-item:hover {
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border-color: #667eea;
-            transform: translateX(3px);
         }
         
         .paper-title {
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-            line-height: 1.4;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+            line-height: 1.3;
         }
         
         .paper-details {
             display: grid;
             grid-template-columns: auto 1fr auto;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
-            margin-bottom: 12px;
-            font-size: 0.95em;
+            margin-bottom: 10px;
+            font-size: 0.9em;
             color: #666;
         }
         
@@ -655,16 +467,16 @@ def create_enhanced_css():
         .paper-date {
             background: #e3f2fd;
             color: #1976d2;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.85em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
         }
         
         .paper-summary {
             color: #666;
-            font-size: 1em;
-            line-height: 1.5;
-            margin-bottom: 12px;
+            font-size: 0.95em;
+            line-height: 1.4;
+            margin-bottom: 10px;
         }
         
         .paper-link {
@@ -672,9 +484,9 @@ def create_enhanced_css():
             background: #28a745;
             color: white;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
             transition: all 0.3s ease;
         }
         
@@ -686,20 +498,17 @@ def create_enhanced_css():
         .footer {
             text-align: center;
             color: white;
-            margin-top: 60px;
-            padding: 30px;
-            opacity: 0.9;
-        }
-        
-        @media (max-width: 1024px) {
-            .chart-grid {
-                grid-template-columns: 1fr;
-            }
+            margin-top: 50px;
+            padding: 20px;
+            opacity: 0.8;
         }
         
         @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
             .header h1 {
-                font-size: 2.5em;
+                font-size: 2em;
             }
             .subtopics-grid {
                 grid-template-columns: 1fr;
@@ -707,26 +516,23 @@ def create_enhanced_css():
             .category-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 20px;
-            }
-            .category-grid {
-                grid-template-columns: 1fr;
+                gap: 15px;
             }
         }
         
         /* 스크롤바 스타일링 */
         .papers-list::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
         
         .papers-list::-webkit-scrollbar-track {
             background: #f1f1f1;
-            border-radius: 4px;
+            border-radius: 3px;
         }
         
         .papers-list::-webkit-scrollbar-thumb {
             background: #c1c1c1;
-            border-radius: 4px;
+            border-radius: 3px;
         }
         
         .papers-list::-webkit-scrollbar-thumb:hover {
@@ -742,348 +548,232 @@ with tag("html", lang="en"):
         doc.asis('<meta charset="UTF-8">')
         doc.asis('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
         with tag("title"):
-            text("마취학 연구 분류 대시보드 - Anesthesia Research Classification")
-        doc.asis(create_enhanced_css())
+            text("Anesthesia Research Classification - Interactive Dashboard")
+        doc.asis(create_modern_css())
         doc.asis('<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>')
     
     with tag("body"):
         with tag("div", klass="container"):
-            # 향상된 헤더
+            # 헤더
             with tag("div", klass="header"):
                 with tag("h1"):
                     text("🏥 마취학 연구 분류 대시보드")
                 with tag("p"):
-                    text("Comprehensive Anesthesia Research Classification Dashboard")
-                with tag("p", style="font-size: 1em; margin-top: 15px; opacity: 0.8;"):
-                    text("23개 주요 마취학 분야별 연구 동향 및 분석")
+                    text("Anesthesia Research Classification Dashboard")
                 with tag("p", style="font-size: 0.9em; margin-top: 10px; opacity: 0.7;"):
                     if metadata.get("analysis_date"):
                         text(f"Last updated: {metadata['analysis_date']}")
                     else:
                         text(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
             
-            # 개요 통계 카드
-            with tag("div", klass="overview-stats"):
-                with tag("div", klass="overview-card"):
-                    with tag("div", klass="overview-number papers"):
+            # 통계 카드
+            with tag("div", klass="stats-grid"):
+                with tag("div", klass="stat-card"):
+                    with tag("div", klass="stat-number"):
+                        text(str(len(df_categories)))
+                    with tag("div", klass="stat-label"):
+                        text("활성 카테고리")
+                
+                with tag("div", klass="stat-card"):
+                    with tag("div", klass="stat-number"):
+                        text(str(len(df_subtopics)))
+                    with tag("div", klass="stat-label"):
+                        text("세부 주제")
+                
+                with tag("div", klass="stat-card"):
+                    with tag("div", klass="stat-number"):
                         text(str(len(df_papers)))
-                    with tag("div", klass="overview-label"):
-                        text("분석된 논문 수")
+                    with tag("div", klass="stat-label"):
+                        text("분류된 논문")
+                
+                with tag("div", klass="stat-card"):
+                    with tag("div", klass="stat-number"):
+                        text(str(metadata.get("total_papers_analyzed", len(df_papers))))
+                    with tag("div", klass="stat-label"):
+                        text("분석된 총 논문")
 
-# 차트 섹션 (데이터가 있는 경우에만)
-if len(active_categories) > 0:
-    with tag("div", klass="charts-section"):
-        with tag("h2", klass="charts-title"):
-            text("📊 연구 현황 분석")
-        
-        with tag("div", klass="chart-grid"):
-            # 전체 마취학 분야 현황 (활성/비활성)
-            with tag("div", klass="chart-container"):
-                with tag("div", klass="chart-title"):
-                    text("🎯 마취학 분야별 연구 현황")
-                with tag("div", id="field-status-chart"):
-                    pass  # 차트가 여기에 삽입됨
-            
-            # 활성 분야의 논문 분포
-            with tag("div", klass="chart-container"):
-                with tag("div", klass="chart-title"):
-                    text("📈 활성 분야별 논문 분포")
-                with tag("div", id="active-papers-chart"):
-                    pass  # 차트가 여기에 삽입됨
-        
-        # 세부 주제 분석
-        with tag("div", klass="full-width-chart"):
-            with tag("div", klass="chart-title"):
-                text("🔍 세부 연구 주제 상위 20개")
-            with tag("div", id="subtopics-chart"):
-                pass  # 차트가 여기에 삽입됨
+# 차트 생성 (데이터가 있는 경우에만)
+if len(df_categories) > 0:
+    # 카테고리별 논문 수 바 차트
+    fig1 = px.bar(
+        df_categories.sort_values('total_papers', ascending=True),
+        x="total_papers",
+        y="category_short",
+        color="category_short",
+        orientation="h",
+        title="📊 카테고리별 논문 분포",
+        labels={"total_papers": "논문 수", "category_short": "카테고리"},
+        color_discrete_sequence=colors
+    )
+    fig1.update_layout(
+        height=max(400, len(df_categories) * 40),
+        font=dict(family="Arial, sans-serif", size=11),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font_size=18,
+        title_x=0.5,
+        showlegend=False,
+        margin=dict(l=200, r=50, t=80, b=60),
+        yaxis=dict(tickfont=dict(size=10)),
+        xaxis=dict(tickfont=dict(size=11))
+    )
 
-# 전체 카테고리 개요
-with tag("div", klass="category-overview"):
-    with tag("h2", klass="category-overview-title"):
-        text("🗂️ 마취학 23개 분야 전체 개요")
+    # 도넛 차트
+    fig2 = px.pie(
+        df_categories,
+        values='total_papers',
+        names='category_short',
+        title="🥧 카테고리별 비율",
+        hole=0.4,
+        color_discrete_sequence=colors
+    )
+    fig2.update_traces(
+        textposition='inside',
+        textinfo='percent+label',
+        hovertemplate='<b>%{label}</b><br>논문 수: %{value}<br>비율: %{percent}<extra></extra>'
+    )
+    fig2.update_layout(
+        font=dict(family="Arial, sans-serif", size=12),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font_size=18,
+        title_x=0.5
+    )
+
+    # 세부주제 상위 20개 차트
+    top_subtopics = df_subtopics.sort_values('count', ascending=True).tail(20)
+    fig3 = px.bar(
+        top_subtopics,
+        x='count',
+        y='subtopic',
+        color='category_short',
+        orientation='h',
+        title="🔍 상위 세부주제 (Top 20)",
+        labels={"count": "논문 수", "subtopic": "세부주제"},
+        color_discrete_sequence=colors
+    )
+    fig3.update_layout(
+        height=800,
+        font=dict(family="Arial, sans-serif", size=10),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font_size=18,
+        title_x=0.5,
+        margin=dict(l=250, r=50, t=80, b=60),
+        yaxis=dict(tickfont=dict(size=9)),
+        legend=dict(title="카테고리")
+    )
+
+    # HTML에 차트 추가
+    with tag("div", klass="dashboard-grid"):
+        with tag("div", klass="chart-container"):
+            doc.asis(fig1.to_html(full_html=False, include_plotlyjs=False, div_id="category-chart"))
+        
+        with tag("div", klass="chart-container"):
+            doc.asis(fig2.to_html(full_html=False, include_plotlyjs=False, div_id="category-pie"))
+        
+        with tag("div", klass="chart-container full-width"):
+            doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="subtopic-chart"))
+
+# 카테고리별 상세 섹션
+for _, cat_row in df_categories.sort_values('total_papers', ascending=False).iterrows():
+    category = cat_row['category']
+    category_subtopics = df_subtopics[df_subtopics['category'] == category].sort_values('count', ascending=False)
     
-    with tag("div", klass="category-grid"):
-        for cat_info in category_structure:
-            css_class = "category-item active" if cat_info['status'] == 'active' else "category-item empty"
-            with tag("div", klass=css_class):
-                with tag("div", klass="category-name"):
-                    text(cat_info['category'])
+    with tag("div", klass="category-section"):
+        with tag("div", klass="category-header"):
+            with tag("div", klass="category-title"):
+                text(f"📚 {category}")
+            with tag("div", klass="category-stats"):
+                with tag("div", klass="category-stat"):
+                    text(f"{cat_row['total_papers']}편")
+                with tag("div", klass="category-stat"):
+                    text(f"{cat_row['subtopics']}개 주제")
+        
+        with tag("div", klass="subtopics-grid"):
+            for _, subtopic_row in category_subtopics.iterrows():
+                subtopic = subtopic_row['subtopic']
+                papers = [p for p in all_papers if p['category'] == category and p['subtopic'] == subtopic]
                 
-                with tag("div", klass="category-stats-inline"):
-                    with tag("span", klass="category-stat-badge"):
-                        if cat_info['status'] == 'active':
-                            text(f"📄 {cat_info['paper_count']}편")
-                        else:
-                            text("📄 0편")
+                with tag("div", klass="subtopic-card"):
+                    with tag("div", klass="subtopic-title"):
+                        with tag("span"):
+                            text(subtopic)
+                        with tag("span", klass="paper-count"):
+                            text(f"{len(papers)}편")
                     
-                    with tag("span", klass="category-stat-badge"):
-                        if cat_info['status'] == 'active':
-                            text(f"🏷️ {cat_info['subtopic_count']}주제")
-                        else:
-                            text("🏷️ 0주제")
-                    
-                    with tag("span", klass="category-stat-badge"):
-                        status_text = "✅ 활성" if cat_info['status'] == 'active' else "⏸️ 대기"
-                        text(status_text)
+                    with tag("div", klass="papers-list"):
+                        for paper in papers:
+                            with tag("div", klass="paper-item"):
+                                with tag("div", klass="paper-title"):
+                                    text(paper.get('title', 'No title'))
+                                
+                                with tag("div", klass="paper-details"):
+                                    with tag("span", klass="paper-journal"):
+                                        text(paper.get('journal', 'Unknown journal'))
+                                    with tag("span"):
+                                        text(f"by {paper.get('author', 'Unknown author')}")
+                                    if paper.get('issue_date'):
+                                        with tag("span", klass="paper-date"):
+                                            text(paper['issue_date'])
+                                
+                                if paper.get('abstract_summary'):
+                                    with tag("div", klass="paper-summary"):
+                                        text(paper['abstract_summary'])
+                                
+                                if paper.get('link'):
+                                    with tag("a", href=paper['link'], target="_blank", klass="paper-link"):
+                                        text("📄 PubMed에서 보기")
 
-# 활성 카테고리 상세 섹션
-if len(active_categories) > 0:
-    with tag("div", klass="detailed-categories"):
-        for cat_info in active_categories:
-            category = cat_info['category']
-            
-            with tag("div", klass="category-section"):
-                with tag("div", klass="category-header"):
-                    with tag("div", klass="category-title-main"):
-                        text(f"📚 {category}")
-                    with tag("div", klass="category-stats-header"):
-                        with tag("div", klass="category-stat-header"):
-                            text(f"📄 {cat_info['paper_count']}편")
-                        with tag("div", klass="category-stat-header"):
-                            text(f"🏷️ {cat_info['subtopic_count']}개 주제")
-                
-                with tag("div", klass="subtopics-grid"):
-                    for subtopic_info in cat_info['subtopics']:
-                        subtopic = subtopic_info['name'] 
-                        papers = [p for p in all_papers if p['category'] == category and p['subtopic'] == subtopic]
-                        
-                        with tag("div", klass="subtopic-card"):
-                            with tag("div", klass="subtopic-title"):
-                                with tag("span"):
-                                    text(subtopic)
-                                with tag("span", klass="paper-count"):
-                                    text(f"{len(papers)}편")
-                            
-                            with tag("div", klass="papers-list"):
-                                for paper in papers:
-                                    with tag("div", klass="paper-item"):
-                                        with tag("div", klass="paper-title"):
-                                            text(paper.get('title', 'No title'))
-                                        
-                                        with tag("div", klass="paper-details"):
-                                            with tag("span", klass="paper-journal"):
-                                                text(paper.get('journal', 'Unknown journal'))
-                                            with tag("span"):
-                                                text(f"by {paper.get('author', 'Unknown author')}")
-                                            if paper.get('issue_date'):
-                                                with tag("span", klass="paper-date"):
-                                                    text(paper['issue_date'])
-                                        
-                                        if paper.get('abstract_summary'):
-                                            with tag("div", klass="paper-summary"):
-                                                text(paper['abstract_summary'])
-                                        
-                                        if paper.get('link'):
-                                            with tag("a", href=paper['link'], target="_blank", klass="paper-link"):
-                                                text("📄 PubMed에서 보기")
-
-# 푸터
+# 푸터 추가
 with tag("div", klass="footer"):
-    with tag("p", style="font-size: 1.1em; margin-bottom: 10px;"):
-        text("🔬 Generated with Python, Gemini AI & GitHub Pages")
-    with tag("p", style="font-size: 1em; margin-bottom: 15px;"):
-        text("마취학 연구 동향 분석 및 시각화 대시보드")
+    with tag("p"):
+        text("Generated with Python, Gemini AI & GitHub Pages")
     if metadata.get("date_range", {}).get("oldest_formatted"):
-        date_range = metadata["date_range"]
-        with tag("p", style="font-size: 0.95em; opacity: 0.8;"):
-            text(f"📅 논문 발행 기간: {date_range['oldest_formatted']} ~ {date_range['newest_formatted']}")
+        with tag("p", style="font-size: 0.9em; margin-top: 5px;"):
+            date_range = metadata["date_range"]
+            text(f"논문 발행 기간: {date_range['oldest_formatted']} ~ {date_range['newest_formatted']}")
 
-# JavaScript 및 차트 생성
+# JavaScript 추가
 with tag("script"):
-    doc.asis(f"""
-    // 차트 데이터 준비
-    const categoryData = {df_all_categories.to_json(orient='records')};
-    const activeData = {df_active.to_json(orient='records') if len(df_active) > 0 else '[]'};
-    const subtopicData = {df_subtopics.to_json(orient='records') if len(df_subtopics) > 0 else '[]'};
+    doc.asis("""
+    document.querySelectorAll('.subtopic-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.borderLeftWidth = '8px';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.borderLeftWidth = '5px';
+        });
+    });
     
-    // 1. 전체 분야 현황 도넛 차트
-    const fieldStatusData = [
-        {{
-            values: [{len(active_categories)}, {len(empty_categories)}],
-            labels: ['활성 연구 분야', '미개발 연구 분야'],
-            type: 'pie',
-            hole: 0.5,
-            marker: {{
-                colors: ['#28a745', '#6c757d']
-            }},
-            textinfo: 'label+percent+value',
-            textposition: 'outside',
-            hovertemplate: '<b>%{{label}}</b><br>개수: %{{value}}<br>비율: %{{percent}}<extra></extra>'
-        }}
-    ];
-    
-    const fieldStatusLayout = {{
-        font: {{family: "Arial, sans-serif", size: 12}},
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        margin: {{l: 50, r: 50, t: 20, b: 20}},
-        showlegend: true,
-        legend: {{
-            orientation: 'h',
-            x: 0.5,
-            xanchor: 'center',
-            y: -0.1
-        }}
-    }};
-    
-    if (document.getElementById('field-status-chart')) {{
-        Plotly.newPlot('field-status-chart', fieldStatusData, fieldStatusLayout, {{responsive: true}});
-    }}
-    
-    // 2. 활성 분야별 논문 분포 (세로 막대 차트)
-    if (activeData.length > 0) {{
-        const activeSorted = activeData.sort((a, b) => b.paper_count - a.paper_count);
-        
-        const activePapersData = [{{
-            x: activeSorted.map(d => d.category_short),
-            y: activeSorted.map(d => d.paper_count),
-            type: 'bar',
-            marker: {{
-                color: activeSorted.map((d, i) => ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'][i % 5])
-            }},
-            text: activeSorted.map(d => d.paper_count),
-            textposition: 'outside',
-            hovertemplate: '<b>%{{x}}</b><br>논문 수: %{{y}}<br>세부주제: %{{customdata}}개<extra></extra>',
-            customdata: activeSorted.map(d => d.subtopic_count)
-        }}];
-        
-        const activePapersLayout = {{
-            font: {{family: "Arial, sans-serif", size: 11}},
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: {{l: 60, r: 50, t: 20, b: 120}},
-            xaxis: {{
-                tickangle: -45,
-                tickfont: {{size: 10}},
-                title: {{text: '연구 분야', font: {{size: 12}}}}
-            }},
-            yaxis: {{
-                title: {{text: '논문 수', font: {{size: 12}}}}
-            }},
-            showlegend: false
-        }};
-        
-        if (document.getElementById('active-papers-chart')) {{
-            Plotly.newPlot('active-papers-chart', activePapersData, activePapersLayout, {{responsive: true}});
-        }}
-    }}
-    
-    // 3. 세부 주제 상위 20개 (가로 막대 차트)
-    if (subtopicData.length > 0) {{
-        const topSubtopics = subtopicData
-            .sort((a, b) => b.count - a.count)
-            .slice(0, 20)
-            .reverse(); // 가로 차트를 위해 역순 정렬
-        
-        const subtopicsChartData = [{{
-            x: topSubtopics.map(d => d.count),
-            y: topSubtopics.map(d => d.subtopic.length > 50 ? d.subtopic.substring(0, 47) + '...' : d.subtopic),
-            type: 'bar',
-            orientation: 'h',
-            marker: {{
-                color: topSubtopics.map(d => {{
-                    const colors = {{'마취전 관리': '#FF6B6B', '마취 약리': '#4ECDC4'}};
-                    return colors[d.category_short] || '#45B7D1';
-                }})
-            }},
-            text: topSubtopics.map(d => d.count),
-            textposition: 'outside',
-            hovertemplate: '<b>%{{y}}</b><br>논문 수: %{{x}}<br>분야: %{{customdata}}<extra></extra>',
-            customdata: topSubtopics.map(d => d.category_short)
-        }}];
-        
-        const subtopicsLayout = {{
-            height: Math.max(600, topSubtopics.length * 35),
-            font: {{family: "Arial, sans-serif", size: 10}},
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            margin: {{l: 300, r: 80, t: 20, b: 60}},
-            xaxis: {{
-                title: {{text: '논문 수', font: {{size: 12}}}},
-                tickfont: {{size: 11}}
-            }},
-            yaxis: {{
-                tickfont: {{size: 9}},
-                automargin: true
-            }},
-            showlegend: false
-        }};
-        
-        if (document.getElementById('subtopics-chart')) {{
-            Plotly.newPlot('subtopics-chart', subtopicsChartData, subtopicsLayout, {{responsive: true}});
-        }}
-    }}
-    
-    // 인터랙티브 기능
-    document.addEventListener('DOMContentLoaded', function() {{
-        // 카테고리 아이템 호버 효과
-        document.querySelectorAll('.category-item').forEach(item => {{
-            item.addEventListener('mouseenter', function() {{
-                if (this.classList.contains('active')) {{
-                    this.style.borderLeftWidth = '8px';
-                    this.style.borderLeftColor = '#28a745';
-                }} else {{
-                    this.style.borderLeftWidth = '8px';
-                    this.style.borderLeftColor = '#6c757d';
-                }}
-            }});
-            
-            item.addEventListener('mouseleave', function() {{
-                this.style.borderLeftWidth = '2px';
-            }});
-        }});
-        
-        // 세부주제 카드 호버 효과
-        document.querySelectorAll('.subtopic-card').forEach(card => {{
-            card.addEventListener('mouseenter', function() {{
-                this.style.borderLeftWidth = '10px';
-            }});
-            card.addEventListener('mouseleave', function() {{
-                this.style.borderLeftWidth = '6px';
-            }});
-        }});
-        
-        // 부드러운 등장 애니메이션
-        const observerOptions = {{
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        }};
-        
-        const observer = new IntersectionObserver(function(entries) {{
-            entries.forEach(entry => {{
-                if (entry.isIntersecting) {{
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }}
-            }});
-        }}, observerOptions);
-        
-        // 애니메이션 대상 요소들
-        document.querySelectorAll('.overview-card, .chart-container, .full-width-chart, .category-item, .subtopic-card, .category-section').forEach((el, index) => {{
+    // 부드러운 등장 애니메이션
+    window.addEventListener('load', function() {
+        document.querySelectorAll('.chart-container, .subtopic-card, .stat-card, .category-section').forEach((el, index) => {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s ease';
-            observer.observe(el);
-        }});
-        
-        // 논문 아이템 호버 효과
-        document.querySelectorAll('.paper-item').forEach(item => {{
-            item.addEventListener('mouseenter', function() {{
-                this.style.transform = 'translateX(8px)';
-                this.style.boxShadow = '0 12px 25px rgba(0,0,0,0.15)';
-            }});
-            item.addEventListener('mouseleave', function() {{
-                this.style.transform = 'translateX(3px)';
-                this.style.boxShadow = '0 8px 20px rgba(0,0,0,0.1)';
-            }});
-        }});
-    }});
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, index * 50);
+        });
+    });
+    
+    // 논문 아이템 호버 효과
+    document.querySelectorAll('.paper-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(5px)';
+        });
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
+        });
+    });
     """)
 
 # HTML 저장
 output_html = "index.html"  # GitHub Pages를 위해 index.html로 저장
-print("💾 향상된 HTML 파일 생성 중...")
+print("💾 HTML 파일 생성 중...")
 with open(output_html, "w", encoding="utf-8") as f:
     f.write(doc.getvalue())
 
@@ -1120,12 +810,9 @@ else:
         print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
     print("💡 자동 배포를 원하시면 스크립트 상단의 AUTO_DEPLOY = True로 설정하세요.")
 
-print("\n🏁 향상된 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
-print("📊 새로운 대시보드 주요 기능:")
-print("   ✅ 23개 전체 마취학 분야 구조 반영")
-print("   ✅ 활성/비활성 분야 구분 시각화")
-print("   ✅ 전체 분야 개요 및 현황 파악")
-print("   ✅ 개선된 차트 (도넛, 막대, 가로 막대)")
-print("   ✅ 향상된 반응형 디자인")
-print("   ✅ 부드러운 애니메이션 효과")
-print("   ✅ 세부주제별 상세 정보 및 논문 링크")
+print("\n🏁 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
+print("📊 대시보드 주요 기능:")
+print("   - 카테고리별 논문 분포 차트")
+print("   - 세부주제별 상세 정보")
+print("   - 각 논문의 요약 및 PubMed 링크")
+print("   - 반응형 디자인으로 모바일 지원")
