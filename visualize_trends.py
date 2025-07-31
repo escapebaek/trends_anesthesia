@@ -238,7 +238,7 @@ if os.path.exists(meta_path):
         full_data = json.load(f)
         metadata = full_data.get("metadata", {})
 
-# 2. 데이터 전처리 (문제 수정)
+# 2. 개선된 데이터 전처리 
 category_stats = []
 subtopic_stats = []
 all_papers = []
@@ -246,15 +246,32 @@ all_papers = []
 print("🔍 데이터 구조 분석 중...")
 print(f"전체 카테고리 수: {len(classified_data)}")
 
+# 데이터 구조 파악을 위한 디버깅
+print("\n🐛 JSON 구조 디버깅:")
+for i, (category, subtopics) in enumerate(list(classified_data.items())[:2]):
+    print(f"  카테고리 {i+1}: {category}")
+    print(f"    타입: {type(subtopics)}")
+    if isinstance(subtopics, dict):
+        print(f"    세부주제 수: {len(subtopics)}")
+        for j, (subtopic_name, papers) in enumerate(list(subtopics.items())[:2]):
+            print(f"      세부주제 {j+1}: {subtopic_name}")
+            print(f"        타입: {type(papers)}")
+            if isinstance(papers, list):
+                print(f"        논문 수: {len(papers)}")
+                if len(papers) > 0:
+                    print(f"        첫 번째 논문 키: {list(papers[0].keys()) if isinstance(papers[0], dict) else 'Not a dict'}")
+    print()
+
+# 실제 데이터 전처리
 for category, subtopics in classified_data.items():
     category_count = 0
     category_subtopics = 0
     
     print(f"\n📂 처리 중: {category}")
-    print(f"   세부주제 수: {len(subtopics)}")
     
-    # subtopics가 딕셔너리인지 리스트인지 확인
     if isinstance(subtopics, dict):
+        print(f"   세부주제 수: {len(subtopics)}")
+        
         for subtopic, papers in subtopics.items():
             if papers and isinstance(papers, list) and len(papers) > 0:
                 paper_count = len(papers)
@@ -282,30 +299,10 @@ for category, subtopics in classified_data.items():
                         paper_data["first_author"] = extract_first_author(paper_data.get("author", "N/A"))
                         all_papers.append(paper_data)
     
-    elif isinstance(subtopics, list):
-        # subtopics가 리스트인 경우 (다른 데이터 구조)
-        for item in subtopics:
-            if isinstance(item, dict):
-                paper_data = item.copy()
-                paper_data["category"] = category
-                paper_data["subtopic"] = "General"  # 기본 세부주제
-                paper_data["category_short"] = category.split("(")[0].strip()
-                paper_data["first_author"] = extract_first_author(paper_data.get("author", "N/A"))
-                all_papers.append(paper_data)
-                category_count += 1
-        
-        if category_count > 0:
-            category_subtopics = 1
-            subtopic_stats.append({
-                "category": category,
-                "subtopic": "General",
-                "count": category_count,
-                "category_short": category.split("(")[0].strip()
-            })
-    
     print(f"   총 논문 수: {category_count}")
     
-    if category_count > 0:  # 논문이 있는 카테고리만
+    # 논문이 있는 카테고리만 추가 (중요: 0개인 카테고리 제외)
+    if category_count > 0:
         category_stats.append({
             "category": category,
             "category_short": category.split("(")[0].strip(),
@@ -314,59 +311,48 @@ for category, subtopics in classified_data.items():
         })
 
 print(f"\n📊 최종 집계:")
-print(f"   - 처리된 카테고리: {len(category_stats)}개")
-print(f"   - 처리된 세부주제: {len(subtopic_stats)}개")
-print(f"   - 처리된 논문: {len(all_papers)}개")
+print(f"   - 활성 카테고리: {len(category_stats)}개")
+print(f"   - 활성 세부주제: {len(subtopic_stats)}개")
+print(f"   - 총 논문: {len(all_papers)}개")
 
 # DataFrame 생성 및 데이터 검증
 df_categories = pd.DataFrame(category_stats)
 df_subtopics = pd.DataFrame(subtopic_stats)
 df_papers = pd.DataFrame(all_papers)
 
-# 데이터 검증 및 디버깅 정보
+# 데이터 타입 확실히 설정 (중요!)
+if len(df_categories) > 0:
+    df_categories['total_papers'] = df_categories['total_papers'].astype(int)
+    df_categories['subtopics'] = df_categories['subtopics'].astype(int)
+    
+if len(df_subtopics) > 0:
+    df_subtopics['count'] = df_subtopics['count'].astype(int)
+
 print(f"\n✅ 데이터프레임 생성 완료:")
 print(f"   - 활성 카테고리: {len(df_categories)}개")
 print(f"   - 총 세부주제: {len(df_subtopics)}개") 
 print(f"   - 총 논문: {len(df_papers)}개")
 
-# 카테고리별 상세 정보 출력 (디버깅)
+# 카테고리별 상세 정보 출력
 if len(df_categories) > 0:
     print(f"\n📈 카테고리별 논문 수 분포:")
     for _, row in df_categories.sort_values('total_papers', ascending=False).iterrows():
         print(f"   - {row['category_short']}: {row['total_papers']}개 논문, {row['subtopics']}개 세부주제")
     
     print(f"\n📊 총 논문 수 검증: {df_categories['total_papers'].sum()}개")
-else:
-    print("❌ 카테고리 데이터가 없습니다. JSON 파일 구조를 확인해주세요.")
-    
-    # JSON 구조 디버깅
-    print("\n🔍 JSON 구조 분석:")
-    for i, (key, value) in enumerate(classified_data.items()):
-        if i < 3:  # 처음 3개만 출력
-            print(f"   Key: {key}")
-            print(f"   Value type: {type(value)}")
-            if isinstance(value, dict):
-                print(f"   Subtopics: {list(value.keys())[:3]}...")  # 처음 3개 세부주제
-                for j, (subkey, subvalue) in enumerate(value.items()):
-                    if j < 2:  # 처음 2개 세부주제만
-                        print(f"     - {subkey}: {len(subvalue) if isinstance(subvalue, list) else 'not a list'}")
-            print("   ---")
 
-# 최신 트렌드 데이터 생성
-trend_data = get_recent_trend_data(df_papers, months=12)
+# 최신 트렌드 데이터 생성 (날짜 정보가 있는 경우에만)
+trend_data = pd.DataFrame()
+if len(df_papers) > 0 and 'issue_date' in df_papers.columns:
+    trend_data = get_recent_trend_data(df_papers, months=12)
 
-# 3. 개선된 색상 팔레트 정의 (더 현대적이고 구분하기 쉬운 색상)
+# 3. 개선된 색상 팔레트 정의
 modern_colors = [
     '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', 
     '#DDA0DD', '#98D8E8', '#F7DC6F', '#BB8FCE', '#85C1E9',
     '#F8C471', '#82E0AA', '#F1948A', '#AED6F1', '#D7BDE2',
     '#A9DFBF', '#F9E79F', '#D5A6BD', '#AED6F1', '#F4D03F'
 ]
-
-category_colors = {}
-if len(df_categories) > 0:
-    for i, category in enumerate(df_categories['category'].unique()):
-        category_colors[category] = modern_colors[i % len(modern_colors)]
 
 print("📈 차트 생성 중...")
 
@@ -785,14 +771,6 @@ def create_enhanced_css():
             box-shadow: 0 6px 20px rgba(40,167,69,0.4);
         }
         
-        .trend-section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 25px;
-            margin: 40px 0;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
-        }
-        
         .footer {
             text-align: center;
             color: white;
@@ -827,7 +805,6 @@ def create_enhanced_css():
             }
         }
         
-        /* 개선된 스크롤바 스타일링 */
         .papers-list::-webkit-scrollbar {
             width: 8px;
         }
@@ -846,7 +823,6 @@ def create_enhanced_css():
             background: linear-gradient(135deg, #5a6fd8, #6a4190);
         }
         
-        /* 로딩 애니메이션 */
         .loading-animation {
             opacity: 0;
             transform: translateY(30px);
@@ -917,58 +893,63 @@ with tag("html", lang="ko"):
 if len(df_categories) > 0:
     print(f"📊 차트 생성 시작...")
     print(f"   카테고리 데이터: {len(df_categories)}개")
-    print(f"   최대 논문 수: {df_categories['total_papers'].max()}")
-    print(f"   최소 논문 수: {df_categories['total_papers'].min()}")
     
-    # 1. 카테고리별 논문 수 바 차트 (개선된 버전) - 데이터 확인 추가
+    # 1. 수정된 카테고리별 논문 수 바 차트
     chart_data = df_categories.sort_values('total_papers', ascending=True)
     print(f"   바 차트 데이터: {len(chart_data)}개 항목")
+    print(f"   데이터 타입 확인: {chart_data['total_papers'].dtype}")
     
-    fig1 = px.bar(
-        chart_data,
-        x="total_papers",
-        y="category_short",
-        color="total_papers",
-        orientation="h",
-        title="📊 Research Distribution by Category",
-        labels={"total_papers": "Number of Papers", "category_short": "Research Category"},
-        color_continuous_scale="Viridis",
-        text="total_papers"
-    )
-    fig1.update_traces(texttemplate='%{text}', textposition='outside')
+    # 바 차트 생성 - text 파라미터 수정
+    fig1 = go.Figure()
+    fig1.add_trace(go.Bar(
+        x=chart_data['total_papers'],
+        y=chart_data['category_short'],
+        orientation='h',
+        text=[f'{val}' for val in chart_data['total_papers']],  # 명시적으로 문자열로 변환
+        textposition='outside',
+        texttemplate='%{text}',
+        marker=dict(
+            color=chart_data['total_papers'],
+            colorscale='Viridis',
+            showscale=False
+        ),
+        hovertemplate='<b>%{y}</b><br>Papers: %{x}<extra></extra>'
+    ))
+    
     fig1.update_layout(
+        title="📊 Research Distribution by Category",
+        xaxis_title="Number of Papers",
+        yaxis_title="Research Category",
         height=max(500, len(df_categories) * 50),
         font=dict(family="Inter, Arial, sans-serif", size=12),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         title_font_size=20,
         title_x=0.5,
-        showlegend=False,
         margin=dict(l=200, r=100, t=100, b=80),
         yaxis=dict(tickfont=dict(size=11)),
-        xaxis=dict(tickfont=dict(size=12), title_font_size=14),
-        coloraxis_showscale=False
+        xaxis=dict(tickfont=dict(size=12), title_font_size=14)
     )
 
-    # 2. 개선된 도넛 차트 - 데이터 확인
-    pie_data = df_categories[df_categories['total_papers'] > 0]  # 0개인 카테고리 제외
+    # 2. 수정된 도넛 차트
+    pie_data = df_categories[df_categories['total_papers'] > 0].copy()
     print(f"   파이 차트 데이터: {len(pie_data)}개 항목")
+    print(f"   파이 차트 값 확인: {pie_data['total_papers'].tolist()}")
     
-    fig2 = px.pie(
-        pie_data,
-        values='total_papers',
-        names='category_short',
-        title="🥧 Research Category Distribution",
+    fig2 = go.Figure()
+    fig2.add_trace(go.Pie(
+        labels=pie_data['category_short'],
+        values=pie_data['total_papers'],
         hole=0.5,
-        color_discrete_sequence=modern_colors
-    )
-    fig2.update_traces(
         textposition='auto',
         textinfo='percent+label',
         hovertemplate='<b>%{label}</b><br>Papers: %{value}<br>Percentage: %{percent}<extra></extra>',
-        textfont_size=11
-    )
+        textfont_size=11,
+        marker=dict(colors=modern_colors[:len(pie_data)])
+    ))
+    
     fig2.update_layout(
+        title="🥧 Research Category Distribution",
         font=dict(family="Inter, Arial, sans-serif", size=12),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
@@ -978,25 +959,37 @@ if len(df_categories) > 0:
         legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.02)
     )
 
-    # 3. 세부주제 상위 15개 차트 (개선된 버전) - 데이터 확인
+    # 3. 수정된 세부주제 상위 15개 차트
     if len(df_subtopics) > 0:
         top_subtopics = df_subtopics.sort_values('count', ascending=True).tail(15)
         print(f"   세부주제 차트 데이터: {len(top_subtopics)}개 항목")
-        print(f"   최대 세부주제 논문 수: {top_subtopics['count'].max()}")
+        print(f"   세부주제 값 확인: {top_subtopics['count'].tolist()}")
         
-        fig3 = px.bar(
-            top_subtopics,
-            x='count',
-            y='subtopic',
-            color='category_short',
+        # 카테고리별 색상 매핑
+        category_color_map = {}
+        unique_categories = top_subtopics['category_short'].unique()
+        for i, cat in enumerate(unique_categories):
+            category_color_map[cat] = modern_colors[i % len(modern_colors)]
+        
+        colors = [category_color_map[cat] for cat in top_subtopics['category_short']]
+        
+        fig3 = go.Figure()
+        fig3.add_trace(go.Bar(
+            x=top_subtopics['count'],
+            y=top_subtopics['subtopic'],
             orientation='h',
-            title="🔍 Top 15 Research Subtopics",
-            labels={"count": "Number of Papers", "subtopic": "Research Subtopic"},
-            color_discrete_sequence=modern_colors,
-            text='count'
-        )
-        fig3.update_traces(texttemplate='%{text}', textposition='outside')
+            text=[f'{val}' for val in top_subtopics['count']],  # 명시적으로 문자열로 변환
+            textposition='outside',
+            texttemplate='%{text}',
+            marker=dict(color=colors),
+            hovertemplate='<b>%{y}</b><br>Papers: %{x}<br>Category: %{customdata}<extra></extra>',
+            customdata=top_subtopics['category_short']
+        ))
+        
         fig3.update_layout(
+            title="🔍 Top 15 Research Subtopics",
+            xaxis_title="Number of Papers",
+            yaxis_title="Research Subtopic",
             height=700,
             font=dict(family="Inter, Arial, sans-serif", size=11),
             plot_bgcolor='rgba(0,0,0,0)',
@@ -1005,8 +998,7 @@ if len(df_categories) > 0:
             title_x=0.5,
             margin=dict(l=300, r=100, t=100, b=80),
             yaxis=dict(tickfont=dict(size=10)),
-            xaxis=dict(tickfont=dict(size=12)),
-            legend=dict(title="Category", title_font_size=14)
+            xaxis=dict(tickfont=dict(size=12))
         )
     else:
         print("   ⚠️ 세부주제 데이터가 없습니다.")
@@ -1046,40 +1038,6 @@ if len(df_categories) > 0:
         print("   ⚠️ 트렌드 데이터가 없습니다.")
         fig4 = None
 
-    # 5. 저널별 논문 분포 (상위 10개 저널)
-    if len(df_papers) > 0 and 'journal' in df_papers.columns:
-        journal_counts = df_papers['journal'].value_counts().head(10)
-        if len(journal_counts) > 0:
-            print(f"   저널 차트 데이터: {len(journal_counts)}개 저널")
-            fig5 = px.bar(
-                x=journal_counts.values,
-                y=journal_counts.index,
-                orientation='h',
-                title="📚 Top 10 Journals by Publication Count",
-                labels={"x": "Number of Papers", "y": "Journal"},
-                color=journal_counts.values,
-                color_continuous_scale="Blues",
-                text=journal_counts.values
-            )
-            fig5.update_traces(texttemplate='%{text}', textposition='outside')
-            fig5.update_layout(
-                height=500,
-                font=dict(family="Inter, Arial, sans-serif", size=11),
-                plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)',
-                title_font_size=20,
-                title_x=0.5,
-                margin=dict(l=200, r=100, t=100, b=80),
-                yaxis=dict(tickfont=dict(size=10)),
-                xaxis=dict(tickfont=dict(size=12)),
-                coloraxis_showscale=False
-            )
-        else:
-            fig5 = None
-    else:
-        print("   ⚠️ 저널 데이터가 없습니다.")
-        fig5 = None
-
     # HTML에 차트 추가
     with tag("div", klass="dashboard-grid loading-animation"):
         with tag("div", klass="chart-container"):
@@ -1105,13 +1063,6 @@ if len(df_categories) > 0:
             with tag("div", klass="chart-title"):
                 text("Publication Trends Over Time")
             doc.asis(fig4.to_html(full_html=False, include_plotlyjs=False, div_id="trend-chart"))
-
-    # 저널 분포 차트 추가 (데이터가 있는 경우)
-    if fig5 is not None:
-        with tag("div", klass="chart-container full-width loading-animation"):
-            with tag("div", klass="chart-title"):
-                text("Top Publishing Journals")
-            doc.asis(fig5.to_html(full_html=False, include_plotlyjs=False, div_id="journal-chart"))
 
 else:
     # 데이터가 없는 경우 오류 메시지 표시
@@ -1162,7 +1113,6 @@ for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', asc
                                 with tag("div", klass="paper-details"):
                                     with tag("div", klass="paper-author-journal"):
                                         with tag("div", klass="paper-author"):
-                                            # 개선된 저자 표시
                                             author = paper.get('first_author', 'N/A')
                                             if author != 'N/A':
                                                 text(f"👨‍⚕️ {author}")
@@ -1181,7 +1131,6 @@ for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', asc
                                 if paper.get('abstract_summary'):
                                     with tag("div", klass="paper-summary"):
                                         summary = paper['abstract_summary']
-                                        # 요약이 너무 길면 자르기
                                         if len(summary) > 300:
                                             summary = summary[:300] + "..."
                                         text(summary)
@@ -1201,10 +1150,9 @@ with tag("div", klass="footer"):
             date_range = metadata["date_range"]
             text(f"📊 Publication Range: {date_range['oldest_formatted']} ~ {date_range['newest_formatted']}")
 
-# JavaScript 추가 (개선된 인터랙션)
+# JavaScript 추가
 with tag("script"):
     doc.asis("""
-    // 부드러운 등장 애니메이션
     document.addEventListener('DOMContentLoaded', function() {
         const observerOptions = {
             threshold: 0.1,
@@ -1220,7 +1168,6 @@ with tag("script"):
             });
         }, observerOptions);
 
-        // 모든 애니메이션 요소 관찰
         document.querySelectorAll('.loading-animation').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
@@ -1229,7 +1176,6 @@ with tag("script"):
         });
     });
     
-    // 개선된 카드 호버 효과
     document.querySelectorAll('.subtopic-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.style.borderLeftWidth = '10px';
@@ -1241,7 +1187,6 @@ with tag("script"):
         });
     });
     
-    // 논문 아이템 개선된 호버 효과
     document.querySelectorAll('.paper-item').forEach(item => {
         item.addEventListener('mouseenter', function() {
             this.style.transform = 'translateX(10px) scale(1.02)';
@@ -1253,7 +1198,6 @@ with tag("script"):
         });
     });
 
-    // 통계 카드 카운터 애니메이션
     function animateCounters() {
         document.querySelectorAll('.stat-number').forEach(counter => {
             const target = parseInt(counter.textContent);
@@ -1272,32 +1216,7 @@ with tag("script"):
         });
     }
 
-    // 페이지 로드 후 카운터 애니메이션 시작
     setTimeout(animateCounters, 500);
-
-    // 차트 컨테이너 개선된 호버 효과
-    document.querySelectorAll('.chart-container').forEach(container => {
-        container.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px)';
-        });
-        container.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-
-    // 부드러운 스크롤 효과
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
 
     console.log('🏥 Anesthesia Research Dashboard loaded successfully!');
     console.log('📊 Total categories:', """ + str(len(df_categories)) + """);
@@ -1305,28 +1224,25 @@ with tag("script"):
     """)
 
 # HTML 저장
-output_html = "index.html"  # GitHub Pages를 위해 index.html로 저장
-print("💾 Enhanced HTML 대시보드 생성 중...")
+output_html = "index.html"
+print("💾 수정된 HTML 대시보드 생성 중...")
 with open(output_html, "w", encoding="utf-8") as f:
     f.write(doc.getvalue())
 
-print(f"✅ 개선된 마취학 분류 대시보드 생성 완료 → {output_html}")
-print("\n🎨 주요 개선사항:")
-print("   ✓ 저자 이름 정상 표시 (첫 번째 저자 + et al.)")
-print("   ✓ 현대적이고 미적인 디자인 개선")
-print("   ✓ 인터랙티브 애니메이션 및 호버 효과")
-print("   ✓ 최신 연구 트렌드 시각화")
-print("   ✓ 상위 저널 분포 차트 추가")
-print("   ✓ 반응형 디자인 및 모바일 최적화")
-print("   ✓ 부드러운 로딩 애니메이션")
+print(f"✅ 수정된 마취학 분류 대시보드 생성 완료 → {output_html}")
+print("\n🔧 주요 수정사항:")
+print("   ✓ 바 차트 숫자 표시 문제 해결 (plotly.graph_objects 사용)")
+print("   ✓ 파이 차트 카운팅 정확성 개선 (0개 카테고리 제외)")
+print("   ✓ 세부주제 차트 정확성 개선")
+print("   ✓ 불필요한 저널 차트 제거")
+print("   ✓ 데이터 타입 명시적 설정")
+print("   ✓ 차트 텍스트 레이블 수정")
 
-# 자동 배포 실행
+# 자동 배포 실행 (기존 코드와 동일)
 if AUTO_DEPLOY:
     print("\n🚀 GitHub Pages 자동 배포를 시작합니다...")
     
-    # Git 레포지토리 확인/설정
     if setup_git_repo():
-        # 배포 실행
         pages_url = deploy_to_github()
         if pages_url:
             print("🎉 배포가 완료되었습니다!")
@@ -1344,20 +1260,10 @@ if AUTO_DEPLOY:
         except Exception:
             print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
 else:
-    # 로컬에서만 열기
     try:
         webbrowser.open("file://" + os.path.abspath(output_html))
         print("🌐 로컬 브라우저에서 대시보드를 열었습니다.")
     except Exception:
         print(f"📁 수동으로 파일을 열어주세요: {os.path.abspath(output_html)}")
-    print("💡 자동 배포를 원하시면 스크립트 상단의 AUTO_DEPLOY = True로 설정하세요.")
 
-print("\n🏁 개선된 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
-print("📊 새로운 대시보드 특징:")
-print("   - 📈 실시간 연구 트렌드 분석")
-print("   - 👨‍⚕️ 정확한 저자 정보 표시")
-print("   - 🎨 모던하고 인터랙티브한 UI/UX")
-print("   - 📱 완전한 반응형 디자인")
-print("   - 🔍 상세한 연구 분야별 분석")
-print("   - 📚 주요 저널 분포 시각화")
-print("   - ⚡ 부드러운 애니메이션과 전환 효과")
+print("\n🏁 수정된 마취학 연구 분류 대시보드 생성이 완료되었습니다!")
