@@ -238,37 +238,72 @@ if os.path.exists(meta_path):
         full_data = json.load(f)
         metadata = full_data.get("metadata", {})
 
-# 2. 데이터 전처리
+# 2. 데이터 전처리 (문제 수정)
 category_stats = []
 subtopic_stats = []
 all_papers = []
+
+print("🔍 데이터 구조 분석 중...")
+print(f"전체 카테고리 수: {len(classified_data)}")
 
 for category, subtopics in classified_data.items():
     category_count = 0
     category_subtopics = 0
     
-    for subtopic, papers in subtopics.items():
-        if papers:  # 빈 리스트가 아닌 경우만
-            category_count += len(papers)
-            category_subtopics += 1
-            
-            # 세부주제 통계
-            subtopic_stats.append({
-                "category": category,
-                "subtopic": subtopic,
-                "count": len(papers),
-                "category_short": category.split("(")[0].strip()
-            })
-            
-            # 개별 논문 데이터
-            for paper in papers:
-                paper_data = paper.copy()
+    print(f"\n📂 처리 중: {category}")
+    print(f"   세부주제 수: {len(subtopics)}")
+    
+    # subtopics가 딕셔너리인지 리스트인지 확인
+    if isinstance(subtopics, dict):
+        for subtopic, papers in subtopics.items():
+            if papers and isinstance(papers, list) and len(papers) > 0:
+                paper_count = len(papers)
+                category_count += paper_count
+                category_subtopics += 1
+                
+                print(f"   - {subtopic}: {paper_count}개 논문")
+                
+                # 세부주제 통계
+                subtopic_stats.append({
+                    "category": category,
+                    "subtopic": subtopic,
+                    "count": paper_count,
+                    "category_short": category.split("(")[0].strip()
+                })
+                
+                # 개별 논문 데이터
+                for paper in papers:
+                    if isinstance(paper, dict):
+                        paper_data = paper.copy()
+                        paper_data["category"] = category
+                        paper_data["subtopic"] = subtopic
+                        paper_data["category_short"] = category.split("(")[0].strip()
+                        # 저자 이름 개선
+                        paper_data["first_author"] = extract_first_author(paper_data.get("author", "N/A"))
+                        all_papers.append(paper_data)
+    
+    elif isinstance(subtopics, list):
+        # subtopics가 리스트인 경우 (다른 데이터 구조)
+        for item in subtopics:
+            if isinstance(item, dict):
+                paper_data = item.copy()
                 paper_data["category"] = category
-                paper_data["subtopic"] = subtopic
+                paper_data["subtopic"] = "General"  # 기본 세부주제
                 paper_data["category_short"] = category.split("(")[0].strip()
-                # 저자 이름 개선
                 paper_data["first_author"] = extract_first_author(paper_data.get("author", "N/A"))
                 all_papers.append(paper_data)
+                category_count += 1
+        
+        if category_count > 0:
+            category_subtopics = 1
+            subtopic_stats.append({
+                "category": category,
+                "subtopic": "General",
+                "count": category_count,
+                "category_short": category.split("(")[0].strip()
+            })
+    
+    print(f"   총 논문 수: {category_count}")
     
     if category_count > 0:  # 논문이 있는 카테고리만
         category_stats.append({
@@ -278,15 +313,44 @@ for category, subtopics in classified_data.items():
             "subtopics": category_subtopics
         })
 
-# DataFrame 생성
+print(f"\n📊 최종 집계:")
+print(f"   - 처리된 카테고리: {len(category_stats)}개")
+print(f"   - 처리된 세부주제: {len(subtopic_stats)}개")
+print(f"   - 처리된 논문: {len(all_papers)}개")
+
+# DataFrame 생성 및 데이터 검증
 df_categories = pd.DataFrame(category_stats)
 df_subtopics = pd.DataFrame(subtopic_stats)
 df_papers = pd.DataFrame(all_papers)
 
-print(f"✅ 데이터 처리 완료:")
+# 데이터 검증 및 디버깅 정보
+print(f"\n✅ 데이터프레임 생성 완료:")
 print(f"   - 활성 카테고리: {len(df_categories)}개")
-print(f"   - 총 세부주제: {len(df_subtopics)}개")
+print(f"   - 총 세부주제: {len(df_subtopics)}개") 
 print(f"   - 총 논문: {len(df_papers)}개")
+
+# 카테고리별 상세 정보 출력 (디버깅)
+if len(df_categories) > 0:
+    print(f"\n📈 카테고리별 논문 수 분포:")
+    for _, row in df_categories.sort_values('total_papers', ascending=False).iterrows():
+        print(f"   - {row['category_short']}: {row['total_papers']}개 논문, {row['subtopics']}개 세부주제")
+    
+    print(f"\n📊 총 논문 수 검증: {df_categories['total_papers'].sum()}개")
+else:
+    print("❌ 카테고리 데이터가 없습니다. JSON 파일 구조를 확인해주세요.")
+    
+    # JSON 구조 디버깅
+    print("\n🔍 JSON 구조 분석:")
+    for i, (key, value) in enumerate(classified_data.items()):
+        if i < 3:  # 처음 3개만 출력
+            print(f"   Key: {key}")
+            print(f"   Value type: {type(value)}")
+            if isinstance(value, dict):
+                print(f"   Subtopics: {list(value.keys())[:3]}...")  # 처음 3개 세부주제
+                for j, (subkey, subvalue) in enumerate(value.items()):
+                    if j < 2:  # 처음 2개 세부주제만
+                        print(f"     - {subkey}: {len(subvalue) if isinstance(subvalue, list) else 'not a list'}")
+            print("   ---")
 
 # 최신 트렌드 데이터 생성
 trend_data = get_recent_trend_data(df_papers, months=12)
@@ -851,9 +915,17 @@ with tag("html", lang="ko"):
 
 # 차트 생성 (데이터가 있는 경우에만)
 if len(df_categories) > 0:
-    # 1. 카테고리별 논문 수 바 차트 (개선된 버전)
+    print(f"📊 차트 생성 시작...")
+    print(f"   카테고리 데이터: {len(df_categories)}개")
+    print(f"   최대 논문 수: {df_categories['total_papers'].max()}")
+    print(f"   최소 논문 수: {df_categories['total_papers'].min()}")
+    
+    # 1. 카테고리별 논문 수 바 차트 (개선된 버전) - 데이터 확인 추가
+    chart_data = df_categories.sort_values('total_papers', ascending=True)
+    print(f"   바 차트 데이터: {len(chart_data)}개 항목")
+    
     fig1 = px.bar(
-        df_categories.sort_values('total_papers', ascending=True),
+        chart_data,
         x="total_papers",
         y="category_short",
         color="total_papers",
@@ -872,15 +944,18 @@ if len(df_categories) > 0:
         title_font_size=20,
         title_x=0.5,
         showlegend=False,
-        margin=dict(l=200, r=80, t=100, b=80),
+        margin=dict(l=200, r=100, t=100, b=80),
         yaxis=dict(tickfont=dict(size=11)),
         xaxis=dict(tickfont=dict(size=12), title_font_size=14),
         coloraxis_showscale=False
     )
 
-    # 2. 개선된 도넛 차트
+    # 2. 개선된 도넛 차트 - 데이터 확인
+    pie_data = df_categories[df_categories['total_papers'] > 0]  # 0개인 카테고리 제외
+    print(f"   파이 차트 데이터: {len(pie_data)}개 항목")
+    
     fig2 = px.pie(
-        df_categories,
+        pie_data,
         values='total_papers',
         names='category_short',
         title="🥧 Research Category Distribution",
@@ -903,35 +978,43 @@ if len(df_categories) > 0:
         legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.02)
     )
 
-    # 3. 세부주제 상위 15개 차트 (개선된 버전)
-    top_subtopics = df_subtopics.sort_values('count', ascending=True).tail(15)
-    fig3 = px.bar(
-        top_subtopics,
-        x='count',
-        y='subtopic',
-        color='category_short',
-        orientation='h',
-        title="🔍 Top 15 Research Subtopics",
-        labels={"count": "Number of Papers", "subtopic": "Research Subtopic"},
-        color_discrete_sequence=modern_colors,
-        text='count'
-    )
-    fig3.update_traces(texttemplate='%{text}', textposition='outside')
-    fig3.update_layout(
-        height=700,
-        font=dict(family="Inter, Arial, sans-serif", size=11),
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        title_font_size=20,
-        title_x=0.5,
-        margin=dict(l=300, r=80, t=100, b=80),
-        yaxis=dict(tickfont=dict(size=10)),
-        xaxis=dict(tickfont=dict(size=12)),
-        legend=dict(title="Category", title_font_size=14)
-    )
+    # 3. 세부주제 상위 15개 차트 (개선된 버전) - 데이터 확인
+    if len(df_subtopics) > 0:
+        top_subtopics = df_subtopics.sort_values('count', ascending=True).tail(15)
+        print(f"   세부주제 차트 데이터: {len(top_subtopics)}개 항목")
+        print(f"   최대 세부주제 논문 수: {top_subtopics['count'].max()}")
+        
+        fig3 = px.bar(
+            top_subtopics,
+            x='count',
+            y='subtopic',
+            color='category_short',
+            orientation='h',
+            title="🔍 Top 15 Research Subtopics",
+            labels={"count": "Number of Papers", "subtopic": "Research Subtopic"},
+            color_discrete_sequence=modern_colors,
+            text='count'
+        )
+        fig3.update_traces(texttemplate='%{text}', textposition='outside')
+        fig3.update_layout(
+            height=700,
+            font=dict(family="Inter, Arial, sans-serif", size=11),
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            title_font_size=20,
+            title_x=0.5,
+            margin=dict(l=300, r=100, t=100, b=80),
+            yaxis=dict(tickfont=dict(size=10)),
+            xaxis=dict(tickfont=dict(size=12)),
+            legend=dict(title="Category", title_font_size=14)
+        )
+    else:
+        print("   ⚠️ 세부주제 데이터가 없습니다.")
+        fig3 = None
 
     # 4. 최신 트렌드 차트 (시간별 논문 발행 동향)
     if len(trend_data) > 0:
+        print(f"   트렌드 차트 데이터: {len(trend_data)}개 데이터포인트")
         fig4 = px.line(
             trend_data,
             x='month_year_str',
@@ -959,33 +1042,43 @@ if len(df_categories) > 0:
             line=dict(width=3),
             marker=dict(size=8)
         )
+    else:
+        print("   ⚠️ 트렌드 데이터가 없습니다.")
+        fig4 = None
 
     # 5. 저널별 논문 분포 (상위 10개 저널)
-    journal_counts = df_papers['journal'].value_counts().head(10)
-    if len(journal_counts) > 0:
-        fig5 = px.bar(
-            x=journal_counts.values,
-            y=journal_counts.index,
-            orientation='h',
-            title="📚 Top 10 Journals by Publication Count",
-            labels={"x": "Number of Papers", "y": "Journal"},
-            color=journal_counts.values,
-            color_continuous_scale="Blues",
-            text=journal_counts.values
-        )
-        fig5.update_traces(texttemplate='%{text}', textposition='outside')
-        fig5.update_layout(
-            height=500,
-            font=dict(family="Inter, Arial, sans-serif", size=11),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            title_font_size=20,
-            title_x=0.5,
-            margin=dict(l=200, r=80, t=100, b=80),
-            yaxis=dict(tickfont=dict(size=10)),
-            xaxis=dict(tickfont=dict(size=12)),
-            coloraxis_showscale=False
-        )
+    if len(df_papers) > 0 and 'journal' in df_papers.columns:
+        journal_counts = df_papers['journal'].value_counts().head(10)
+        if len(journal_counts) > 0:
+            print(f"   저널 차트 데이터: {len(journal_counts)}개 저널")
+            fig5 = px.bar(
+                x=journal_counts.values,
+                y=journal_counts.index,
+                orientation='h',
+                title="📚 Top 10 Journals by Publication Count",
+                labels={"x": "Number of Papers", "y": "Journal"},
+                color=journal_counts.values,
+                color_continuous_scale="Blues",
+                text=journal_counts.values
+            )
+            fig5.update_traces(texttemplate='%{text}', textposition='outside')
+            fig5.update_layout(
+                height=500,
+                font=dict(family="Inter, Arial, sans-serif", size=11),
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                title_font_size=20,
+                title_x=0.5,
+                margin=dict(l=200, r=100, t=100, b=80),
+                yaxis=dict(tickfont=dict(size=10)),
+                xaxis=dict(tickfont=dict(size=12)),
+                coloraxis_showscale=False
+            )
+        else:
+            fig5 = None
+    else:
+        print("   ⚠️ 저널 데이터가 없습니다.")
+        fig5 = None
 
     # HTML에 차트 추가
     with tag("div", klass="dashboard-grid loading-animation"):
@@ -999,24 +1092,39 @@ if len(df_categories) > 0:
                 text("Category Distribution Overview")
             doc.asis(fig2.to_html(full_html=False, include_plotlyjs=False, div_id="category-pie"))
     
-    with tag("div", klass="chart-container full-width loading-animation"):
-        with tag("div", klass="chart-title"):
-            text("Top Research Subtopics")
-        doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="subtopic-chart"))
+    # 세부주제 차트 (데이터가 있는 경우만)
+    if fig3 is not None:
+        with tag("div", klass="chart-container full-width loading-animation"):
+            with tag("div", klass="chart-title"):
+                text("Top Research Subtopics")
+            doc.asis(fig3.to_html(full_html=False, include_plotlyjs=False, div_id="subtopic-chart"))
 
     # 트렌드 차트 추가 (데이터가 있는 경우)
-    if len(trend_data) > 0:
+    if fig4 is not None:
         with tag("div", klass="chart-container full-width loading-animation"):
             with tag("div", klass="chart-title"):
                 text("Publication Trends Over Time")
             doc.asis(fig4.to_html(full_html=False, include_plotlyjs=False, div_id="trend-chart"))
 
-    # 저널 분포 차트 추가
-    if len(journal_counts) > 0:
+    # 저널 분포 차트 추가 (데이터가 있는 경우)
+    if fig5 is not None:
         with tag("div", klass="chart-container full-width loading-animation"):
             with tag("div", klass="chart-title"):
                 text("Top Publishing Journals")
             doc.asis(fig5.to_html(full_html=False, include_plotlyjs=False, div_id="journal-chart"))
+
+else:
+    # 데이터가 없는 경우 오류 메시지 표시
+    with tag("div", klass="chart-container full-width loading-animation"):
+        with tag("div", style="text-align: center; padding: 50px;"):
+            with tag("h2", style="color: #e74c3c;"):
+                text("⚠️ 데이터 로딩 오류")
+            with tag("p", style="color: #666; font-size: 1.1em;"):
+                text("분류된 데이터를 찾을 수 없습니다. JSON 파일 구조를 확인해주세요.")
+            with tag("p", style="color: #666; margin-top: 20px;"):
+                text("예상 JSON 구조: {'카테고리': {'세부주제': [논문리스트]}}")
+
+print("📊 차트 생성 완료!")
 
 # 카테고리별 상세 섹션
 for idx, (_, cat_row) in enumerate(df_categories.sort_values('total_papers', ascending=False).iterrows()):
