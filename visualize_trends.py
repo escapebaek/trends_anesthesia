@@ -916,6 +916,8 @@ if len(df_categories) > 0:
         hovertemplate='<b>%{y}</b><br>Papers: %{x}<extra></extra>'
     ))
     
+    fig1.update_traces(texttemplate='%{text}', textposition='outside')
+    
     fig1.update_layout(
         title="📊 Research Distribution by Category",
         xaxis_title="Number of Papers",
