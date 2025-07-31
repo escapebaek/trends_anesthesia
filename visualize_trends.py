@@ -936,22 +936,16 @@ if len(df_categories) > 0:
     print(f"   파이 차트 데이터: {len(pie_data)}개 항목")
     print(f"   파이 차트 값 확인: {pie_data['total_papers'].tolist()}")
 
-    # 데이터 타입 명시적 확인 및 변환
-    pie_data = df_categories[df_categories['total_papers'] > 0].copy()
-    pie_values = pie_data['total_papers'].astype(int).tolist()
-    pie_labels = pie_data['category_short'].tolist()
-
     fig2 = go.Figure()
     fig2.add_trace(go.Pie(
-        labels=pie_labels,
-        values=pie_values,
+        labels=pie_data['category_short'],
+        values=pie_data['total_papers'],
         hole=0.5,
         textposition='auto',
         textinfo='percent+label+value',
         hovertemplate='<b>%{label}</b><br>Papers: %{value}<br>Percentage: %{percent}<extra></extra>',
         textfont_size=11,
-        marker=dict(colors=modern_colors[:len(pie_data)]),
-        customdata=pie_values
+        marker=dict(colors=modern_colors[:len(pie_data)])
     ))
 
     fig2.update_layout(
