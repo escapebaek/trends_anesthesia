@@ -310,48 +310,27 @@ for category, subtopics in classified_data.items():
             "subtopics": category_subtopics
         })
 
-print(f"\n📊 최종 집계:")
-print(f"   - 활성 카테고리: {len(category_stats)}개")
-print(f"   - 활성 세부주제: {len(subtopic_stats)}개")
-print(f"   - 총 논문: {len(all_papers)}개")
+print(f"- 총 논문: {len(all_papers)}개")
 
-# DataFrame 생성 및 데이터 검증
+# DataFrame 생성
 df_categories = pd.DataFrame(category_stats)
 df_subtopics = pd.DataFrame(subtopic_stats)
 df_papers = pd.DataFrame(all_papers)
 
-# 데이터 타입 확실히 설정 (중요!)
-if len(df_categories) > 0:
+if not df_categories.empty:
     df_categories['total_papers'] = df_categories['total_papers'].astype(int)
     df_categories['subtopics'] = df_categories['subtopics'].astype(int)
-    
-if len(df_subtopics) > 0:
+
+if not df_subtopics.empty:
     df_subtopics['count'] = df_subtopics['count'].astype(int)
 
-print(f"\n✅ 데이터프레임 생성 완료:")
-print(f"   - 활성 카테고리: {len(df_categories)}개")
-print(f"   - 총 세부주제: {len(df_subtopics)}개") 
-print(f"   - 총 논문: {len(df_papers)}개")
+print("\n✅ 데이터프레임 생성 완료.")
 
-# 카테고리별 상세 정보 출력
-if len(df_categories) > 0:
-    print(f"\n📈 카테고리별 논문 수 분포:")
-    for _, row in df_categories.sort_values('total_papers', ascending=False).iterrows():
-        print(f"   - {row['category_short']}: {row['total_papers']}개 논문, {row['subtopics']}개 세부주제")
-    
-    print(f"\n📊 총 논문 수 검증: {df_categories['total_papers'].sum()}개")
-
-# 최신 트렌드 데이터 생성 (날짜 정보가 있는 경우에만)
-trend_data = pd.DataFrame()
-if len(df_papers) > 0 and 'issue_date' in df_papers.columns:
-    trend_data = get_recent_trend_data(df_papers, months=12)
-
-# 3. 개선된 색상 팔레트 정의
+# 3. 색상 팔레트 정의
 modern_colors = [
-    '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', 
-    '#DDA0DD', '#98D8E8', '#F7DC6F', '#BB8FCE', '#85C1E9',
-    '#F8C471', '#82E0AA', '#F1948A', '#AED6F1', '#D7BDE2',
-    '#A9DFBF', '#F9E79F', '#D5A6BD', '#AED6F1', '#F4D03F'
+    '#4a90e2', '#50e3c2', '#f5a623', '#bd10e0', '#7ed321', 
+    '#9013fe', '#f8e71c', '#e24a4a', '#2ab7ca', '#f78da7',
+    '#4a4a4a', '#d0021b', '#b8e986', '#417505', '#d8bfd8'
 ]
 
 print("📈 차트 생성 중...")
@@ -362,106 +341,73 @@ doc, tag, text = Doc().tagtext()
 def create_enhanced_css():
     return """
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
             line-height: 1.6;
         }
         
         .container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 20px;
         }
         
         .header {
             text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #4a90e2 0%, #50e3c2 100%);
+            border-radius: 24px;
+            margin-bottom: 40px;
             color: white;
-            margin-bottom: 50px;
-            padding: 60px 0;
-            position: relative;
-        }
-        
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.1);
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            z-index: -1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         
         .header h1 {
-            font-size: 3.5em;
+            font-size: 3em;
             font-weight: 800;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            background: linear-gradient(45deg, #fff, #f0f0f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
         
         .header p {
-            font-size: 1.3em;
-            opacity: 0.95;
+            font-size: 1.2em;
+            opacity: 0.9;
             font-weight: 300;
         }
         
         .header .subtitle {
-            font-size: 1em;
-            margin-top: 10px;
+            font-size: 0.9em;
+            margin-top: 15px;
             opacity: 0.8;
             font-style: italic;
         }
         
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
         
         .chart-container {
-            background: rgba(255,255,255,0.95);
-            border-radius: 25px;
-            padding: 35px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         
-        .chart-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-            background-size: 200% 100%;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        @keyframes shimmer {
-            0%, 100% { background-position: 200% 0; }
-            50% { background-position: -200% 0; }
-        }
-        
         .chart-container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 35px 70px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
         }
         
         .full-width {
@@ -469,13 +415,13 @@ def create_enhanced_css():
         }
         
         .chart-title {
-            font-size: 1.6em;
+            font-size: 1.5em;
             font-weight: 700;
             margin-bottom: 25px;
-            color: #2c3e50;
+            color: #212529;
             text-align: center;
             position: relative;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
         }
         
         .chart-title::after {
@@ -484,356 +430,233 @@ def create_enhanced_css():
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
+            width: 40px;
             height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4a90e2, #50e3c2);
             border-radius: 2px;
         }
         
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
+            gap: 30px;
+            margin-bottom: 40px;
         }
         
         .stat-card {
-            background: rgba(255,255,255,0.95);
+            background: #ffffff;
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .stat-card:hover::before {
-            left: 100%;
         }
         
         .stat-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
         }
         
         .stat-number {
-            font-size: 3em;
+            font-size: 2.8em;
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
-            position: relative;
+            color: #4a90e2;
+            margin-bottom: 10px;
         }
         
         .stat-label {
-            color: #666;
-            font-size: 1.2em;
+            color: #6c757d;
+            font-size: 1.1em;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
         .category-section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 25px;
-            margin: 40px 0;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: #ffffff;
+            border-radius: 20px;
+            margin: 30px 0;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
         }
         
         .category-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4a90e2, #50e3c2);
             color: white;
-            padding: 25px 35px;
-            border-radius: 20px;
+            padding: 20px 30px;
+            border-radius: 16px;
             margin-bottom: 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .category-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.1);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .category-header:hover::before {
-            opacity: 1;
         }
         
         .category-title {
-            font-size: 1.6em;
+            font-size: 1.5em;
             font-weight: 700;
-            position: relative;
-            z-index: 1;
         }
         
         .category-stats {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
         }
         
         .category-stat {
-            background: rgba(255,255,255,0.25);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.95em;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
             font-weight: 600;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
         }
         
         .subtopics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
         }
         
         .subtopic-card {
-            background: linear-gradient(145deg, #f8f9fa, #ffffff);
-            border-radius: 20px;
-            padding: 30px;
-            border-left: 6px solid #667eea;
-            transition: all 0.4s ease;
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 25px;
+            border-left: 5px solid #4a90e2;
+            transition: all 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .subtopic-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .subtopic-card:hover::before {
-            opacity: 1;
         }
         
         .subtopic-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 45px rgba(0,0,0,0.15);
-            border-left-width: 8px;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+            border-left-color: #50e3c2;
         }
         
         .subtopic-title {
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 20px;
+            color: #343a40;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            z-index: 1;
         }
         
         .paper-count {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #4a90e2;
             color: white;
-            padding: 6px 16px;
-            border-radius: 25px;
-            font-size: 0.85em;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8em;
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
         }
         
         .papers-list {
-            max-height: 400px;
+            max-height: 350px;
             overflow-y: auto;
-            padding-right: 15px;
-            position: relative;
-            z-index: 1;
+            padding-right: 10px;
         }
         
         .paper-item {
-            background: rgba(255,255,255,0.9);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(0,0,0,0.05);
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #e9ecef;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
         }
         
         .paper-item:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-color: #4a90e2;
             transform: translateX(5px);
-            background: rgba(255,255,255,1);
         }
         
         .paper-title {
             font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 12px;
-            font-size: 1.1em;
-            line-height: 1.4;
+            color: #343a40;
+            margin-bottom: 8px;
+            font-size: 1.05em;
         }
         
         .paper-details {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 0.95em;
-            color: #666;
-        }
-        
-        .paper-author-journal {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #6c757d;
         }
         
         .paper-author {
             font-weight: 600;
             color: #495057;
-            font-size: 1.05em;
         }
         
         .paper-journal {
             font-style: italic;
-            color: #6c757d;
         }
         
         .paper-date {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            color: #1976d2;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
             font-weight: 600;
-            white-space: nowrap;
         }
         
         .paper-summary {
-            color: #666;
-            font-size: 1em;
+            color: #495057;
+            font-size: 0.95em;
             line-height: 1.5;
-            margin-bottom: 15px;
-            text-align: justify;
+            margin-bottom: 12px;
         }
         
         .paper-link {
             display: inline-block;
-            background: linear-gradient(135deg, #28a745, #20c997);
+            background-color: #28a745;
             color: white;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 0.85em;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(40,167,69,0.3);
         }
         
         .paper-link:hover {
-            background: linear-gradient(135deg, #218838, #1ba085);
+            background-color: #218838;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40,167,69,0.4);
         }
         
         .footer {
             text-align: center;
-            color: white;
-            margin-top: 60px;
-            padding: 30px;
-            opacity: 0.9;
-        }
-        
-        .footer p {
-            margin-bottom: 10px;
+            color: #6c757d;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.9em;
         }
         
         @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .header h1 {
-                font-size: 2.5em;
-            }
-            .subtopics-grid {
+            .dashboard-grid, .stats-grid, .subtopics-grid {
                 grid-template-columns: 1fr;
             }
-            .category-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-            .paper-details {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
+            .header h1 { font-size: 2.2em; }
+            .category-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
         
-        .papers-list::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .papers-list::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
-            border-radius: 4px;
-        }
-        
-        .papers-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 4px;
-        }
-        
-        .papers-list::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #5a6fd8, #6a4190);
-        }
+        .papers-list::-webkit-scrollbar { width: 6px; }
+        .papers-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
+        .papers-list::-webkit-scrollbar-thumb { background: #ced4da; border-radius: 3px; }
+        .papers-list::-webkit-scrollbar-thumb:hover { background: #adb5bd; }
         
         .loading-animation {
             opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 0.6s ease forwards;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
         }
         
         @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
     """
@@ -898,19 +721,16 @@ if len(df_categories) > 0:
 
     # 2. 수정된 도넛 차트
     pie_data = df_categories[df_categories['total_papers'] > 0].copy()
-    print(f"   파이 차트 데이터: {len(pie_data)}개 항목")
-    print(f"   파이 차트 값 확인: {pie_data['total_papers'].tolist()}")
-
+    
     fig2 = go.Figure()
     fig2.add_trace(go.Pie(
         labels=pie_data['category_short'],
         values=pie_data['total_papers'],
-        hole=0.5,
-        textposition='auto',
-        textinfo='percent+label+value',
-        hovertemplate='<b>%{label}</b><br>Papers: %{value}<br>Percentage: %{percent}<extra></extra>',
-        textfont_size=11,
-        marker=dict(colors=modern_colors[:len(pie_data)])
+        hole=0.4,
+        textinfo='percent+label',
+        hoverinfo='label+value+percent',
+        marker=dict(colors=modern_colors, line=dict(color='#ffffff', width=2)),
+        pull=[0.05] * len(pie_data)
     ))
 
     fig2.update_layout(
@@ -928,28 +748,21 @@ if len(df_categories) > 0:
 
     # 3. 수정된 세부주제 상위 15개 차트
     if len(df_subtopics) > 0:
-        top_subtopics = df_subtopics.sort_values('count', ascending=True).tail(15)
-        print(f"   세부주제 차트 데이터: {len(top_subtopics)}개 항목")
-        print(f"   세부주제 값 확인: {top_subtopics['count'].tolist()}")
+        top_subtopics = df_subtopics.nlargest(15, 'count').sort_values('count', ascending=True)
         
-        # 카테고리별 색상 매핑
-        category_color_map = {}
-        unique_categories = top_subtopics['category_short'].unique()
-        for i, cat in enumerate(unique_categories):
-            category_color_map[cat] = modern_colors[i % len(modern_colors)]
-        
-        colors = [category_color_map[cat] for cat in top_subtopics['category_short']]
-        
+        category_color_map = {cat: color for cat, color in zip(df_categories['category_short'].unique(), modern_colors)}
+        colors = top_subtopics['category_short'].map(category_color_map).fillna('#d3d3d3')
+
         fig3 = go.Figure()
         fig3.add_trace(go.Bar(
             x=top_subtopics['count'],
             y=top_subtopics['subtopic'],
             orientation='h',
             text=top_subtopics['count'],
-            textposition='outside',
+            textposition='auto',
             marker=dict(color=colors),
-            hovertemplate='<b>%{y}</b><br>Papers: %{x}<br>Category: %{customdata}<extra></extra>',
-            customdata=top_subtopics['category_short']
+            customdata=top_subtopics['category_short'],
+            hovertemplate='<b>%{y}</b><br>Category: %{customdata}<br>Papers: %{x}<extra></extra>'
         ))
         
         fig3.update_layout(
